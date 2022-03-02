@@ -1,5 +1,29 @@
-The ConnectWallet React component wraps the [web3modal](https://github.com/Web3Modal/web3modal) library with a basic configuration and a convenient button to connect your wallet.
+### Built with:
 
-It can be customized to provide more wallet options.
+Next.js
+Tailwind css
+Prisma (ORM)
+Supabase (Database, Storage, and Authentication)
 
-Once a wallet is connected any future component can be rendered. By default this component leverages a [CheckNetwork](http://localhost:3000/component/CheckNetwork) subcomponent that will verify that the wallet is on the correct network before proceeding.
+#### Running the app:
+
+Create a .env file in the root directory of the project.
+Fill in the values provided in .env.template
+
+Run the development server:
+
+yarn dev
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Prisma
+
+### Creating A Migration
+
+Change the schema to look like you want it to and then run:
+
+npx prisma migrate dev --name [MIGRATION NAME]
+
+### Deploy database changes
+
+npx prisma db deploy
