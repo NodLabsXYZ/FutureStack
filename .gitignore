@@ -41,3 +41,7 @@ yarn-error.log*
 
 # VS Code
 .vscode
+# Supabase
+**/supabase/.branches
+**/supabase/.temp
+**/supabase/.env
