@@ -4,25 +4,22 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 async function main() {
-  const alice = await prisma.user.upsert({
+  const alice = await prisma.profile.upsert({
     where: { email: 'alice@test.com' },
     update: {},
     create: {
+      userId: 'aliceUUID',
       email: 'alice@test.com',
-      profile: {
-        create: {
-          username: "Alice",
-          teams: {
+      username: "Alice",
+      teams: {
+        create: [{
+          title: "Nod Labs",
+          projects: {
             create: [{
-              title: "Nod Labs",
-              projects: {
-                create: [{
-                  title: "SimpleURIAndPriceNFTWithWithdrawalRoyalty"
-                }]
-              }  
+              title: "SimpleURIAndPriceNFTWithWithdrawalRoyalty"
             }]
-          }
-        }
+          }  
+        }]
       },
     },
   })
