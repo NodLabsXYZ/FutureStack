@@ -35,11 +35,9 @@ yarn-error.log*
 .vercel
 
 # Supabase
-**/supabase/.temp
-**/supabase/.env
-**/supabase/.globals.sql
-
-# Supabase
 **/supabase/.branches
 **/supabase/.temp
 **/supabase/.env
+
+# VS Code
+.vscode
