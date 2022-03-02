@@ -4,8 +4,8 @@ CREATE TABLE "profile" (
     "username" TEXT,
     "email" TEXT,
     "avatar_url" TEXT,
-    "userId" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "user_id" UUID NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(6),
 
     CONSTRAINT "profile_pkey" PRIMARY KEY ("id")
@@ -15,8 +15,8 @@ CREATE TABLE "profile" (
 CREATE TABLE "project" (
     "id" UUID NOT NULL,
     "title" TEXT NOT NULL,
-    "teamId" UUID NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "team_id" UUID NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(6),
 
     CONSTRAINT "project_pkey" PRIMARY KEY ("id")
@@ -26,7 +26,7 @@ CREATE TABLE "project" (
 CREATE TABLE "team" (
     "id" UUID NOT NULL,
     "title" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(6),
 
     CONSTRAINT "team_pkey" PRIMARY KEY ("id")
@@ -37,10 +37,10 @@ CREATE TABLE "contract" (
     "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "info" JSONB NOT NULL,
-    "compiledAt" TIMESTAMP(3) NOT NULL,
-    "projectId" UUID NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "compiled_at" TIMESTAMP(3) NOT NULL,
+    "project_id" UUID NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "contract_pkey" PRIMARY KEY ("id")
 );
@@ -58,7 +58,7 @@ CREATE UNIQUE INDEX "profile_username_key" ON "profile"("username");
 CREATE UNIQUE INDEX "profile_email_key" ON "profile"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "profile_userId_key" ON "profile"("userId");
+CREATE UNIQUE INDEX "profile_user_id_key" ON "profile"("user_id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_profileToteam_AB_unique" ON "_profileToteam"("A", "B");
@@ -67,10 +67,10 @@ CREATE UNIQUE INDEX "_profileToteam_AB_unique" ON "_profileToteam"("A", "B");
 CREATE INDEX "_profileToteam_B_index" ON "_profileToteam"("B");
 
 -- AddForeignKey
-ALTER TABLE "project" ADD CONSTRAINT "project_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "project" ADD CONSTRAINT "project_team_id_fkey" FOREIGN KEY ("team_id") REFERENCES "team"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "contract" ADD CONSTRAINT "contract_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "contract" ADD CONSTRAINT "contract_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_profileToteam" ADD FOREIGN KEY ("A") REFERENCES "profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
