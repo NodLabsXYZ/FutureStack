@@ -1,79 +1,17 @@
 import {
-  simpleApiCall
-} from '../../lib'
-
-import {
-  FutureStackLayout,
-  TWCenteredContent,
-  ConnectWalletButton,
-  TWCircleSpinner,
-  ContractDeploymentDashboardContract
+  FutureStackLayout
 } from '../../components'
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
+import { Project } from '../../components/projects';
 
 const ProjectPage = () => {
   const router = useRouter()
-  const [provider, setProvider] = useState()
-  const [project, setProject] = useState()
-  
-  useEffect(() => {
-    const { id } = router.query;
-    if (!id) return;
-
-    const getProject = async () => {
-      const { json, error } = await simpleApiCall(
-        `projects/${id}`,
-        'GET'
-      )
-      setProject(json)
-    }
-
-    getProject()
-  }, [router.query])
+  const { id } = router.query
   
   return (
     <FutureStackLayout>
-      {!provider && 
-        <TWCenteredContent>
-          <div className='py-6'>
-            <ConnectWalletButton
-              onConnect={setProvider}
-            />
-          </div>
-        </TWCenteredContent>
-      }
-      {provider && !project &&
-        <TWCircleSpinner
-          message="Loading project..."
-        />
-      }
-      {provider && project &&
-        <div>        
-          <h2 className='text-lg'>
-            <span className='font-bold mr-3'>
-              Project:
-            </span>
-            {project.title}
-          </h2>
-          {project.contracts.sort(
-            (a, b) => new Date(b.compiledAt) - new Date(a.compiledAt)
-          ).map(
-            (contract, index) => (
-              <div 
-                key={`contract-${index}`}
-                className='py-3'
-              >
-                <ContractDeploymentDashboardContract
-                  provider={provider}
-                  contract={contract}
-                />
-              </div>
-            )
-          )}
-        </div>        
-      }
+      <Project id={id} />
     </FutureStackLayout>
   )
 }
