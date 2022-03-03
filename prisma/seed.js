@@ -8,7 +8,7 @@ async function main() {
     where: { email: 'alice@test.com' },
     update: {},
     create: {
-      userId: 'aliceUUID',
+      user_id: '3950d1fa-5386-4499-b2fa-b3e27af55b97',
       email: 'alice@test.com',
       username: "Alice",
       teams: {
@@ -24,29 +24,26 @@ async function main() {
     },
   })
 
-  // const bob = await prisma.user.upsert({
-  //   where: { email: 'bob@prisma.io' },
-  //   update: {},
-  //   create: {
-  //     email: 'bob@prisma.io',
-  //     name: 'Bob',
-  //     posts: {
-  //       create: [
-  //         {
-  //           title: 'Follow Prisma on Twitter',
-  //           content: 'https://twitter.com/prisma',
-  //           published: true,
-  //         },
-  //         {
-  //           title: 'Follow Nexus on Twitter',
-  //           content: 'https://twitter.com/nexusgql',
-  //           published: true,
-  //         },
-  //       ],
-  //     },
-  //   },
-  // })
-  console.log({ alice })
+  const bob = await prisma.profile.upsert({
+    where: { email: 'bob@test.com' },
+    update: {},
+    create: {
+      user_id: '3950d1fa-5386-4499-b2fa-b3e27af55b98',
+      email: 'bob@test.com',
+      username: "Bob",
+      teams: {
+        create: [{
+          title: "FutureStack",
+          projects: {
+            create: [{
+              title: "FutureStack"
+            }]
+          }  
+        }]
+      },
+    },
+  })
+  console.log({ alice, bob })
 }
 
 main()
