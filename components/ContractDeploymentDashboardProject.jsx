@@ -11,6 +11,8 @@ const ContractDeploymentDashboardProject = ({ project }) => {
         className='block border p-3'
       >
         {project.title}
+        <br/>
+        <span className='text-xs'>{project.team.title}</span>
       </a>
     </NextLink>
   )
