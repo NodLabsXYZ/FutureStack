@@ -12,7 +12,7 @@ export default async function handle(req, res) {
   const { user, error  } = await supabaseClient.auth.api.getUserByCookie(req, res)
 
   if (error?.status === 400) {
-    return res.status(400)
+    return res.status(400).json({ message: error.message })
   }
 
   const projects = await prismaClient.project.findMany({

@@ -61,13 +61,13 @@ const ContractDeploymentDashboardContract = ({ provider, contract }) => {
 
     setActiveContract(updatedContract)
 
-    const response = await simpleApiCall(
+    const { data, status } = await simpleApiCall(
       `contracts/${contract.id}`,
       'POST',
       updatedContract
     )
 
-    setActiveContract(response)
+    setActiveContract(data)
   }
 
   return (

@@ -1,22 +1,17 @@
 import {
   simpleApiCall
-} from '../lib'
-
-import {
-  TWCircleSpinner,
-  ContractDeploymentDashboardProject,
-  ContractDeploymentDashboardProjectsNewButton,
-  ContractDeploymentDashboardProjectsCreateButton
-} from '.'
+} from '../../lib'
 
 import { useEffect, useState } from 'react';
+import { TWCircleSpinner } from '..';
+import { NewProjectButton, ProjectListing } from '.';
 
 const ContractDeploymentDashboardProjects = () => {
   const [projects, setProjects] = useState()
 
   useEffect(() => {
     const getProjects = async () => {
-      const { data, status } = await simpleApiCall(
+      const { data, error } = await simpleApiCall(
         'projects',
         'GET'
       )
@@ -39,7 +34,7 @@ const ContractDeploymentDashboardProjects = () => {
           <div className='flex mb-3'>
             {projects.map(
               (project, index) => (
-                <ContractDeploymentDashboardProject
+                <ProjectListing
                   key={`project-${index}`}
                   project={project}
                 />
@@ -47,10 +42,10 @@ const ContractDeploymentDashboardProjects = () => {
             )}
           </div>
         }
-        
-        {/* <ContractDeploymentDashboardProjectsNewButton />
-        &nbsp;
-        <ContractDeploymentDashboardProjectsCreateButton /> */}
+
+        <div className='pt-6'>
+          <NewProjectButton />
+        </div>
       </div>
     </div>
   )

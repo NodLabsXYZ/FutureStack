@@ -1,4 +1,4 @@
-const BoldKeyAndValue = ({ title, value }) => (
+const BoldTitleAndValue = ({ title, value }) => (
   <div>
     <span className='font-bold mr-1'>
       {title}:
@@ -7,4 +7,4 @@ const BoldKeyAndValue = ({ title, value }) => (
   </div>
 );
 
-export default BoldKeyAndValue;
+export default BoldTitleAndValue;

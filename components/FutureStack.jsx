@@ -7,10 +7,10 @@ import {
   TWConstrainedCenteredContent,
   TWCircleSpinner,
   SupabaseMagicLink,
-  ContractDeploymentDashboardProjects
 } from '.'
 
 import { useEffect, useState } from 'react'
+import { ProjectsDashboard } from './projects'
 
 const FutureStack = ({  }) => {
   const [user, setUser] = useState()
@@ -54,7 +54,7 @@ const FutureStack = ({  }) => {
 
   return (
     <FutureStackLayout user={user}>
-      <ContractDeploymentDashboardProjects />
+      <ProjectsDashboard />
     </FutureStackLayout>
   )
 }

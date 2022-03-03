@@ -4,7 +4,7 @@ import {
 } from '../lib'
 
 import {
-  BoldKeyAndValue
+  BoldTitleAndValue
 } from '.'
 
 import { ethers } from 'ethers';
@@ -80,25 +80,25 @@ const EthereumGasEstimateInformation = ({ provider, contract, deploymentArgument
   return (
     <div>
       {network && 
-        <BoldKeyAndValue
+        <BoldTitleAndValue
           title="Network"
           value={ethereumNetworkIdToName(network)}
         />
       }
       {gasEstimate &&
-        <BoldKeyAndValue
+        <BoldTitleAndValue
           title="Gas"
           value={ethers.utils.commify(gasEstimate)}
         />
       }
       {readableGasPrice && 
-        <BoldKeyAndValue
+        <BoldTitleAndValue
           title="Gas Price"
           value={`${readableGasPrice} GWEI`}
         />
       }
       {estimatedCost !== null &&
-        <BoldKeyAndValue
+        <BoldTitleAndValue
           title="Transaction Cost"
           value={`${estimatedCost} ETH`}
         />      
