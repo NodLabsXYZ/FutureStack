@@ -11,11 +11,12 @@ const ContractDeploymentDashboardProjects = () => {
 
   useEffect(() => {
     const getProjects = async () => {
-      const { data, error } = await simpleApiCall(
+      const { json, error } = await simpleApiCall(
         'projects',
         'GET'
       )
-      setProjects(data)
+
+      setProjects(json)
     }
 
     getProjects()

@@ -5,10 +5,10 @@ import { simpleApiCall } from "../../lib";
 
 const NewProject = () => {
   const router = useRouter();
-  const [title, setTitle] = useState();
+  const [title, setTitle] = useState('');
 
-  onSubmit = async () => {
-    const { data, status } = await simpleApiCall(
+  const onSubmit = async () => {
+    const { json, status } = await simpleApiCall(
       'projects',
       'POST',
       {
@@ -17,30 +17,31 @@ const NewProject = () => {
     )
 
     if (status === 200) {
-      router.push(`/projects/${data.id}`)
+      router.push(`/project/${json.id}`)
     }
   }
 
   return (
     <div>
       <h2>New Project</h2>
-      <div>
+      <div className='py-3'>
         <BoldTitleAndValue
           title="Title"
           value={(
             <input
               type="text"
-              onChange={setTitle}
+              className='border px-3 py-1'
+              onChange={(e) => setTitle(e.target.value)}
               value={title}
             />
           )}
         />
-        <TWButton
-          onClick={onSubmit}
-        >
-          Create Project
-        </TWButton>
       </div>
+      <TWButton
+        onClick={onSubmit}
+      >
+        Create Project
+      </TWButton>
     </div>
   )
   

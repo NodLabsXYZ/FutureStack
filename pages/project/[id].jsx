@@ -3,7 +3,7 @@ import {
 } from '../../lib'
 
 import {
-  ContractDeploymentDashboardTestLayout,
+  FutureStackLayout,
   TWCenteredContent,
   ConnectWalletButton,
   TWCircleSpinner,
@@ -13,7 +13,7 @@ import {
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
 
-const ContractDeploymentDashboardProjectPage = () => {
+const ProjectPage = () => {
   const router = useRouter()
   const [provider, setProvider] = useState()
   const [project, setProject] = useState()
@@ -23,18 +23,18 @@ const ContractDeploymentDashboardProjectPage = () => {
     if (!id) return;
 
     const getProject = async () => {
-      const _project = await simpleApiCall(
+      const { json, error } = await simpleApiCall(
         `projects/${id}`,
         'GET'
       )
-      setProject(_project)
+      setProject(json)
     }
 
     getProject()
   }, [router.query])
   
   return (
-    <ContractDeploymentDashboardTestLayout>
+    <FutureStackLayout>
       {!provider && 
         <TWCenteredContent>
           <div className='py-6'>
@@ -74,8 +74,8 @@ const ContractDeploymentDashboardProjectPage = () => {
           )}
         </div>        
       }
-    </ContractDeploymentDashboardTestLayout>
+    </FutureStackLayout>
   )
 }
 
-export default ContractDeploymentDashboardProjectPage;
+export default ProjectPage;

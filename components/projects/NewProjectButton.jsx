@@ -5,11 +5,13 @@ import {
 
 const NewProjectButton = () => {
   return (
-    <NextLink href="/new-project">
-      <TWButton>
-        New Project
-      </TWButton>
-    </NextLink>
+    <TWButton>
+      <NextLink href="/project/new">
+        <a>
+          New Project
+        </a>
+      </NextLink>
+    </TWButton>
   )
 }
 

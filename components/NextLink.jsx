@@ -9,7 +9,6 @@ const NextLink = (props) => {
 }
 
 NextLink.defaultProps = {
-  
   href: "https://www.example.com",
   children: "Example Link"
 }
