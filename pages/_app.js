@@ -1,9 +1,9 @@
 import '../styles/globals.css'
 import '../styles/index.css'
 
-function NextTemplateWebsite({ Component, pageProps }) {
+function FutureStackApp({ Component, pageProps }) {
   return <Component {...pageProps} />
 }
 
-export default NextTemplateWebsite;
+export default FutureStackApp;
 

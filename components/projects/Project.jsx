@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { ContractDeploymentDashboardContract, TWCircleSpinner } from "..";
+import { NextLink, TWCircleSpinner, TWButton } from "..";
 import { simpleApiCall } from "../../lib";
 
 const Project = ({ id }) => {
@@ -36,21 +36,15 @@ const Project = ({ id }) => {
         </span>
         {project.title}
       </h2>
-      {project.contracts.sort(
-        (a, b) => new Date(b.compiledAt) - new Date(a.compiledAt)
-      ).map(
-        (contract, index) => (
-          <div 
-            key={`contract-${index}`}
-            className='py-3'
-          >
-            <ContractDeploymentDashboardContract
-              provider={provider}
-              contract={contract}
-            />
-          </div>
-        )
-      )}
+      <div className='flex pt-6'>
+        <div className='border p-6'>
+          <TWButton>
+            <NextLink href={`/project/${id}/contract`}>
+              <a>Contracts</a>
+            </NextLink>
+          </TWButton>
+        </div>
+      </div>
     </div>
   )
 }
