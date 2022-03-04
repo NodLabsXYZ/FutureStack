@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
 import { ContractDeploymentDashboardContract, TWCircleSpinner } from "..";
-import { simpleApiCall } from "../../lib";
+import { getContracts } from "../../lib/queries";
 
 const ContractsDashboard = ({ project }) => {
   const [precompiledContracts, setPrecompiledContracts] = useState();
 
   useEffect(() => {
     const getPrecompiledContracts = async () => {
-      const { json, error } = await simpleApiCall(
-        'contracts/public',
-        'GET'
-      )
+      const _precompiledProjects = await getContracts(true)
 
-      setPrecompiledContracts(json)
+      setPrecompiledContracts(_precompiledProjects)
     }
 
     getPrecompiledContracts()

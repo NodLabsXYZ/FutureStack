@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react'
 import { FutureStackLayout, TWCircleSpinner } from "../../../../components"
 import ContractsDashboard from "../../../../components/contracts/ContractsDashboard";
-import { simpleApiCall } from '../../../../lib';
+import { getProject } from '../../../../lib/queries';
 
 const ContractsPage = () => {
   const router = useRouter()
@@ -13,15 +13,12 @@ const ContractsPage = () => {
   useEffect(() => {
     if (!projectId) return;
 
-    const getProject = async () => {
-      const { json, error } = await simpleApiCall(
-        `projects/${projectId}`,
-        'GET'
-      )
-      setProject(json)
+    const loadProject = async () => {
+      const _project = await getProject(projectId)
+      setProject(_project)
     }
 
-    getProject()
+    loadProject()
   }, [projectId])
 
   if (!project) {
