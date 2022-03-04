@@ -49,7 +49,10 @@ const uploadBulk = async (
         metadataUris.push(metadataUri);
         const percentCompleted = index / nftObjects.length * 100;
         setPercentCompleted(percentCompleted);
-        await new Promise(r => setTimeout(r, 2000));
+        // Waiting for 2 seconds when running locally helps with getting an idea of how long the real process will take
+        // if (process.env.NODE_ENV !== 'production') {
+        //     await new Promise(r => setTimeout(r, 2000));
+        // }
     }
     return metadataUris
 }
