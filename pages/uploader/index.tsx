@@ -50,6 +50,70 @@ const Home: NextPage = () => {
       const nftObjs = await createNftObjects(imageFiles, metadataFiles);
       console.log('nftObjs :>> ', nftObjs);
       setNftObjects(nftObjs);
+
+      for (let index = 0; index < nftObjs.length; index++) {
+        const nftObj = nftObjs[index];
+        const formData = new FormData();
+
+        formData.append('image', nftObj.imageFile);
+
+        const options = {
+          method: 'POST',
+          body: formData
+        }
+
+
+        const response = await fetch('/api/uploader/getFilePath', options);
+
+        const { filePath: tempImageFilePath } = await response.json();
+
+
+        console.log('imageFilePath :>> ', tempImageFilePath);
+
+        const newNftObj = {
+          tempImageFilePath,
+          metadata: nftObj.metadata
+        }
+        const numberOfItemsToUpload = (index + 1).toString()
+        localStorage.setItem(index.toString(), JSON.stringify(newNftObj));
+        localStorage.setItem('numberOfItemsToUpload', numberOfItemsToUpload);
+      }
+
+      // let counter = 0;
+      // nftObjs.forEach(nftObj => {
+      //   const reader = new FileReader();
+      //   reader.addEventListener('load', async () => {
+
+      //     const formData = new FormData();
+
+      //     formData.append('image', nftObj.imageFile);
+
+      //     const options = {
+      //       method: 'POST',
+      //       body: formData
+      //     }
+
+
+      //     const response = await fetch('/api/uploader/getFilePath', options);
+
+      //     const { filePath: imageFilePath } = await response.json();
+
+
+      //     console.log('imageFilePath :>> ', imageFilePath);
+
+      //     const newNftObj = {
+      //       // imageFile: reader.result.toString(),
+      //       imageFilePath,
+      //       metadata: nftObj.metadata
+      //     }
+      //     localStorage.setItem(counter.toString(), JSON.stringify(newNftObj));
+      //     counter++;
+      //     localStorage.setItem('numberOfItemsToUpload', counter.toString());
+      //   });
+
+      //   reader.readAsDataURL(nftObj.imageFile);
+      // });
+
       setShowConfirmUpload(true);
     }
   }

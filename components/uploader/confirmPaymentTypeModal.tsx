@@ -78,11 +78,11 @@ export default function ConfirmPaymentTypeModal(props: ConfirmPaymentTypeModalPr
                                         role="link"
                                         className="w-full flex items-center justify-center bg-black border border-transparent text-white rounded-md py-2 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
                                     >
-                                        <span className="sr-only">Pay with fiat</span>
+                                        <span className="sr-only">Pay with credit card</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                                         </svg>
-                                        <span className='ml-2'>Pay with fiat</span>
+                                        <span className='ml-2'>Pay with credit card</span>
                                     </button>
 
                                     <div className="relative mt-4 mb-4">

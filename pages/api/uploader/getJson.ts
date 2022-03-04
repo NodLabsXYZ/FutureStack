@@ -41,19 +41,12 @@ export default async (
         }
     }
 
-    console.log('fileIds :>> ', fileIds);
-
-
-    console.log('fileIds :>> ', fileIds);
     const paths: string[] = [];
 
     for (let index = 0; index < fileIds.length; index++) {
         const file = data.files[fileIds[index]];
         paths.push(file.filepath);
     }
-
-    console.log('paths :>> ', paths);
-
 
     const json = JSON.parse(readFileSync(paths[0], 'utf8'));
 

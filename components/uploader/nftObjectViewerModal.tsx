@@ -3,6 +3,7 @@ import { Dispatch, Fragment, SetStateAction, Suspense, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { NftObject } from '../../types/NftObject'
 import React from 'react';
+import { getNameFromMetadataString } from "../../utils/metadataUtils";
 
 // This is to fix 'document not found' error from the react-json-view package
 const ReactJson = React.lazy(() => import('react-json-view'));
@@ -21,23 +22,6 @@ type NftContentProps = {
 }
 
 function NftContent(props: NftContentProps) {
-    let jsonView: JSX.Element;
-
-    // if (typeof window !== 'undefined') {
-    //     jsonView = <ReactJson
-    //         src={JSON.parse(props.metadata)}
-    //         theme="bright:inverted"
-    //         displayObjectSize={false}
-    //         displayDataTypes={false}
-    //         enableClipboard={false}
-    //     />
-    //     // import('react-json-view').then(reactJsonView => {
-    //     //     const ReactJson = reactJsonView.default;
-
-    //     //     console.log('ReactJson :>> ', ReactJson);
-    //     // })
-    // }
-    // console.log('jsonView :>> ', jsonView);
     return (
         <div className="sm:flex">
             <div className="mb-4 flex-shrink-0 sm:mb-0 sm:mr-4">
@@ -46,7 +30,6 @@ function NftContent(props: NftContentProps) {
             <div>
                 <h4 className="text-lg font-bold">{props.name}</h4>
                 <div className='mt-4'>
-                    {jsonView}
                     <Suspense fallback={<div>Loading...</div>}>
                         <ReactJson
                             src={JSON.parse(props.metadata)}
@@ -94,8 +77,8 @@ export default function NftObjectViewerModal(props: NftObjectViewerModalProps) {
                     >
                         <div className="relative inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full sm:p-6">
                             <NftContent
-                                name={props.nftToShow?.name}
-                                preview={props.nftToShow?.preview}
+                                name={getNameFromMetadataString(props.nftToShow?.metadata)}
+                                preview={props.nftToShow?.imageFile.preview}
                                 metadata={props.nftToShow?.metadata}
                             />
                         </div>
