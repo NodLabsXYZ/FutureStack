@@ -10,31 +10,17 @@ function FutureStackApp({ Component, pageProps }) {
 
   useEffect(() => {
     const _user = supabaseClient.auth.user()
+    setUser(_user)
 
-    const refreshUser = async () => {
-      // supabaseClient.auth.refreshSession()
-      // const session = supabaseClient.auth.session()
-      // console.log("SESSION", session, "USER", _user)
-      // const x = await supabaseClient.auth.signIn({
-      //   refreshToken: session.refresh_token,
-      // });
-      // console.log("USER2", x);
-      setUser(_user)
-    }
-
-    if (_user) { 
-      refreshUser(_user)
-    } else {
+    if (!_user) { 
       setTimeout(() => setLoading(false), 1000)
     }
 
     const { data, error } = supabaseClient.auth.onAuthStateChange(
       (event, session) => {
         if (event === 'SIGNED_IN' && session) {
-          console.log("USERCHANGE", event, session)
           setUser(session.user);
         } else if (session === null) {
-          console.log("USERCHANGE SIGNEDOUT", event, session)
           setUser(null);
         }
       }

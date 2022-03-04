@@ -20,8 +20,20 @@ const ContractsDashboard = ({ project }) => {
 
   return (
     <div>
-      <h2 className='text-lg'>Contracts</h2>
+      <h2 className='text-lg'>My Contracts</h2>
       
+      {(project.contract || []).length === 0 && (
+        <div>
+          <p>You have no custom contracts.</p>
+          <p>You can upload any custom contract using the FutureStack CLI.</p>
+          <p>
+            Simply run 
+            <code className='bg-slate-700 text-white px-1 mx-1'>future compile</code> 
+            in any Hardhat project.
+          </p>
+        </div>
+      )}
+  
       {(project.contract || []).length > 0 &&
         <div className='py-6'>
           <h2 className='font-bold'>Project Contracts</h2>
