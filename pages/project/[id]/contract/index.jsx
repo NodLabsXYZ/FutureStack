@@ -24,19 +24,18 @@ const ContractsPage = () => {
     getProject()
   }, [projectId])
 
+  if (!project) {
+    return (
+      <TWCircleSpinner
+        message='Loading project...'
+      />
+    )
+  }
+
   return (
-    <FutureStackLayout>
-      {!project &&
-        <TWCircleSpinner
-          message='Loading project...'
-        />
-      }
-      {project &&
-        <ContractsDashboard 
-          project={project}
-        />
-      }
-    </FutureStackLayout>
+    <ContractsDashboard 
+      project={project}
+    />
   )
 }
 

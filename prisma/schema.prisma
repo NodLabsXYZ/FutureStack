@@ -41,6 +41,7 @@ model contract {
   id          String   @id @default(uuid()) @db.Uuid
   name        String
   info        Json
+  public      Boolean  @default(false)
   compiled_at DateTime
   project_id  String   @db.Uuid
   project     project  @relation(fields: [project_id], references: [id])

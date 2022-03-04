@@ -1,7 +1,3 @@
-import {
-  FutureStackLayout
-} from '../../components'
-
 import { useRouter } from 'next/router'
 import { Project } from '../../components/projects';
 
@@ -10,9 +6,7 @@ const ProjectPage = () => {
   const { id } = router.query
   
   return (
-    <FutureStackLayout>
-      <Project id={id} />
-    </FutureStackLayout>
+    <Project id={id} />
   )
 }
 

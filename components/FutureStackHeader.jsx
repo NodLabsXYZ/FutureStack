@@ -3,6 +3,7 @@ import {
 } from '../lib'
 
 import {
+  NextLink,
   TWCleanHeader
 } from '.'
 
@@ -15,7 +16,11 @@ const FutureStackHeader = ({ user }) => {
   return (
     <TWCleanHeader>
       <h1 className='text-md'>
-        FutureStack
+        <NextLink href='/'>
+          <a>
+            FutureStack
+          </a>
+        </NextLink>
       </h1>
       <div>
         {user && 
