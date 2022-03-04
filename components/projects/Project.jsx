@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { NextLink, TWCircleSpinner, TWButton } from "..";
-import { simpleApiCall } from "../../lib";
+import { getProject } from "../../lib/queries";
 
 const Project = ({ id }) => {
   const [project, setProject] = useState();
@@ -9,15 +9,12 @@ const Project = ({ id }) => {
   useEffect(() => {
     if (!id) return;
 
-    const getProject = async () => {
-      const { json, error } = await simpleApiCall(
-        `projects/${id}`,
-        'GET'
-      )
-      setProject(json)
+    const loadProject = async () => {
+      const project = await getProject(id);
+      setProject(project)
     }
 
-    getProject()
+    loadProject()
   }, [id])
 
   if (!project) {
