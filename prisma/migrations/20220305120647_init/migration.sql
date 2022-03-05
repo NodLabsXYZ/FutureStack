@@ -5,6 +5,7 @@ CREATE TABLE "profile" (
     "email" TEXT,
     "avatar_url" TEXT,
     "user_id" UUID NOT NULL,
+    "secret_key" UUID,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ(6),
 
@@ -37,6 +38,7 @@ CREATE TABLE "contract" (
     "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "info" JSONB NOT NULL,
+    "opensource" BOOLEAN NOT NULL DEFAULT false,
     "compiled_at" TIMESTAMP(3) NOT NULL,
     "project_id" UUID NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,

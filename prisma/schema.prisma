@@ -13,6 +13,7 @@ model profile {
   email      String?   @unique
   avatar_url String?
   user_id    String    @unique @db.Uuid
+  secret_key String?   @default(uuid()) @db.Uuid
   created_at DateTime  @default(now())
   updated_at DateTime? @db.Timestamptz(6)
   teams      team[]
@@ -41,7 +42,7 @@ model contract {
   id          String   @id @default(uuid()) @db.Uuid
   name        String
   info        Json
-  public      Boolean  @default(false)
+  opensource  Boolean  @default(false)
   compiled_at DateTime
   project_id  String   @db.Uuid
   project     project  @relation(fields: [project_id], references: [id])

@@ -1,24 +1,18 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { BoldTitleAndValue, TWButton } from "..";
-import { simpleApiCall } from "../../lib";
+import { newProject } from "../../lib/queries";
 
 const NewProject = () => {
   const router = useRouter();
   const [title, setTitle] = useState('');
 
   const onSubmit = async () => {
-    const { json, status } = await simpleApiCall(
-      'projects',
-      'POST',
-      {
-        title
-      }
-    )
+    const project = await newProject({
+      title
+    })
 
-    if (status === 200) {
-      router.push(`/project/${json.id}`)
-    }
+    router.push(`/project/${project.id}`)
   }
 
   return (

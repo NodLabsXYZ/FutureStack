@@ -1,19 +1,30 @@
 import { useEffect, useState } from "react";
 import { ContractDeploymentDashboardContract, TWCircleSpinner } from "..";
 import { getContracts } from "../../lib/queries";
+import { supabaseClient } from "../../lib";
 
 const ContractsDashboard = ({ project }) => {
   const [precompiledContracts, setPrecompiledContracts] = useState();
 
   useEffect(() => {
     const getPrecompiledContracts = async () => {
+      const user = supabaseClient.auth.user();
+
+      let team = await supabaseClient
+        .from('team')
+        .select('*, profile!inner(*)')
+        .eq('profile.user_id', user.id)
+        .maybeSingle();
+
+      console.log("TEAM", team);
+
       const _precompiledProjects = await getContracts(true)
 
       setPrecompiledContracts(_precompiledProjects)
     }
 
     getPrecompiledContracts()
-  })
+  }, [])
 
   return (
     <div>

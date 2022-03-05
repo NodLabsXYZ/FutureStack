@@ -3,11 +3,11 @@ import {
 } from '../../../lib/server'
 
 export default async function handle(_req, res) {
-  const publicContracts = await prismaClient.contract.findMany({
+  const openSourceContracts = await prismaClient.contract.findMany({
     where: {
-      public: true
+      opensource: true
     }
   })
 
-  res.json(publicContracts);
+  res.json(openSourceContracts);
 }

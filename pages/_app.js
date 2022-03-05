@@ -30,7 +30,7 @@ function FutureStackApp({ Component, pageProps }) {
   }, [user])
 
   return (
-    <FutureStackLayout>
+    <FutureStackLayout user={user}>
       <Component 
         loading={loading} 
         user={user} 

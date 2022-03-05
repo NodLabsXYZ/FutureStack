@@ -1,3 +1,12 @@
+-- AddUUIDs
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+ALTER TABLE public.profile ALTER COLUMN id SET DEFAULT uuid_generate_v4();
+ALTER TABLE public.profile ALTER COLUMN secret_key SET DEFAULT uuid_generate_v4();
+ALTER TABLE public.project ALTER COLUMN id SET DEFAULT uuid_generate_v4();
+ALTER TABLE public.team ALTER COLUMN id SET DEFAULT uuid_generate_v4();
+ALTER TABLE public.contract ALTER COLUMN id SET DEFAULT uuid_generate_v4();
+
+-- AddPolicies
 CREATE POLICY profile_contract_access 
 ON public.contract
 WITH CHECK (
@@ -10,11 +19,11 @@ WITH CHECK (
         AND ("_profileToteam"."B" = project.team_id) 
         AND (project.id = contract.project_id)
       ) OR (
-        contract.public = true
+        contract.opensource = true
       )
     )
   )
-)
+);
 
 CREATE POLICY profile_project_access
 ON public.project
@@ -27,4 +36,4 @@ WITH CHECK (
       AND ("_profileToteam"."B" = project.team_id)
     )
   )
-)
+);
