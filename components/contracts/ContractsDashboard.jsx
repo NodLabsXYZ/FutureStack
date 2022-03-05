@@ -29,7 +29,17 @@ const ContractsDashboard = ({ project }) => {
       {(contracts || []).length === 0 && (
         <div className='text-sm'>
           <p>You have no custom contracts.</p>
-          <p>You can upload any custom contract using the FutureStack CLI.</p>
+          <p>
+            You can upload any custom contract using the 
+            <a 
+              href='https://www.npmjs.com/package/futurestack-cli' 
+              target='_blank'
+              rel='noopener noreferrer'
+              className='ml-1 text-blue-600 underline'
+            >
+              FutureStack CLI.
+            </a>
+          </p>
           <p>After installing the CLI add a .env file with the following contents:</p>
           <code className='block my-3 bg-slate-700 text-white p-3 text-xs w-1/2 overflow-x-auto'>
             FUTURE_STACK_SECRET_KEY=&#39;{access_token}&#39;
@@ -37,7 +47,7 @@ const ContractsDashboard = ({ project }) => {
           <p>
             Then simply run 
             <code className='bg-slate-700 text-white px-1 py-1 mx-1 text-xs'>
-              future compile -p &#39;{project.title}&#39;
+              npx future compile -p &#39;{project.title}&#39;
             </code> 
             in any Hardhat project.
           </p>
