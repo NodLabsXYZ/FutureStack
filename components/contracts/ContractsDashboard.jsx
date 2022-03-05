@@ -5,6 +5,7 @@ import { supabaseClient } from "../../lib";
 
 const ContractsDashboard = ({ project }) => {
   const [precompiledContracts, setPrecompiledContracts] = useState();
+  const { access_token } = supabaseClient.auth.session();
 
   useEffect(() => {
     const getPrecompiledContracts = async () => {
@@ -15,8 +16,6 @@ const ContractsDashboard = ({ project }) => {
         .select('*, profile!inner(*)')
         .eq('profile.user_id', user.id)
         .maybeSingle();
-
-      console.log("TEAM", team);
 
       const _precompiledProjects = await getContracts(true)
 
@@ -31,12 +30,18 @@ const ContractsDashboard = ({ project }) => {
       <h2 className='text-lg'>My Contracts</h2>
       
       {(project.contract || []).length === 0 && (
-        <div>
+        <div className='text-sm'>
           <p>You have no custom contracts.</p>
           <p>You can upload any custom contract using the FutureStack CLI.</p>
+          <p>After installing the CLI add a .env file with the following contents:</p>
+          <code className='block my-3 bg-slate-700 text-white p-3 text-xs w-1/2 overflow-x-auto'>
+            FUTURE_STACK_SECRET_KEY=&#39;{access_token}&#39;
+          </code>
           <p>
-            Simply run 
-            <code className='bg-slate-700 text-white px-1 mx-1'>future compile</code> 
+            Then simply run 
+            <code className='bg-slate-700 text-white px-1 py-1 mx-1 text-xs'>
+              future compile -p &#39;{project.title}&#39;
+            </code> 
             in any Hardhat project.
           </p>
         </div>

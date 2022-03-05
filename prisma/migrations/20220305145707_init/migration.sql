@@ -42,7 +42,7 @@ CREATE TABLE "contract" (
     "compiled_at" TIMESTAMP(3) NOT NULL,
     "project_id" UUID NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
+    "updated_at" TIMESTAMPTZ(6),
 
     CONSTRAINT "contract_pkey" PRIMARY KEY ("id")
 );
