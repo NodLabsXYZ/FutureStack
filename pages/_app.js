@@ -1,20 +1,28 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router'
 import { FutureStackLayout } from '../components';
 import { supabaseClient } from '../lib';
 import '../styles/globals.css'
 import '../styles/index.css'
 
 function FutureStackApp({ Component, pageProps }) {
+  const router = useRouter();
   const [user, setUser] = useState()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const _user = supabaseClient.auth.user()
-    setUser(_user)
 
     if (!_user) { 
+      if (router.pathname !== '/') {
+        router.push('/')
+        return;
+      }
+      
       setTimeout(() => setLoading(false), 1000)
     }
+
+    setUser(_user)
 
     const { data, error } = supabaseClient.auth.onAuthStateChange(
       (event, session) => {

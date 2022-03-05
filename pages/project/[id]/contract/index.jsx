@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react'
-import { FutureStackLayout, TWCircleSpinner } from "../../../../components"
+import { TWCircleSpinner } from "../../../../components"
 import ContractsDashboard from "../../../../components/contracts/ContractsDashboard";
 import { getProject } from '../../../../lib/queries';
 

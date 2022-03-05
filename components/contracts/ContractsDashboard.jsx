@@ -1,24 +1,21 @@
 import { useEffect, useState } from "react";
+import { ContractPreview } from '.';
 import { ContractDeploymentDashboardContract, TWCircleSpinner } from "..";
 import { getContracts } from "../../lib/queries";
 import { supabaseClient } from "../../lib";
 
 const ContractsDashboard = ({ project }) => {
+  const [provider, setProvider] = useState();
+  const [contracts, setContracts] = useState();
   const [precompiledContracts, setPrecompiledContracts] = useState();
-  const { access_token } = supabaseClient.auth.session();
+  const { access_token } = supabaseClient.auth.session() || {};
 
   useEffect(() => {
     const getPrecompiledContracts = async () => {
-      const user = supabaseClient.auth.user();
-
-      let team = await supabaseClient
-        .from('team')
-        .select('*, profile!inner(*)')
-        .eq('profile.user_id', user.id)
-        .maybeSingle();
+      const _contracts = await getContracts();
+      setContracts(_contracts);
 
       const _precompiledProjects = await getContracts(true)
-
       setPrecompiledContracts(_precompiledProjects)
     }
 
@@ -27,9 +24,9 @@ const ContractsDashboard = ({ project }) => {
 
   return (
     <div>
-      <h2 className='text-lg'>My Contracts</h2>
+      <h2 className='text-lg'>Contracts: {project.title}</h2>
       
-      {(project.contract || []).length === 0 && (
+      {(contracts || []).length === 0 && (
         <div className='text-sm'>
           <p>You have no custom contracts.</p>
           <p>You can upload any custom contract using the FutureStack CLI.</p>
@@ -47,24 +44,26 @@ const ContractsDashboard = ({ project }) => {
         </div>
       )}
   
-      {(project.contract || []).length > 0 &&
+      {(contracts || []).length > 0 &&
         <div className='py-6'>
           <h2 className='font-bold'>Project Contracts</h2>
-          {project.contracts.sort(
-            (a, b) => new Date(b.compiledAt) - new Date(a.compiledAt)
-          ).map(
-            (contract, index) => (
-              <div 
-                key={`contract-${index}`}
-                className='py-3'
-              >
-                <ContractDeploymentDashboardContract
-                  provider={provider}
-                  contract={contract}
-                />
-              </div>
-            )
-          )}
+          <div className='flex'>
+            {contracts.sort(
+              (a, b) => new Date(b.compiledAt) - new Date(a.compiledAt)
+            ).map(
+              (contract, index) => (
+                <div 
+                  key={`contract-${index}`}
+                  className='py-3'
+                >
+                  <ContractPreview
+                    provider={provider}
+                    contract={contract}
+                  />
+                </div>
+              )
+            )}
+          </div>
         </div>
       }
 

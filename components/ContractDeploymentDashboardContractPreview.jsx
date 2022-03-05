@@ -12,7 +12,7 @@ import {
 
 import { useMemo, useState } from 'react';
 
-const ContractDeploymentDashboardContract = ({ provider, contract, onProvider }) => {
+const ContractDeploymentDashboardContractPreview = ({ provider, contract, onProvider }) => {
   const [deploymentArguments, setDeploymentArguments] = useState();
   const [activeContract, setActiveContract] = useState(contract);
   

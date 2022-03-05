@@ -17,7 +17,7 @@ const EthereumGasEstimateInformation = ({ provider, contract, deploymentArgument
   const gasPriceTimeout = useRef();
 
   const getAndSetGasPrice = useMemo(() => async () => {
-    const gasPrice = await provider.getGasPrice();
+    const gasPrice = await provider?.getGasPrice();
     setGasPrice(gasPrice);
   }, [provider])
 
@@ -53,12 +53,12 @@ const EthereumGasEstimateInformation = ({ provider, contract, deploymentArgument
     gasPriceTimeout.current = setTimeout(getAndSetGasPrice, 1000)
   }, [gasPrice, getAndSetGasPrice])
   
-  if (!deploymentArguments) {
+  if (!provider || !deploymentArguments) {
     return (
       <div className='text-xs py-6'>
-        Provide deployment arguments to get
+        Connect your wallet and provide deployment arguments
         <br/>
-        an estimate on gas or deploy the contract.
+        to get an estimate on gas or deploy the contract.
       </div>
     )
   }
