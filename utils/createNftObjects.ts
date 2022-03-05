@@ -31,9 +31,6 @@ const createNftObject = async (imageFile: FileWithPreview, metadataFile: File) =
 
     const nftObj: NftObject = {
         imageFile,
-        metadataFile,
-        name,
-        preview: imageFile.preview,
         metadata: JSON.stringify(metadata)
     }
 

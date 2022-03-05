@@ -37,6 +37,24 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Stripe testing
+
+Use the following credit card numbers with any other info for testing:
+Payment succeeds:
+```
+4242 4242 4242 4242
+```
+
+Payment requires authentication:
+```
+4000 0025 0000 3155
+```
+
+Payment is declined:
+```
+4000 0000 0000 9995
+```
+
 ## Prisma
 
 ### Creating A Migration

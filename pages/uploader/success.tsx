@@ -40,7 +40,7 @@ export default function Success({ Component, pageProps }: AppProps) {
     const [uris, setUris] = useState<string[]>([]);
     useEffect(() => {
         if (window) {
-            const urisFromSession = sessionStorage.getItem('uris');
+            const urisFromSession = localStorage.getItem('metadataUris');
             if (urisFromSession) {
                 const uriArray = urisFromSession.split(',');
                 setUris(uriArray);

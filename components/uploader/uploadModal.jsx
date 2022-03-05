@@ -53,7 +53,7 @@ export default function UploadModal(props) {
             if (uris) {
                 console.log('uris :>> ', uris);
 
-                sessionStorage.setItem('uris', uris);
+                localStorage.setItem('uris', uris);
 
                 router.push('uploader/success')
             }
