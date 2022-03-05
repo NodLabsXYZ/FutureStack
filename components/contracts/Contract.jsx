@@ -88,13 +88,15 @@ const Contract = ({ contract }) => {
         </div>
         <div className='flex text-xs'>
           {activeContract.info?.description && 
-            <div className='pr-12'>
+            <div className=''>
               <h2 className='text-sm font-bold mb-3'>
                 Contract Description
               </h2>
-              <ReactMarkdown>
-                {activeContract.info.description}
-              </ReactMarkdown>
+              <div className='prose-sm scale-90 -translate-x-3 -translate-y-3'>
+                <ReactMarkdown>
+                  {activeContract.info.description}
+                </ReactMarkdown>
+              </div>
             </div>
           }
           {activeContract.info?.deployments &&

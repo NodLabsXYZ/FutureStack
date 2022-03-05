@@ -21,6 +21,7 @@
     "@stripe/stripe-js": "^1.24.0",
     "@supabase/supabase-auth-helpers": "^1.0.6",
     "@supabase/supabase-js": "^1.29.2",
+    "@tailwindcss/typography": "^0.5.2",
     "@walletconnect/web3-provider": "^1.7.1",
     "arweave": "^1.10.23",
     "arweave-nft-uploader": "^1.0.19",
