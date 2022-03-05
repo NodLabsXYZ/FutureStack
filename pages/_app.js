@@ -35,7 +35,7 @@ function FutureStackApp({ Component, pageProps }) {
     );
 
     return data.unsubscribe;
-  }, [user])
+  }, [user, router])
 
   return (
     <FutureStackLayout user={user}>

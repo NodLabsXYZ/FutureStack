@@ -3,7 +3,7 @@ import {
   TWHorizontalSpread
 } from '.'
 
-const TWCleanHeader = ({ classMap, style, children }) => {
+const TWCleanHeader = ({ classMap, children }) => {
   return (
     <div 
       className={
@@ -12,16 +12,13 @@ const TWCleanHeader = ({ classMap, style, children }) => {
             leading: 'leading-10',
             fontColor: 'text-slate-800',
             background: 'bg-white',
-            padding: 'p-6'
+            padding: 'py-6'
           },
           classMap
         )
       }
     >
-      <TWHorizontalSpread 
-        classMap={{ padding: 'sm:px-12 md:px-24' }}
-        style={style || {}}
-      >
+      <TWHorizontalSpread>
         {children}
       </TWHorizontalSpread>
     </div>
