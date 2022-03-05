@@ -1,3 +1,5 @@
+import Image from 'next/image'
+
 import {
   supabaseClient
 } from '../lib'
@@ -15,10 +17,18 @@ const FutureStackHeader = ({ user }) => {
 
   return (
     <TWCleanHeader>
-      <h1 className='text-md'>
+      <h1 className='text-lg' style={{ lineHeight: '21px' }}>
         <NextLink href='/'>
           <a>
-            FutureStack
+            <Image
+              src="/images/stack.png"
+              alt="FutureStack Logo"
+              width={21}
+              height={21}
+            />
+            <span className='ml-1 align-top'>
+              Future<span className='font-semibold'>Stack</span>
+            </span>
           </a>
         </NextLink>
       </h1>

@@ -116,8 +116,7 @@ export default function Uploading() {
 
 
     return (
-        <>
-            <Header />
+        <div>
             <main className={styles.main}>
                 <div className='place-content-center'>
                     <br />
@@ -134,6 +133,6 @@ export default function Uploading() {
                     <p>Please wait while your images and metadata are being uploaded to Arweave.</p>
                 </div>
             </main>
-        </>
+        </div>
     )
 }

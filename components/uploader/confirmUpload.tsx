@@ -22,8 +22,7 @@ export default function ConfirmUpload(props: ConfirmUploadProps) {
     const [nftToShow, setNftToShow] = useState<NftObject>();
 
     return (
-        <>
-            <Header />
+        <div>
             <main className={styles.main}>
 
                 <p className='m-4'>
@@ -59,7 +58,7 @@ export default function ConfirmUpload(props: ConfirmUploadProps) {
                 setOpen={setOpenConfirmPaymentTypeModal}
                 cost={props.cost}
             />
-        </>
+        </div>
 
     )
 }

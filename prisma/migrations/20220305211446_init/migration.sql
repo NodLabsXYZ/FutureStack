@@ -48,6 +48,18 @@ CREATE TABLE "contract" (
 );
 
 -- CreateTable
+CREATE TABLE "asset" (
+    "id" UUID NOT NULL,
+    "image_uri" TEXT NOT NULL,
+    "metadata" JSONB NOT NULL,
+    "onchain_image_uri" TEXT,
+    "onchain_metadata_uri" TEXT,
+    "project_id" UUID,
+
+    CONSTRAINT "asset_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "_profileToteam" (
     "A" UUID NOT NULL,
     "B" UUID NOT NULL
@@ -73,6 +85,9 @@ ALTER TABLE "project" ADD CONSTRAINT "project_team_id_fkey" FOREIGN KEY ("team_i
 
 -- AddForeignKey
 ALTER TABLE "contract" ADD CONSTRAINT "contract_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "asset" ADD CONSTRAINT "asset_project_id_fkey" FOREIGN KEY ("project_id") REFERENCES "project"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_profileToteam" ADD FOREIGN KEY ("A") REFERENCES "profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;

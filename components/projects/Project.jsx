@@ -34,10 +34,17 @@ const Project = ({ id }) => {
         {project.title}
       </h2>
       <div className='flex pt-6'>
-        <div className='border p-6'>
+        <div className='border p-6 mr-6'>
           <TWButton>
             <NextLink href={`/project/${id}/contract`}>
               <a>Contracts</a>
+            </NextLink>
+          </TWButton>
+        </div>
+        <div className='border p-6 mr-6'>
+          <TWButton>
+            <NextLink href={`/uploader`}>
+              <a>Assets</a>
             </NextLink>
           </TWButton>
         </div>
