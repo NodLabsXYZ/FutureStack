@@ -17,22 +17,23 @@ const FutureStackHeader = ({ user }) => {
 
   return (
     <TWCleanHeader>
-      <h1 className='text-lg' style={{ lineHeight: '21px' }}>
+      <h1 className='text-lg'>
         <NextLink href='/'>
-          <a>
+          <a className='flex'>
             <Image
               src="/images/stack.png"
               alt="FutureStack Logo"
-              width={21}
-              height={21}
+              width={24}
+              height={18}
             />
-            <span className='ml-1 align-top'>
-              Future<span className='font-semibold'>Stack</span>
-            </span>
+            <div className='ml-1'>
+              <span className='font-light'>Future</span>
+              <span className='font-semibold'>Stack</span>
+            </div>
           </a>
         </NextLink>
       </h1>
-      <div>
+      <div className='-mt-2'>
         {user && 
           <span
             className='cursor-pointer'
