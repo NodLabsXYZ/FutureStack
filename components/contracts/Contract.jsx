@@ -1,18 +1,22 @@
+import ReactMarkdown from 'react-markdown'
+
 import {
   simpleApiCall,
   dateStringDiffToWords
-} from '../lib'
+} from '../../lib'
 
 import {
   SolidityContractDeployments,
   SolidityContractConstructorForm,
   EthereumGasEstimateInformation,
-  DeploySolidityContractButton
-} from '.'
+  DeploySolidityContractButton,
+  ConnectWalletButton
+} from '..'
 
 import { useMemo, useState } from 'react';
 
-const ContractDeploymentDashboardContract = ({ provider, contract, onProvider }) => {
+const Contract = ({ contract }) => {
+  const [provider, setProvider] = useState()
   const [deploymentArguments, setDeploymentArguments] = useState();
   const [activeContract, setActiveContract] = useState(contract);
   
@@ -83,6 +87,18 @@ const ContractDeploymentDashboardContract = ({ provider, contract, onProvider })
           {dateStringDiffToWords(contract.compiledAt)}
         </div>
         <div className='flex text-xs'>
+          {activeContract.info?.description && 
+            <div className=''>
+              <h2 className='text-sm font-bold mb-3'>
+                Contract Description
+              </h2>
+              <div className='prose-sm scale-90 -translate-x-3 -translate-y-3'>
+                <ReactMarkdown>
+                  {activeContract.info.description}
+                </ReactMarkdown>
+              </div>
+            </div>
+          }
           {activeContract.info?.deployments &&
             <div className='pr-12 text-sm'>
               <SolidityContractDeployments
@@ -108,6 +124,13 @@ const ContractDeploymentDashboardContract = ({ provider, contract, onProvider })
               contract={contract}
               deploymentArguments={orderedArgumentValues}
             />
+            {!provider && 
+              <div className=''>
+                <ConnectWalletButton
+                  onConnect={setProvider}
+                />
+              </div>
+            }
             {deploymentArguments && (
               <div className='mt-6'>
                 <DeploySolidityContractButton
@@ -128,4 +151,4 @@ const ContractDeploymentDashboardContract = ({ provider, contract, onProvider })
 
 }
 
-export default ContractDeploymentDashboardContract;
+export default Contract;

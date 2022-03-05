@@ -1,8 +1,11 @@
 import { FutureStack } from '../components'
 
-const Index = () => {
+const Index = ({ loading, user }) => {
   return (
-    <FutureStack />
+    <FutureStack
+      loading={loading}
+      user={user}
+    />
   );
 }
 

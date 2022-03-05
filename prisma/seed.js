@@ -13,10 +13,10 @@ async function main() {
       username: "Alice",
       teams: {
         create: [{
-          title: "Nod Labs",
+          title: "Alice Labs",
           projects: {
             create: [{
-              title: "SimpleURIAndPriceNFTWithWithdrawalRoyalty"
+              title: "DeFi Project"
             }]
           }  
         }]
@@ -33,10 +33,10 @@ async function main() {
       username: "Bob",
       teams: {
         create: [{
-          title: "FutureStack",
+          title: "Bob Labs",
           projects: {
             create: [{
-              title: "FutureStack"
+              title: "NFTProject"
             }]
           }  
         }]

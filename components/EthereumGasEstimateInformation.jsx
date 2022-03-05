@@ -4,7 +4,7 @@ import {
 } from '../lib'
 
 import {
-  BoldKeyAndValue
+  BoldTitleAndValue
 } from '.'
 
 import { ethers } from 'ethers';
@@ -17,7 +17,7 @@ const EthereumGasEstimateInformation = ({ provider, contract, deploymentArgument
   const gasPriceTimeout = useRef();
 
   const getAndSetGasPrice = useMemo(() => async () => {
-    const gasPrice = await provider.getGasPrice();
+    const gasPrice = await provider?.getGasPrice();
     setGasPrice(gasPrice);
   }, [provider])
 
@@ -37,13 +37,25 @@ const EthereumGasEstimateInformation = ({ provider, contract, deploymentArgument
         contract.info.bytecode,
         deploymentArguments
       );
-      setNetwork(gasEstimateInfo.network);
       setGasEstimate(gasEstimateInfo.gas);
     }
 
     getGasEstimate()
     getAndSetGasPrice()
   }, [gasEstimate, provider, contract, deploymentArguments, getAndSetGasPrice])
+
+  useEffect(() => {
+    if (!provider) {
+      return;
+    }
+
+    const getNetwork = async () => {
+      const { chainId } = await provider.getNetwork();
+      setNetwork(chainId);
+    }
+
+    getNetwork();
+  }, [provider]);
 
   useEffect(() => {
     if (gasPriceTimeout.current) {
@@ -53,12 +65,28 @@ const EthereumGasEstimateInformation = ({ provider, contract, deploymentArgument
     gasPriceTimeout.current = setTimeout(getAndSetGasPrice, 1000)
   }, [gasPrice, getAndSetGasPrice])
   
-  if (!deploymentArguments) {
+  if (!provider || !deploymentArguments) {
     return (
       <div className='text-xs py-6'>
-        Provide deployment arguments to get
+        {!provider && !deploymentArguments && 
+          "Connect your wallet and provide deployment arguments"
+        } 
+        {!provider && deploymentArguments &&
+          "Connect your wallet"
+        }
+        {provider && !deploymentArguments &&
+          "Provide deployment arguments"
+        }
         <br/>
-        an estimate on gas or deploy the contract.
+        to get an estimate on gas or deploy the contract.
+        {network && 
+          <div className='pt-6'>
+            <BoldTitleAndValue
+              title='Network'
+              value={ethereumNetworkIdToName(network)}
+            />
+          </div>
+        }
       </div>
     )
   }
@@ -80,25 +108,25 @@ const EthereumGasEstimateInformation = ({ provider, contract, deploymentArgument
   return (
     <div>
       {network && 
-        <BoldKeyAndValue
+        <BoldTitleAndValue
           title="Network"
           value={ethereumNetworkIdToName(network)}
         />
       }
       {gasEstimate &&
-        <BoldKeyAndValue
+        <BoldTitleAndValue
           title="Gas"
           value={ethers.utils.commify(gasEstimate)}
         />
       }
       {readableGasPrice && 
-        <BoldKeyAndValue
+        <BoldTitleAndValue
           title="Gas Price"
           value={`${readableGasPrice} GWEI`}
         />
       }
       {estimatedCost !== null &&
-        <BoldKeyAndValue
+        <BoldTitleAndValue
           title="Transaction Cost"
           value={`${estimatedCost} ETH`}
         />      
