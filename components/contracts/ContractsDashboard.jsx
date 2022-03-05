@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { ContractPreview } from '.';
-import { ContractDeploymentDashboardContract, TWCircleSpinner } from "..";
+import { TWCircleSpinner } from "..";
 import { getContracts } from "../../lib/queries";
 import { supabaseClient } from "../../lib";
 
 const ContractsDashboard = ({ project }) => {
-  const [provider, setProvider] = useState();
   const [contracts, setContracts] = useState();
   const [precompiledContracts, setPrecompiledContracts] = useState();
   const { access_token } = supabaseClient.auth.session() || {};
@@ -67,7 +66,6 @@ const ContractsDashboard = ({ project }) => {
                   className='py-3'
                 >
                   <ContractPreview
-                    provider={provider}
                     contract={contract}
                   />
                 </div>
@@ -86,19 +84,20 @@ const ContractsDashboard = ({ project }) => {
       {precompiledContracts &&
         <div className='py-6'>
           <h2 className='font-bold'>Precompiled Contracts</h2>
-          {precompiledContracts.map(
-            (contract, index) => (
-              <div
-                key={`precompiled-contract-${index}`}
-                className='py-3'
-              >
-                <ContractDeploymentDashboardContract
-                  provider={provider}
-                  contract={contract}
-                />
-              </div>
-            )
-          )}
+          <div className='flex'>
+            {precompiledContracts.map(
+              (contract, index) => (
+                <div
+                  key={`precompiled-contract-${index}`}
+                  className='py-3'
+                >
+                  <ContractPreview
+                    contract={contract}
+                  />
+                </div>
+              )
+            )}
+          </div>
         </div>
       }
     </div>
