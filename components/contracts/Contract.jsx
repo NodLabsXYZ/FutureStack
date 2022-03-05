@@ -13,7 +13,8 @@ import {
 
 import { useMemo, useState } from 'react';
 
-const Contract = ({ provider, contract, onProvider }) => {
+const Contract = ({ contract }) => {
+  const [provider, setProvider] = useState()
   const [deploymentArguments, setDeploymentArguments] = useState();
   const [activeContract, setActiveContract] = useState(contract);
   
@@ -112,7 +113,7 @@ const Contract = ({ provider, contract, onProvider }) => {
             {!provider && 
               <div className=''>
                 <ConnectWalletButton
-                  onConnect={onProvider}
+                  onConnect={setProvider}
                 />
               </div>
             }

@@ -37,13 +37,25 @@ const EthereumGasEstimateInformation = ({ provider, contract, deploymentArgument
         contract.info.bytecode,
         deploymentArguments
       );
-      setNetwork(gasEstimateInfo.network);
       setGasEstimate(gasEstimateInfo.gas);
     }
 
     getGasEstimate()
     getAndSetGasPrice()
   }, [gasEstimate, provider, contract, deploymentArguments, getAndSetGasPrice])
+
+  useEffect(() => {
+    if (!provider) {
+      return;
+    }
+
+    const getNetwork = async () => {
+      const { chainId } = await provider.getNetwork();
+      setNetwork(chainId);
+    }
+
+    getNetwork();
+  }, [provider]);
 
   useEffect(() => {
     if (gasPriceTimeout.current) {
@@ -56,9 +68,25 @@ const EthereumGasEstimateInformation = ({ provider, contract, deploymentArgument
   if (!provider || !deploymentArguments) {
     return (
       <div className='text-xs py-6'>
-        Connect your wallet and provide deployment arguments
+        {!provider && !deploymentArguments && 
+          "Connect your wallet and provide deployment arguments"
+        } 
+        {!provider && deploymentArguments &&
+          "Connect your wallet"
+        }
+        {provider && !deploymentArguments &&
+          "Provide deployment arguments"
+        }
         <br/>
         to get an estimate on gas or deploy the contract.
+        {network && 
+          <div className='pt-6'>
+            <BoldTitleAndValue
+              title='Network'
+              value={ethereumNetworkIdToName(network)}
+            />
+          </div>
+        }
       </div>
     )
   }
