@@ -1,3 +1,5 @@
+import ReactMarkdown from 'react-markdown'
+
 import {
   simpleApiCall,
   dateStringDiffToWords
@@ -85,6 +87,16 @@ const Contract = ({ contract }) => {
           {dateStringDiffToWords(contract.compiledAt)}
         </div>
         <div className='flex text-xs'>
+          {activeContract.info?.description && 
+            <div className='pr-12'>
+              <h2 className='text-sm font-bold mb-3'>
+                Contract Description
+              </h2>
+              <ReactMarkdown>
+                {activeContract.info.description}
+              </ReactMarkdown>
+            </div>
+          }
           {activeContract.info?.deployments &&
             <div className='pr-12 text-sm'>
               <SolidityContractDeployments
