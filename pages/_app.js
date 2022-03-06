@@ -5,21 +5,18 @@ import { supabaseClient } from '../lib';
 import '../styles/globals.css'
 import '../styles/index.css'
 
+const publicRoutes = ['/', '/login', '/arweave']
+
 function FutureStackApp({ Component, pageProps }) {
   const router = useRouter();
   const [user, setUser] = useState()
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const _user = supabaseClient.auth.user()
 
-    if (!_user) { 
-      if (router.pathname !== '/') {
-        router.push('/')
-        return;
-      }
-      
-      setTimeout(() => setLoading(false), 1000)
+    if (!_user && !publicRoutes.includes(router.pathname)) { 
+      router.push('/')
+      return;
     }
 
     setUser(_user)
@@ -40,7 +37,6 @@ function FutureStackApp({ Component, pageProps }) {
   return (
     <FutureStackLayout user={user}>
       <Component 
-        loading={loading} 
         user={user} 
         {...pageProps} 
       />

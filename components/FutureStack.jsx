@@ -3,25 +3,17 @@ import {
   TWCircleSpinner,
   SupabaseMagicLink,
 } from '.'
+import FrontPage from './FrontPage'
 
 import { ProjectsDashboard } from './projects'
 
-const FutureStack = ({ loading, user  }) => {
+const FutureStack = ({ user }) => {
   if (!user) {
     return (
-      <TWConstrainedCenteredContent>
-        <div className='py-12'>
-          {loading &&
-            <TWCircleSpinner />
-          }
-          {!loading &&    
-            <SupabaseMagicLink />
-          }
-        </div>
-      </TWConstrainedCenteredContent>
+      <FrontPage />
     )
   }
-
+  
   return (
     <ProjectsDashboard />
   )

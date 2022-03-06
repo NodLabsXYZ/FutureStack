@@ -6,6 +6,7 @@ import {
 
 import {
   NextLink,
+  TWButton,
   TWCleanHeader
 } from '.'
 
@@ -41,6 +42,17 @@ const FutureStackHeader = ({ user }) => {
           >
             Sign Out
           </span>
+        }
+        {!user && 
+          <TWButton
+            classMap={{
+              rounded: 'rounded-full'
+            }}
+          >
+            <NextLink href='/login'>
+              <a>Sign In</a>
+            </NextLink>
+          </TWButton>
         }
       </div>
     </TWCleanHeader>
