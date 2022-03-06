@@ -48,9 +48,7 @@ export default function Success({ Component, pageProps }: AppProps) {
         }
     }, []);
     return (
-        <>
-            <Header />
-
+        <div>
             <main className={styles.main}>
                 <div>
                     <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
@@ -69,8 +67,6 @@ export default function Success({ Component, pageProps }: AppProps) {
                     <UriDisplay uris={uris} />
                 </div>
             </main>
-
-            {/* <Footer /> */}
-        </>
+        </div>
     )
 }

@@ -135,7 +135,6 @@ const Home: NextPage = () => {
           <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         </Head>
 
-        <Header />
         <main className={styles.main}>
           <Error showError={errorMessage} message={errorMessage} />
           <div>
@@ -198,8 +197,6 @@ const Home: NextPage = () => {
           imageFiles={imageFiles}
           metadataFiles={metadataFiles}
         />
-
-        {/* <Footer /> */}
       </div>
     )
   }
