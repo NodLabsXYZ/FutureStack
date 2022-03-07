@@ -79,7 +79,7 @@ const ContractsDashboard = ({ project }) => {
                   FUTURE_STACK_SECRET_KEY=&#39;{access_token}&#39;
                 </code>
                 <p>
-                  Be sure to add the .env file to your .gitignore so that you don't accidentally commit it.
+                  Be sure to add the .env file to your .gitignore so that you do not accidentally commit it.
                 </p>
                 <p className='pt-3'>
                   Then simply run 
