@@ -1,27 +1,38 @@
-import { supabaseClient } from "../../../../lib";
+import { useEffect, useState } from "react";
+import { useRouter } from 'next/router';
+import { getProject } from '../../../../lib/queries';
+import { TWCircleSpinner } from "../../../../components";
+import { AssetDashboard } from "../../../../components/uploader";
 
 const AssetPage = () => {
+  const router = useRouter()
+  const projectId = router.query.id 
   
-  const saveAsset = async () => {
-    const { body, error } = await supabaseClient.from('asset').insert({
-      image_uri:            '',
-      metadata:             '',
-      onchain_image_uri:    '',
-      onchain_metadata_uri: '',
-      project_id:         ''
-    });
+  const [project, setProject] = useState()
 
-    console.log("ASSET INSERTED", body, error);
+  useEffect(() => {
+    if (!projectId) return;
 
-    const { data } = await supabaseClient.from('asset').select('*');
+    const loadProject = async () => {
+      const _project = await getProject(projectId)
+      setProject(_project)
+    }
 
-    console.log("ASSETS", data);
+    loadProject()
+  }, [projectId])
+
+  if (!project) {
+    return (
+      <TWCircleSpinner
+        message='Loading project...'
+      />
+    )
   }
 
   return (
-    <div>
-      <h1>AssetPage</h1>
-    </div>
+    <AssetDashboard
+      project={project}
+    />
   );
 }
 
