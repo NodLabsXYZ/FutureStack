@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { IncomingForm } from 'formidable'
 import { connectToLocalArweave, connectToArweave, generateTestKey, ArweaveNftUploader } from 'arweave-nft-uploader'
-import Arweave from 'arweave'
+import Arweave from 'arweave';
+import ArLocal from 'ArLocal';
 import { JWKInterface } from 'arweave/node/lib/wallet';
 
 
@@ -26,16 +27,6 @@ export default async (
     req: NextApiRequest,
     res: NextApiResponse<Data>
 ) => {
-    console.log('=============================');
-    console.log('=============================');
-    console.log('=============================');
-    console.log('=============================');
-    console.log('=============================');
-    console.log('=============================');
-    console.log('=============================');
-    console.log('=============================');
-
-
     let env = process.env.NODE_ENV;
     // env = 'production';
     const { arweaveInstance, key, isMainnet } = await getArweave(env);
@@ -52,8 +43,6 @@ export default async (
         })
     })
 
-    console.log('data :>> ', data);
-
     const tempImageFilePath = data.fields.tempImageFilePath;
     const metadata = data.fields.metadata;
 
@@ -62,66 +51,9 @@ export default async (
         JSON.parse(metadata)
     );
 
+    console.log('metadataUri :>> ', metadataUri);
+
     res.status(200).json({ metadataUri })
-
-    // const fileIds = [];
-    // for (const file in data.files) {
-    //     if (Object.prototype.hasOwnProperty.call(data.files, file)) {
-    //         fileIds.push(file);
-    //         const element = data.files[file];
-    //     }
-    // }
-
-    // console.log('fileIds :>> ', fileIds);
-
-    // fileIds.sort();
-
-    // console.log('fileIds :>> ', fileIds);
-    // const paths: string[] = [];
-
-    // for (let index = 0; index < fileIds.length; index++) {
-    //     const file = data.files[fileIds[index]];
-    //     paths.push(file.filepath);
-    // }
-
-    // console.log('paths :>> ', paths);
-
-    // const numberOfItemsToUpload = Math.ceil(paths.length / 2);
-
-    // const orderedImagePaths = paths.splice(0, numberOfItemsToUpload);
-    // const orderedMetadataPaths = paths;
-
-    // console.log('orderedImagePaths :>> ', orderedImagePaths);
-    // console.log('orderedMetadataPaths :>> ', orderedMetadataPaths);
-
-    // const uris: string[] = [];
-    // for (let index = 0; index < numberOfItemsToUpload; index++) {
-    //     const imagePath = orderedImagePaths[index];
-    //     const metadataPath = orderedMetadataPaths[index];
-
-    //     if (!imagePath || !metadataPath) {
-    //         res.status(500);
-    //     }
-
-    //     console.log('imagePath :>> ', imagePath);
-    //     console.log('metadataPath :>> ', metadataPath);
-
-    //     try {
-    //         const metadataUri = await arweaveNftUploader.uploadSingleImagePathAndMetadataPath(
-    //             imagePath!,
-    //             metadataPath!
-    //         )
-    //         console.log('metadataUri from next server :>> ', metadataUri);
-
-    //         uris.push(metadataUri);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-
-
-    // }
-
-    // res.status(200).json({ uris })
 }
 
 const getArweave = async (env: string): Promise<ArweaveConnection> => {
@@ -143,7 +75,15 @@ const getArweave = async (env: string): Promise<ArweaveConnection> => {
             isMainnet
         }
     } else {
-        const localArweaveInstance = await connectToLocalArweave(false);
+        let localArweaveInstance: Arweave;
+        try {
+            const { arweave } = await connectToLocalArweave(true, false);
+            localArweaveInstance = arweave;
+        } catch (error) {
+            console.error(error);
+            const { arweave } = await connectToLocalArweave(false, false);
+            localArweaveInstance = arweave;
+        }
         console.log('generating test key');
         const testKey = await generateTestKey(localArweaveInstance);
         const isMainnet = false;
