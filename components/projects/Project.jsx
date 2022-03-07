@@ -43,7 +43,7 @@ const Project = ({ id }) => {
         </div>
         <div className='border p-6 mr-6'>
           <TWButton>
-            <NextLink href={`/uploader`}>
+            <NextLink href={`/project/${id}/asset`}>
               <a>Assets</a>
             </NextLink>
           </TWButton>

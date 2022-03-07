@@ -55,6 +55,8 @@ CREATE TABLE "asset" (
     "onchain_image_uri" TEXT,
     "onchain_metadata_uri" TEXT,
     "project_id" UUID,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMPTZ(6),
 
     CONSTRAINT "asset_pkey" PRIMARY KEY ("id")
 );
