@@ -131,7 +131,7 @@ const Contract = ({ contract }) => {
                 />
               </div>
             }
-            {deploymentArguments && (
+            {provider && deploymentArguments && (
               <div className='mt-6'>
                 <DeploySolidityContractButton
                   provider={provider}

@@ -17,8 +17,15 @@ const EthereumGasEstimateInformation = ({ provider, contract, deploymentArgument
   const gasPriceTimeout = useRef();
 
   const getAndSetGasPrice = useMemo(() => async () => {
-    const gasPrice = await provider?.getGasPrice();
-    setGasPrice(gasPrice);
+    try {
+      const gasPrice = await provider?.getGasPrice();
+      setGasPrice(gasPrice);  
+    } catch (e) {
+      if (e.message.includes('underlying network changed')) {
+        window.location.reload();
+      }
+      console.error(e);
+    }
   }, [provider])
 
   useEffect(() => {
@@ -37,7 +44,7 @@ const EthereumGasEstimateInformation = ({ provider, contract, deploymentArgument
         contract.info.bytecode,
         deploymentArguments
       );
-      setGasEstimate(gasEstimateInfo.gas);
+      setGasEstimate(gasEstimateInfo?.gas);
     }
 
     getGasEstimate()
@@ -85,6 +92,11 @@ const EthereumGasEstimateInformation = ({ provider, contract, deploymentArgument
               title='Network'
               value={ethereumNetworkIdToName(network)}
             />
+            <div className='text-xs'>
+              To switch your network change it 
+              <br/>
+              in your wallet and refresh the page.
+            </div>
           </div>
         }
       </div>
