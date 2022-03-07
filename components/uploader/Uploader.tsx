@@ -1,7 +1,6 @@
-import type { NextPage } from 'next'
+import { FunctionComponent } from "react"
 import Head from 'next/head'
 import styles from '../../styles/Home.module.css'
-import Header from '../../components/uploader/header'
 import UploadImages from '../../components/uploader/uploadImages'
 import { useEffect, useState } from 'react'
 import { formatBytes } from '../../utils/formatters';
@@ -9,14 +8,16 @@ import UploadMetadata from '../../components/uploader/uploadMetadata'
 import { getCostToSaveBytesInDollars } from '../../utils/costEstimator'
 import EstimatedCost from '../../components/uploader/estimatedCost'
 import UploadModal from '../../components/uploader/uploadModal';
-import Footer from '../../components/uploader/footer'
 import Error from '../../components/uploader/error';
 import ConfirmUpload from '../../components/uploader/confirmUpload';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import { createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
 
-const Home: NextPage = () => {
+type UploaderProps = {
+}
+
+const Uploader: FunctionComponent<UploaderProps> = () => {
   const [imageFiles, setImageFiles] = useState<FileWithPreview[]>([]);
   const [imageBytes, setImageBytes] = useState(0);
   const [imageCost, setImageCost] = useState(0);
@@ -202,4 +203,4 @@ const Home: NextPage = () => {
   }
 }
 
-export default Home
+export default Uploader;

@@ -1,6 +1,5 @@
 import { NextRouter, useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useState } from 'react';
-import Header from '../../components/uploader/header';
 import Spinner from '../../components/uploader/spinner';
 import styles from '../../styles/Home.module.css'
 import { NftObject } from '../../types/NftObject';

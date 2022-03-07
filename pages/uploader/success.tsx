@@ -1,7 +1,5 @@
 import type { AppProps } from 'next/app'
 import { CheckIcon } from '@heroicons/react/outline'
-import Header from '../../components/uploader/header'
-import Footer from '../../components/uploader/footer'
 import styles from '../../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import { CopyBlock, dracula } from "react-code-blocks";
