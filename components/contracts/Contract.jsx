@@ -1,7 +1,6 @@
 import ReactMarkdown from 'react-markdown'
 
 import {
-  simpleApiCall,
   dateStringDiffToWords
 } from '../../lib'
 
@@ -14,6 +13,7 @@ import {
 } from '..'
 
 import { useMemo, useState } from 'react';
+import { upsertContract } from '../../lib/queries';
 
 const Contract = ({ contract }) => {
   const [provider, setProvider] = useState()
@@ -65,13 +65,9 @@ const Contract = ({ contract }) => {
 
     setActiveContract(updatedContract)
 
-    const { json, status } = await simpleApiCall(
-      `contracts/${contract.id}`,
-      'POST',
-      updatedContract
-    )
+    const newContract = await upsertContract(updatedContract)
 
-    setActiveContract(json)
+    setActiveContract(newContract)
   }
 
   return (

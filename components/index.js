@@ -21,3 +21,4 @@ export { default as EthereumGasEstimateInformation } from './EthereumGasEstimate
 export { default as DeploySolidityContractButton } from './DeploySolidityContractButton'
 export { default as NextLink } from './NextLink'
 export { default as FutureStack } from './FutureStack'
+export { default as ProjectLoader } from './ProjectLoader'
