@@ -8,7 +8,6 @@ import NftObjectViewerModal from './nftObjectViewerModal'
 import { useState } from 'react'
 import UploadModal from './uploadModal'
 import ConfirmPaymentTypeModal from './confirmPaymentTypeModal'
-import Header from './header'
 
 
 type ConfirmUploadProps = {
