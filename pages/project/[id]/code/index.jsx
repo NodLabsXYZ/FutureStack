@@ -1,9 +1,12 @@
+import { CodeDashboard } from "../../../../components/code";
+import { ProjectLoader } from "../../../../components";
+
 const CodePage = () => {
   return (
-    <div>
-      <h1>Code</h1>
-    </div>
+    <ProjectLoader>
+      <CodeDashboard />
+    </ProjectLoader>
   );
 }
 
-export default CodePage
+export default CodePage;
