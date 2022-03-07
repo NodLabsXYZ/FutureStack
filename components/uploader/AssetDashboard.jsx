@@ -1,3 +1,4 @@
+import { Uploader } from ".";
 import { supabaseClient } from "../../lib";
 
 const AssetDashboard = ({ project }) => {
@@ -22,6 +23,7 @@ const AssetDashboard = ({ project }) => {
   return (
     <div>
       <h2 className='text-lg'>Assets: {project.title}</h2>
+      <Uploader />
     </div>
   )
 }

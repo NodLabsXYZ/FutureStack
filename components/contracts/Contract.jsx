@@ -84,7 +84,7 @@ const Contract = ({ contract }) => {
           <span className='font-semibold mr-1'>
             Compiled: 
           </span>
-          {dateStringDiffToWords(contract.compiledAt)}
+          {dateStringDiffToWords(contract.compiled_at + 'Z')}
         </div>
         <div className='flex text-xs'>
           {activeContract.info?.description && 
@@ -92,7 +92,7 @@ const Contract = ({ contract }) => {
               <h2 className='text-sm font-bold mb-3'>
                 Contract Description
               </h2>
-              <div className='prose-sm scale-90 -translate-x-3 -translate-y-3'>
+              <div className='prose-sm scale-90 -translate-x-7 -translate-y-3'>
                 <ReactMarkdown>
                   {activeContract.info.description}
                 </ReactMarkdown>
@@ -131,7 +131,7 @@ const Contract = ({ contract }) => {
                 />
               </div>
             }
-            {deploymentArguments && (
+            {provider && deploymentArguments && (
               <div className='mt-6'>
                 <DeploySolidityContractButton
                   provider={provider}
