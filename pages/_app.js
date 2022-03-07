@@ -15,7 +15,7 @@ function FutureStackApp({ Component, pageProps }) {
     console.log("REFERRER", document.referrer)
     const _user = supabaseClient.auth.user()
 
-    if (!_user && !publicRoutes.includes(router.pathname.split('/')[0])) { 
+    if (!_user && !publicRoutes.includes(router.pathname.split('/')[1] || '')) { 
       router.push('/')
       return;
     }
