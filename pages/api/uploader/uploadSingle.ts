@@ -23,15 +23,18 @@ type ArweaveConnection = {
     isMainnet: boolean
 }
 
+let arweaveNftUploader: ArweaveNftUploader;
+
 export default async (
     req: NextApiRequest,
     res: NextApiResponse<Data>
 ) => {
-    let env = process.env.NODE_ENV;
-    // env = 'production';
-    const { arweaveInstance, key, isMainnet } = await getArweave(env);
-
-    const arweaveNftUploader = new ArweaveNftUploader(arweaveInstance, key, isMainnet);
+    console.log('!arweaveNftUploader :>> ', !arweaveNftUploader);
+    if (!arweaveNftUploader) {
+        let env = process.env.NODE_ENV;
+        // env = 'production';
+        arweaveNftUploader = await getArweaveNftUploader(env);
+    }
 
     // parse form with a Promise wrapper
     const data: any = await new Promise((resolve, reject) => {
@@ -51,9 +54,14 @@ export default async (
         JSON.parse(metadata)
     );
 
-    console.log('metadataUri :>> ', metadataUri);
+    console.log('metadataUri returning from /api/uplodSingle :>> ', metadataUri);
 
     res.status(200).json({ metadataUri })
+}
+
+const getArweaveNftUploader = async (env: string): Promise<ArweaveNftUploader> => {
+    const { arweaveInstance, key, isMainnet } = await getArweave(env);
+    return new ArweaveNftUploader(arweaveInstance, key, isMainnet);
 }
 
 const getArweave = async (env: string): Promise<ArweaveConnection> => {
