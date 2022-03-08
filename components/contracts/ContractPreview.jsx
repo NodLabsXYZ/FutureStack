@@ -4,7 +4,7 @@ import {
 
 import { NextLink } from '..';
 
-const ContractPreview = ({ provider, contract, onProvider }) => {
+const ContractPreview = ({ contract }) => {
   
   return (
     <div>
@@ -24,9 +24,8 @@ const ContractPreview = ({ provider, contract, onProvider }) => {
         </a>
       </NextLink>
     </div>
-
   )
-
+  
 }
 
 export default ContractPreview;

@@ -95,13 +95,6 @@ const Contract = ({ contract }) => {
               </div>
             </div>
           }
-          {activeContract.info?.deployments &&
-            <div className='pr-12 text-sm'>
-              <SolidityContractDeployments
-                deployments={activeContract.info.deployments}
-              />
-            </div>
-          }   
           <div className='pr-12'>
             <h2 className='text-sm font-bold mb-3'>
               Deployment Arguments
@@ -141,6 +134,14 @@ const Contract = ({ contract }) => {
           </div>
         </div>
       </div>
+      {activeContract.info?.deployments &&
+        <div className='py-6'>
+          <SolidityContractDeployments
+            deployments={activeContract.info.deployments}
+          />
+        </div>
+      }   
+
     </div>
 
   )

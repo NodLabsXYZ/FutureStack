@@ -1,14 +1,14 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { BoldTitleAndValue, TWButton } from "..";
-import { newProject } from "../../lib/queries";
+import { createProject } from "../../lib/queries";
 
 const NewProject = () => {
   const router = useRouter();
   const [title, setTitle] = useState('');
 
   const onSubmit = async () => {
-    const project = await newProject({
+    const project = await createProject({
       title
     })
 
