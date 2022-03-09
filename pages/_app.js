@@ -6,7 +6,7 @@ import '../styles/globals.css'
 import '../styles/index.css'
 import { AppWrapper } from '../context/state';
 
-const publicRoutes = ['', 'login', 'arweave']
+const publicRoutes = ['', 'login', 'arweave', 'uploader']
 
 function FutureStackApp({ Component, pageProps }) {
   const router = useRouter();
