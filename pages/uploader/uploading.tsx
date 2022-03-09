@@ -126,7 +126,7 @@ const routeToSuccessIfUploadComplete = (router: NextRouter): boolean => {
     const baseURIFromLocal = localStorage.getItem('baseURI');
     const metadataFileNamesFromLocal = localStorage.getItem('metadataFileNames');
 
-    const isUploadComplete = baseURIFromLocal.length > 0 || metadataFileNamesFromLocal.length > 0;
+    const isUploadComplete = baseURIFromLocal?.length > 0 || metadataFileNamesFromLocal?.length > 0;
 
     if (isUploadComplete) {
         router.push('/uploader/success')
