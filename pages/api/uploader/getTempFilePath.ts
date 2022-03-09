@@ -13,7 +13,7 @@ export const config = {
 };
 
 type Data = {
-    filePath: string
+    clientTempFilePath: string
 }
 
 export default async (
@@ -33,5 +33,7 @@ export default async (
 
     const file = data.files.image;
 
-    res.status(200).json({ filePath: file.filepath })
+    const clientTempFilePath = file.filepath;
+
+    res.status(200).json({ clientTempFilePath })
 }

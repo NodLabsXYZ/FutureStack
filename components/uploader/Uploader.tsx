@@ -11,9 +11,9 @@ import UploadModal from '../../components/uploader/uploadModal';
 import Error from '../../components/uploader/error';
 import ConfirmUpload from '../../components/uploader/confirmUpload';
 import { FileWithPreview } from '../../types/FileWithPreview'
-import { createNftObjects } from '../../utils/createNftObjects'
+import { createArrayBufferNftObjects, createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
-
+import { useAppContext } from '../../context/state';
 type UploaderProps = {
 }
 
@@ -29,6 +29,8 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showConfirmUpload, setShowConfirmUpload] = useState(false);
   const [nftObjects, setNftObjects] = useState<NftObject[]>();
+
+  const appContext = useAppContext();
 
   const updateImageBytes = async (bytes: number) => {
     console.log('updateImageBytes :>> ', bytes);
@@ -52,6 +54,25 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
       console.log('nftObjs :>> ', nftObjs);
       setNftObjects(nftObjs);
 
+      // THIRD TRY - React Context
+
+      // // first, remove everything from the current state
+      // for (let index = 0; index < appContext.length; index++) {
+      //   appContext.pop();
+      // }
+      // console.log('appContext :>> ', appContext);
+
+      // // Add nft objects to react context
+      // for (let index = 0; index < nftObjs.length; index++) {
+      //   const nftObj = nftObjs[index];
+      //   appContext.push(nftObj);
+      // }
+
+      // console.log('appContext :>> ', appContext);
+      
+      // SECOND TRY - local storage
+      
+
       for (let index = 0; index < nftObjs.length; index++) {
         const nftObj = nftObjs[index];
         const formData = new FormData();
@@ -64,15 +85,16 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
         }
 
 
-        const response = await fetch('/api/uploader/getFilePath', options);
+        const response = await fetch('/api/uploader/getTempFilePath', options);
 
-        const { filePath: tempImageFilePath } = await response.json();
+        const { clientTempFilePath } = await response.json();
 
 
-        console.log('imageFilePath :>> ', tempImageFilePath);
+        console.log('clientTempFilePath :>> ', clientTempFilePath);
 
         const newNftObj = {
-          tempImageFilePath,
+          clientTempFilePath,
+          imageFileName: nftObj.imageFile.name,
           metadata: nftObj.metadata
         }
         const numberOfItemsToUpload = (index + 1).toString()
@@ -80,6 +102,14 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
         localStorage.setItem('numberOfItemsToUpload', numberOfItemsToUpload);
       }
 
+      // Remove this item of localStorage so the uploading.tsx page does not redirect
+      localStorage.removeItem('baseURI');
+      localStorage.removeItem('metadataFileNames');
+
+
+
+      // FIRST TRY - FileReader
+      
       // let counter = 0;
       // nftObjs.forEach(nftObj => {
       //   const reader = new FileReader();
@@ -117,6 +147,53 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
 
       setShowConfirmUpload(true);
     }
+  }
+
+  const testAddToReactContext = async () => {
+    const nftObjs = await createNftObjects(imageFiles, metadataFiles);
+    console.log('nftObjs :>> ', nftObjs);
+
+    console.log('appContext :>> ', appContext);
+    
+    appContext.push('hello');
+    
+    console.log('appContext :>> ', appContext);
+  }
+
+  const testBundlrUpload = async () => {
+    // const arrayBufferNftObjects = await createArrayBufferNftObjects(imageFiles, metadataFiles);
+
+    // const formData = new FormData();
+    // for (let index = 0; index < arrayBufferNftObjects.length; index++) {
+    //   const arrayBufferNftObject = arrayBufferNftObjects[index];
+
+    //   formData.append('file_' + index, new Blob([arrayBufferNftObject.arrayBufferFile]));
+
+    //   formData.append('metadata_' + index, arrayBufferNftObject.metadata);
+    // }
+
+    const nftObjs = await createNftObjects(imageFiles, metadataFiles);
+    setNftObjects(nftObjs);
+
+    const formData = new FormData();
+    for (let index = 0; index < nftObjs.length; index++) {
+      const nftObj = nftObjs[index];
+
+
+      formData.append('image_' + index, nftObj.imageFile);
+
+      formData.append('metadata_' + index, nftObj.metadata);
+    }
+
+
+    const options = {
+      method: 'POST',
+      body: formData
+    }
+
+    const response = await fetch('/api/uploader/uploadToBundlr', options);
+
+
   }
 
   if (showConfirmUpload) {
@@ -175,12 +252,31 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
             imageBytes > 0 && metadataBytes > 0 ?
               (
                 <>
-                  <br /><button
+                  <br />
+                  <button
                     type="button"
                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     onClick={continueToUpload}
                   >
                     Continue
+                  </button>
+
+                  {/* FOR TESTING ONLY */}
+                  <br />
+                  <button
+                    type="button"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onClick={testBundlrUpload}
+                  >
+                    TEST upload to Bundlr
+                  </button>
+                  <br />
+                  <button
+                    type="button"
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    onClick={testAddToReactContext}
+                  >
+                    TEST add to react context
                   </button>
                 </>
               ) :
