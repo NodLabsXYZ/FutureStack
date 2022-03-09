@@ -45,6 +45,7 @@ const ContractsDashboard = ({ project }) => {
                   className='py-3'
                 >
                   <ContractPreview
+                    project={project}
                     contract={contract}
                   />
                 </div>

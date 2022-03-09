@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react'
-import { TWCircleSpinner } from '../../components';
-import { Contract } from '../../components/contracts';
-import { getContract } from '../../lib/queries';
+import { ProjectLoader, TWCircleSpinner } from '../../../../components';
+import { Contract } from '../../../../components/contracts';
+import { getContract } from '../../../../lib/queries';
 
 const ContractPage = () => {
   const router = useRouter()
-  const contractId = router.query.id 
+  const contractId = router.query.contractId 
   
   const [contract, setContract] = useState()
 
@@ -30,9 +30,11 @@ const ContractPage = () => {
   }
 
   return (
-    <Contract
-      contract={contract}
-    />
+    <ProjectLoader>
+      <Contract
+        contract={contract}
+      />
+    </ProjectLoader>
   )
 }
 
