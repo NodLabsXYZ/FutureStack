@@ -10,25 +10,35 @@ import {
   BoldTitleAndValue
 } from '.'
 
-import { ethers } from 'ethers'
-import * as zksync from 'zksync';
-import { useEffect } from 'react';
+// import { ethers } from 'ethers'
+// import * as zksync from 'zksync';
+// import { useEffect } from 'react';
 
-const SolidityContractDeployment = ({ provider, deployment }) => {
+const SolidityContractDeployment = ({ provider, contract, deployment }) => {
   const { info, deployed_at } = deployment;
-  console.log("INFO", info)
+  const { abi } = contract.info;
 
+  // Experimenting with zksync
+  // Need to `yarn add zksync` first
   // useEffect(() => {
+  //   if (!provider) return;
+
   //   const tryzksync = async () => {
   //     const syncProvider = await zksync.getDefaultProvider('rinkeby');
   //     const ethWallet = provider.getSigner()
 
   //     const syncWallet = await zksync.Wallet.fromEthSigner(ethWallet, syncProvider);
 
-  //     const contract = new ethers.Contract(address, abi, provider)                
-  //     const signer = provider.getSigner()
-  //     const connected = contract.connect(signer)
-  //     const tx = await connected[name](...inputValues.current)
+  //     const ethersContract = new ethers.Contract(info.contractAddress, abi, provider)     
+      
+  //     const { totalFee: fee } = await syncProvider.getTransactionFee('MintNFT', syncWallet.address(), feeToken);
+
+  //     const connected = ethersContract.connect(syncWallet)
+  //     const tx = await connected['mint'](
+  //       "HI", 
+  //       { value: "100000000000000000" }
+  //     )
+  //     //0.10031586ETH
   //     if (tx.wait) {
   //       const receipt = await tx.wait()
   //       setResponse(receipt)
@@ -40,7 +50,7 @@ const SolidityContractDeployment = ({ provider, deployment }) => {
   //   }
 
   //   tryzksync();
-  // }, [])
+  // }, [provider, info, contract])
 
   return (
     <div 
