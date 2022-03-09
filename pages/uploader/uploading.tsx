@@ -41,7 +41,7 @@ const uploadToArweave = async (
     let metadataFileNames: string[];
 
     if (FAKE_BUNDLR) {
-        baseURI = 'https://arweave.net/HgSjSaOKq2mTSLvNb_2b224fA-r86z6Ogi0xTOWKaio';
+        baseURI = 'https://arweave.net/HgSjSaOKq2mTSLvNb_2b224fA-r86z6Ogi0xTOWKaio/';
         metadataFileNames = ['0.json', '1.json', '2.json', '3.json']
         await new Promise(r => setTimeout(r, 5000));
     } else {
@@ -177,6 +177,18 @@ export default function Uploading() {
                     <br />
                     <br />
                     <p>Please wait while your images and metadata are being uploaded to Arweave.</p>
+                    {
+                        FAKE_BUNDLR ?
+                            (
+                                <>
+                                    <br />
+                                    <br />
+                                    <strong>The Bundlr call is being stubbed.To actually call bundlr, change the <code>FAKE_BUNDLR</code> value in <code>/utils/constants.ts</code>
+                                    </strong>
+                                </>
+                            ) :
+                            (<></>)
+                    }
                 </div>
             </main>
         </div>

@@ -89,7 +89,7 @@ export const getURIsFromParentTxn = (pathToBulkTxnId, pathToManifestJSON) => {
     const fileNames = getFileNamesFromManifest(pathToManifestJSON);
     const uris = [];
     fileNames.forEach(fileName => {
-        uris.push(baseURI + '/' + fileName);
+        uris.push(baseURI + fileName);
     });
     return uris;
 }
@@ -107,7 +107,8 @@ export const getFileNamesFromManifest = (pathToManifestJSON) => {
 }
 
 export const getBaseURIFromFile = (pathToBulkTxnId) => {
-    return BASE_ARWEAVE_URL + fs.readFileSync(pathToBulkTxnId, 'utf-8');
+    const txnId = fs.readFileSync(pathToBulkTxnId, 'utf-8');
+    return BASE_ARWEAVE_URL + txnId + '/';
 }
 
 function getTotalBytesOfImagesAndMetadata(pathToImageDir, metadataJSONpath) {
