@@ -16,6 +16,7 @@ import { useEffect } from 'react';
 
 const SolidityContractDeployment = ({ provider, deployment }) => {
   const { info, deployed_at } = deployment;
+  console.log("INFO", info)
 
   // useEffect(() => {
   //   const tryzksync = async () => {

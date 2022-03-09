@@ -11,7 +11,7 @@ This app uses Supabase.
 
 You need to install the [Supabase CLI](https://github.com/supabase/cli)
 
-Once installed you can run `supabase start`
+Once installed you can run `yarn supabase` to start the local supabase instance, install all necessary packages, run the migrations.
 
 This will produce a number of values such as:
 

@@ -37,7 +37,7 @@ const Contract = ({ project, contract }) => {
     }
 
     loadDeployments();
-  }, [])
+  }, [project])
 
   const onArgsChange = (args) => {
     if (!args) {
@@ -76,70 +76,18 @@ const Contract = ({ project, contract }) => {
 
   return (
     <div>
-      <div className='border p-3'>
-        <h3 className='font-bold mb-3'>
-          {contract.name}
-        </h3>
-        <div className='text-xs mb-6'>
-          <span className='font-semibold mr-1'>
-            Compiled: 
-          </span>
-          {dateStringDiffToWords(contract.compiled_at + 'Z')}
-        </div>
-        <div className='flex text-xs'>
-          {contract.info?.description && 
-            <div className=''>
-              <h2 className='text-sm font-bold mb-3'>
-                Contract Description
-              </h2>
-              <div className='prose-sm scale-90 -translate-x-7 -translate-y-3'>
-                <ReactMarkdown>
-                  {contract.info.description}
-                </ReactMarkdown>
-              </div>
-            </div>
-          }
-          <div className='pr-12'>
-            <h2 className='text-sm font-bold mb-3'>
-              Deployment Arguments
-            </h2>
-            <SolidityContractConstructorForm  
-              abi={contract.info.abi}
-              onChange={onArgsChange}
-            />
-          </div>
-          <div>
-            <h2 className='text-sm font-bold mb-3'>
-              Deploy Contract
-            </h2>
-            <EthereumGasEstimateInformation
-              provider={provider}
-              contract={contract}
-              deploymentArguments={orderedArgumentValues}
-            />
-            {!provider && 
-              <div className=''>
-                <ConnectWalletButton
-                  onConnect={setProvider}
-                />
-              </div>
-            }
-            {provider && deploymentArguments && (
-              <div className='mt-6'>
-                <DeploySolidityContractButton
-                  provider={provider}
-                  abi={contract.info.abi}
-                  bytecode={contract.info.bytecode}
-                  deploymentArguments={orderedArgumentValues}
-                  onDeploy={onDeploy}
-                />
-              </div>
-            )}
-          </div>
-        </div>
+      <h2 className='text-lg font-bold mb-3'>
+        {contract.name}
+      </h2>
+      <div className='text-xs mb-6'>
+        <span className='font-semibold mr-1'>
+          Last Compiled: 
+        </span>
+        {dateStringDiffToWords(contract.compiled_at + 'Z')}
       </div>
+
       {deployments.length > 0 &&
-        <div className='py-6'>
+        <div className='py-3'>
           <SolidityContractDeployments
             provider={provider}
             deployments={deployments}
@@ -147,8 +95,62 @@ const Contract = ({ project, contract }) => {
         </div>
       }   
 
+      <div className='py-3'>  
+        <div className='border p-3'>
+          <div className='flex text-xs'>
+            {contract.info?.description && 
+              <div className=''>
+                <h2 className='text-sm font-bold mb-3'>
+                  Contract Description
+                </h2>
+                <div className='prose-sm scale-90 -translate-x-7 -translate-y-3'>
+                  <ReactMarkdown>
+                    {contract.info.description}
+                  </ReactMarkdown>
+                </div>
+              </div>
+            }
+            <div className='pr-12'>
+              <h2 className='text-sm font-bold mb-3'>
+                Deployment Arguments
+              </h2>
+              <SolidityContractConstructorForm  
+                abi={contract.info.abi}
+                onChange={onArgsChange}
+              />
+            </div>
+            <div>
+              <h2 className='text-sm font-bold mb-3'>
+                Deploy Contract
+              </h2>
+              <EthereumGasEstimateInformation
+                provider={provider}
+                contract={contract}
+                deploymentArguments={orderedArgumentValues}
+              />
+              {!provider && 
+                <div className=''>
+                  <ConnectWalletButton
+                    onConnect={setProvider}
+                  />
+                </div>
+              }
+              {provider && deploymentArguments && (
+                <div className='mt-6'>
+                  <DeploySolidityContractButton
+                    provider={provider}
+                    abi={contract.info.abi}
+                    bytecode={contract.info.bytecode}
+                    deploymentArguments={orderedArgumentValues}
+                    onDeploy={onDeploy}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-
   )
 
 }
