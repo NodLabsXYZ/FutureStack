@@ -1,22 +1,22 @@
 CREATE SCHEMA IF NOT EXISTS "auth";
-
+DROP FUNCTION IF EXISTS "auth"."uid"();
+CREATE FUNCTION "auth"."uid"() RETURNS "uuid"
+    LANGUAGE "sql" STABLE
+    AS $$
+  select 
+      coalesce(
+        nullif(current_setting('request.jwt.claim.sub', true), ''),
+        (nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'sub')
+    )::uuid
+$$;
+ALTER FUNCTION "auth"."uid"() OWNER TO "supabase_auth_admin";
+GRANT ALL ON FUNCTION "auth"."uid"() TO "dashboard_user";
 
 CREATE SCHEMA IF NOT EXISTS "extensions";
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA extensions;
 CREATE EXTENSION IF NOT EXISTS "moddatetime" SCHEMA extensions;
 
 
-
-
-
--- AddUUIDs
--- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
--- ALTER TABLE public.profile ALTER COLUMN id SET DEFAULT uuid_generate_v4();
--- ALTER TABLE public.profile ALTER COLUMN secret_key SET DEFAULT uuid_generate_v4();
--- ALTER TABLE public.project ALTER COLUMN id SET DEFAULT uuid_generate_v4();
--- ALTER TABLE public.team ALTER COLUMN id SET DEFAULT uuid_generate_v4();
--- ALTER TABLE public.contract ALTER COLUMN id SET DEFAULT uuid_generate_v4();
--- ALTER TABLE public.asset ALTER COLUMN id SET DEFAULT uuid_generate_v4();
 
 -- AddUpdatedAt
 CREATE TRIGGER handle_updated_at 

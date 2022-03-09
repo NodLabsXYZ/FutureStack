@@ -1,10 +1,20 @@
 CREATE SCHEMA IF NOT EXISTS "auth";
-
+DROP FUNCTION IF EXISTS "auth"."uid"();
+CREATE FUNCTION "auth"."uid"() RETURNS "uuid"
+    LANGUAGE "sql" STABLE
+    AS $$
+  select 
+      coalesce(
+        nullif(current_setting('request.jwt.claim.sub', true), ''),
+        (nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'sub')
+    )::uuid
+$$;
+ALTER FUNCTION "auth"."uid"() OWNER TO "supabase_auth_admin";
+GRANT ALL ON FUNCTION "auth"."uid"() TO "dashboard_user";
 
 CREATE SCHEMA IF NOT EXISTS "extensions";
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA extensions;
 CREATE EXTENSION IF NOT EXISTS "moddatetime" SCHEMA extensions;
-
 
 -- CreateTable
 CREATE TABLE "profile" (
@@ -123,7 +133,6 @@ ALTER TABLE "_profileToteam" ADD FOREIGN KEY ("A") REFERENCES "profile"("id") ON
 
 -- AddForeignKey
 ALTER TABLE "_profileToteam" ADD FOREIGN KEY ("B") REFERENCES "team"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
 
 -- AddUpdatedAt
 CREATE TRIGGER handle_updated_at 
