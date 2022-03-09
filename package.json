@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npx next dev",
+    "supabase": "yarn; supabase start; npx prisma migrate deploy;",
+    "dev": "yarn; npx next dev",
     "dev:next_template": "NEXT_TEMPLATE=1 npx next dev --port 3001",
     "build": "npx next build",
     "start": "npx next start",

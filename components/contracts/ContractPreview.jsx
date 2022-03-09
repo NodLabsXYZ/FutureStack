@@ -4,11 +4,11 @@ import {
 
 import { NextLink } from '..';
 
-const ContractPreview = ({ contract }) => {
+const ContractPreview = ({ project, contract }) => {
   
   return (
     <div>
-      <NextLink href={`/contracts/${contract.id}`}>
+      <NextLink href={`/project/${project.id}/contract/${contract.id}`}>
         <a>
           <div className='border p-3'>
             <h3 className='font-bold mb-3'>
