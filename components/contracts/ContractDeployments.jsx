@@ -1,8 +1,8 @@
 import {
-  SolidityContractDeployment
+  ContractDeployment
 } from '.'
 
-const SolidityContractDeployments = ({ provider, deployments }) => {
+const ContractDeployments = ({ provider, deployments }) => {
   return (
     <div>
       <h2 className='font-bold'>Deployments</h2>
@@ -14,7 +14,7 @@ const SolidityContractDeployments = ({ provider, deployments }) => {
             key={`deployment-${index}`}
             className='pt-3'
           >
-            <SolidityContractDeployment
+            <ContractDeployment
               provider={provider}
               deployment={deployment}
             />
@@ -32,4 +32,4 @@ const SolidityContractDeployments = ({ provider, deployments }) => {
   )
 }
 
-export default SolidityContractDeployments;
+export default ContractDeployments;

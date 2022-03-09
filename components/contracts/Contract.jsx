@@ -5,10 +5,13 @@ import {
 } from '../../lib'
 
 import {
-  SolidityContractDeployments,
-  SolidityContractConstructorForm,
+  ContractDeployments,
+  ContractConstructorForm,
   EthereumGasEstimateInformation,
-  DeploySolidityContractButton,
+  DeployContractButton
+} from '.'
+
+import {   
   ConnectWalletButton
 } from '..'
 
@@ -89,7 +92,7 @@ const Contract = ({ project, contract }) => {
 
       {deployments.length > 0 &&
         <div className='py-6'>
-          <SolidityContractDeployments
+          <ContractDeployments
             provider={provider}
             deployments={deployments}
           />
@@ -118,7 +121,7 @@ const Contract = ({ project, contract }) => {
               <h2 className='text-sm font-bold mb-3'>
                 Deployment Arguments
               </h2>
-              <SolidityContractConstructorForm  
+              <ContractConstructorForm  
                 abi={contract.info.abi}
                 onChange={onArgsChange}
               />
@@ -141,7 +144,7 @@ const Contract = ({ project, contract }) => {
               }
               {provider && deploymentArguments && (
                 <div className='mt-6'>
-                  <DeploySolidityContractButton
+                  <DeployContractButton
                     provider={provider}
                     abi={contract.info.abi}
                     bytecode={contract.info.bytecode}

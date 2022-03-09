@@ -1,7 +1,7 @@
 import store from 'store2';
 import { useEffect, useState } from 'react';
 
-const SolidityABIFormInput = ({ abiInput, className, onChange }) => {
+const ABIConstructorInput = ({ abiInput, className, onChange }) => {
   const { name, type } = abiInput;
   const storeInput = store.namespace('abiInput')
 
@@ -45,4 +45,4 @@ const SolidityABIFormInput = ({ abiInput, className, onChange }) => {
 
 }
 
-export default SolidityABIFormInput;
+export default ABIConstructorInput;

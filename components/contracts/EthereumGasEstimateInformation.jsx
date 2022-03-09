@@ -1,7 +1,7 @@
 import {
   getEthereumGasEstimate,
   ethereumNetworkIdToName
-} from '../lib'
+} from '../../lib'
 
 import {
   BoldTitleAndValue

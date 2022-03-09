@@ -1,10 +1,10 @@
 import {
-  SolidityABIFormInput
+  ABIConstructorInput
 } from '.'
 
 import { useEffect, useRef, useMemo } from 'react'
 
-const SolidityContractConstructorForm = ({ abi, onChange }) => {
+const ContractConstructorForm = ({ abi, onChange }) => {
   const args = useRef({})
 
   const constructor = abi.find(
@@ -47,7 +47,7 @@ const SolidityContractConstructorForm = ({ abi, onChange }) => {
     <div>
       {constructor.inputs.map(
         (input, index) => (
-          <SolidityABIFormInput
+          <ABIConstructorInput
             key={`abi-input-${index}`}
             className='py-1 first-letter:capitalize'
             abiInput={input}
@@ -60,4 +60,4 @@ const SolidityContractConstructorForm = ({ abi, onChange }) => {
 
 }
 
-export default SolidityContractConstructorForm;
+export default ContractConstructorForm;

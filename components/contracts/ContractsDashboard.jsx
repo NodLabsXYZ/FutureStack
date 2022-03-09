@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { ContractPreview } from '.';
+import { ContractPreview, ContractDeployments } from '.';
 import { TWCircleSpinner } from "..";
 import { getContractDeployments, getContracts } from "../../lib/queries";
 import { supabaseClient } from "../../lib";
-import SolidityContractDeployments from "../SolidityContractDeployments";
 
 const ContractsDashboard = ({ project }) => {
   const [deployments, setDeployments] = useState([]);
@@ -42,7 +41,7 @@ const ContractsDashboard = ({ project }) => {
           </p>
         )}
         {deployments.length > 0 && (
-          <SolidityContractDeployments
+          <ContractDeployments
             deployments={deployments}
           />
         )}

@@ -8,7 +8,7 @@ import {
 
 import { ethers } from 'ethers';
 
-const DeploySolidityContractButton = ({ provider, abi, bytecode, deploymentArguments, onDeploy }) => {
+const DeployContractButton = ({ provider, abi, bytecode, deploymentArguments, onDeploy }) => {
 
   const deployContract = async () => {
     const { chainId } = await provider.getNetwork()
@@ -46,4 +46,4 @@ const DeploySolidityContractButton = ({ provider, abi, bytecode, deploymentArgum
 
 }
 
-export default DeploySolidityContractButton;
+export default DeployContractButton;

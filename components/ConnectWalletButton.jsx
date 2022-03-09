@@ -1,8 +1,9 @@
 import {
   TWCircleSpinner,
-  Web3ModalConnectButton,
-  EnsureCorrectEthereumNetwork
+  Web3ModalConnectButton
 } from '.'
+
+import { EnsureCorrectEthereumNetwork } from './contracts'
 
 import { useEffect, useState } from 'react';
 import Web3Modal from "web3modal";
