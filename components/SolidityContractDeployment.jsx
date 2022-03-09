@@ -20,6 +20,7 @@ const SolidityContractDeployment = ({ provider, contract, deployment }) => {
 
   // Experimenting with zksync
   // Need to `yarn add zksync` first
+  // Try minting: https://docs.zksync.io/dev/nfts.html#mint
   // useEffect(() => {
   //   if (!provider) return;
 
