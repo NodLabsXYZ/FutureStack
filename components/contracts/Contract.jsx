@@ -70,6 +70,7 @@ const Contract = ({ project, contract }) => {
     }
 
     const newDeployment = await createContractDeployment(deployment)
+    newDeployment.contract = contract;
 
     setDeployments([newDeployment, ...deployments])
   }
@@ -87,7 +88,7 @@ const Contract = ({ project, contract }) => {
       </div>
 
       {deployments.length > 0 &&
-        <div className='py-3'>
+        <div className='py-6'>
           <SolidityContractDeployments
             provider={provider}
             deployments={deployments}
@@ -95,14 +96,17 @@ const Contract = ({ project, contract }) => {
         </div>
       }   
 
-      <div className='py-3'>  
+      <div className='py-6'>
+        <h3 className='font-bold mb-3'>
+          Contract Details
+        </h3>  
         <div className='border p-3'>
           <div className='flex text-xs'>
             {contract.info?.description && 
               <div className=''>
-                <h2 className='text-sm font-bold mb-3'>
+                <h4 className='text-sm font-bold mb-3'>
                   Contract Description
-                </h2>
+                </h4>
                 <div className='prose-sm scale-90 -translate-x-7 -translate-y-3'>
                   <ReactMarkdown>
                     {contract.info.description}
