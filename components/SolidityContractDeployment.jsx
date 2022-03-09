@@ -14,9 +14,9 @@ import {
 // import * as zksync from 'zksync';
 // import { useEffect } from 'react';
 
-const SolidityContractDeployment = ({ provider, contract, deployment }) => {
+const SolidityContractDeployment = ({ provider, deployment }) => {
   const { info, deployed_at } = deployment;
-  const { abi } = contract.info;
+  const { abi } = deployment.contract.info;
 
   // Experimenting with zksync
   // Need to `yarn add zksync` first

@@ -2,7 +2,7 @@ import {
   SolidityContractDeployment
 } from '.'
 
-const SolidityContractDeployments = ({ provider, contract, deployments }) => {
+const SolidityContractDeployments = ({ provider, deployments }) => {
   return (
     <div>
       <h2 className='font-bold'>Deployments</h2>
@@ -16,7 +16,6 @@ const SolidityContractDeployments = ({ provider, contract, deployments }) => {
           >
             <SolidityContractDeployment
               provider={provider}
-              contract={contract}
               deployment={deployment}
             />
           </div>

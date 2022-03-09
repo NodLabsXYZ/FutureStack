@@ -90,7 +90,6 @@ const Contract = ({ project, contract }) => {
         <div className='py-3'>
           <SolidityContractDeployments
             provider={provider}
-            contract={contract}
             deployments={deployments}
           />
         </div>

@@ -1,17 +1,25 @@
 import { useEffect, useState } from "react";
 import { ContractPreview } from '.';
 import { TWCircleSpinner } from "..";
-import { getContracts } from "../../lib/queries";
+import { getContractDeployments, getContracts } from "../../lib/queries";
 import { supabaseClient } from "../../lib";
+import SolidityContractDeployments from "../SolidityContractDeployments";
 
 const ContractsDashboard = ({ project }) => {
+  const [deployments, setDeployments] = useState([]);
   const [contracts, setContracts] = useState();
-  const [showCustomContractInstructions, setShowCustomContractInstructions] = useState(false);
   const [precompiledContracts, setPrecompiledContracts] = useState();
+  const [showCustomContractInstructions, setShowCustomContractInstructions] = useState(false);
+
   const { access_token } = supabaseClient.auth.session() || {};
 
   useEffect(() => {
-    const getPrecompiledContracts = async () => {
+    const load = async () => {
+      const deployments = await getContractDeployments({
+        projectId: project.id
+      })
+      setDeployments(deployments);
+
       const _contracts = await getContracts({ projectId: project.id });
       setContracts(_contracts);
 
@@ -19,7 +27,7 @@ const ContractsDashboard = ({ project }) => {
       setPrecompiledContracts(_precompiledProjects)
     }
 
-    getPrecompiledContracts()
+    load()
   }, [project])
 
   return (
@@ -28,7 +36,16 @@ const ContractsDashboard = ({ project }) => {
 
       <div className='py-6'>
         <h2 className='font-bold'>Deployed Contracts</h2>
-        <p className='text-sm pt-3'>You have not yet deployed any contracts.</p>
+        {deployments.length === 0 && (
+          <p className='text-sm pt-3'>
+            You have not yet deployed any contracts.
+          </p>
+        )}
+        {deployments.length > 0 && (
+          <SolidityContractDeployments
+            deployments={deployments}
+          />
+        )}
       </div>
 
 
