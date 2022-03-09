@@ -15,54 +15,55 @@ import * as zksync from 'zksync';
 import { useEffect } from 'react';
 
 const SolidityContractDeployment = ({ provider, deployment }) => {
-  
-  useEffect(() => {
-    const tryzksync = async () => {
-      const syncProvider = await zksync.getDefaultProvider('rinkeby');
-      const ethWallet = provider.getSigner()
+  const { info, deployed_at } = deployment;
 
-      const syncWallet = await zksync.Wallet.fromEthSigner(ethWallet, syncProvider);
+  // useEffect(() => {
+  //   const tryzksync = async () => {
+  //     const syncProvider = await zksync.getDefaultProvider('rinkeby');
+  //     const ethWallet = provider.getSigner()
 
-      const contract = new ethers.Contract(address, abi, provider)                
-      const signer = provider.getSigner()
-      const connected = contract.connect(signer)
-      const tx = await connected[name](...inputValues.current)
-      if (tx.wait) {
-        const receipt = await tx.wait()
-        setResponse(receipt)
-      } else {
-        setResponse(tx)
-      }    
+  //     const syncWallet = await zksync.Wallet.fromEthSigner(ethWallet, syncProvider);
 
-      console.log(syncWallet, zksync);
-    }
+  //     const contract = new ethers.Contract(address, abi, provider)                
+  //     const signer = provider.getSigner()
+  //     const connected = contract.connect(signer)
+  //     const tx = await connected[name](...inputValues.current)
+  //     if (tx.wait) {
+  //       const receipt = await tx.wait()
+  //       setResponse(receipt)
+  //     } else {
+  //       setResponse(tx)
+  //     }    
 
-    tryzksync();
-  }, [])
+  //     console.log(syncWallet, zksync);
+  //   }
+
+  //   tryzksync();
+  // }, [])
 
   return (
     <div 
       className='border p-3 mr-3 text-sm'
     >
       <div className='font-bold'>
-        {ethereumNetworkIdToName(deployment.network)}: 
+        {ethereumNetworkIdToName(info.network)}: 
         &nbsp;
-        {dateStringDiffToWords(deployment.deployedAt)}
+        {dateStringDiffToWords(deployed_at)}
       </div>
       <div className='text-xs pt-3'>
         <BoldTitleAndValue
           title="Address"
-          value={deployment.contractAddress}
+          value={info.contractAddress}
         />
         <BoldTitleAndValue
           title="Gas Used"
-          value={commify(deployment.gasUsed)}
+          value={commify(info.gasUsed)}
         />
         <BoldTitleAndValue
           title="Cost"
           value={`${bigNumberToEth(
-            bigNumberFrom(deployment.effectiveGasPrice).mul(
-              bigNumberFrom(deployment.gasUsed)
+            bigNumberFrom(info.effectiveGasPrice).mul(
+              bigNumberFrom(info.gasUsed)
             )
           )} ETH`}
         />
@@ -70,7 +71,7 @@ const SolidityContractDeployment = ({ provider, deployment }) => {
           title="Arguments"
           value={(
             <div className='pl-3'>
-              {deployment.deploymentArguments.map(
+              {info.deploymentArguments.map(
                 (arg, argIndex) => (
                   <BoldTitleAndValue
                     key={`deployment-arg-${deployment.id}-${argIndex}`}

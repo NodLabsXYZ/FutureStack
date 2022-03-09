@@ -59,9 +59,9 @@ const Contract = ({ project, contract }) => {
     const { chainId } = await provider.getNetwork()
 
     const deployment = {
-      contractId: contract.id,
-      projectId: project.id,
-      deployed_at: Date.now(),
+      contract_id: contract.id,
+      project_id: project.id,
+      deployed_at: new Date().toISOString(),
       info: {
         network: chainId,
         deploymentArguments: deploymentArguments,
@@ -71,7 +71,7 @@ const Contract = ({ project, contract }) => {
 
     const newDeployment = await createContractDeployment(deployment)
 
-    setDeployments([...deployments, newDeployment])
+    setDeployments([newDeployment, ...deployments])
   }
 
   return (

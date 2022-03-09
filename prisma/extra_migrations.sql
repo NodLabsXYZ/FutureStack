@@ -39,7 +39,25 @@ CREATE TRIGGER handle_updated_at
 BEFORE UPDATE on public.asset 
   FOR EACH ROW EXECUTE PROCEDURE extensions.moddatetime (updated_at);
 
+CREATE TRIGGER handle_updated_at 
+BEFORE UPDATE on public.contract_deployment
+  FOR EACH ROW EXECUTE PROCEDURE extensions.moddatetime (updated_at);
+
 -- AddPolicies
+CREATE POLICY profile_contract_deployment_access 
+ON public.contract_deployment
+WITH CHECK (
+  auth.uid() IN ( 
+    SELECT profile.user_id 
+    FROM profile, "_profileToteam", project
+    WHERE (
+      (profile.id = "_profileToteam"."A") 
+      AND ("_profileToteam"."B" = project.team_id) 
+      AND (project.id = contract_deployment.project_id)
+    )
+  )
+);
+
 CREATE POLICY profile_contract_access 
 ON public.contract
 WITH CHECK (
@@ -65,11 +83,9 @@ WITH CHECK (
     SELECT profile.user_id 
     FROM profile, "_profileToteam", project 
     WHERE (
-      (
-        (profile.id = "_profileToteam"."A") 
-        AND ("_profileToteam"."B" = project.team_id) 
-        AND (project.id = asset.project_id)
-      )
+      (profile.id = "_profileToteam"."A") 
+      AND ("_profileToteam"."B" = project.team_id) 
+      AND (project.id = asset.project_id)
     )
   )
 );
