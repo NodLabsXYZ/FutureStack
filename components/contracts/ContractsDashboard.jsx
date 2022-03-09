@@ -12,15 +12,15 @@ const ContractsDashboard = ({ project }) => {
 
   useEffect(() => {
     const getPrecompiledContracts = async () => {
-      const _contracts = await getContracts();
+      const _contracts = await getContracts({ projectId: project.id });
       setContracts(_contracts);
 
-      const _precompiledProjects = await getContracts(true)
+      const _precompiledProjects = await getContracts({ opensource: true })
       setPrecompiledContracts(_precompiledProjects)
     }
 
     getPrecompiledContracts()
-  }, [])
+  }, [project])
 
   return (
     <div>

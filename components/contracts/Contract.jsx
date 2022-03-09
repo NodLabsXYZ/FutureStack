@@ -12,13 +12,13 @@ import {
   ConnectWalletButton
 } from '..'
 
-import { useMemo, useState } from 'react';
-import { upsertContract } from '../../lib/queries';
+import { useEffect, useMemo, useState } from 'react';
+import { getContractDeployments, createContractDeployment } from '../../lib/queries';
 
-const Contract = ({ contract }) => {
+const Contract = ({ project, contract }) => {
   const [provider, setProvider] = useState()
   const [deploymentArguments, setDeploymentArguments] = useState();
-  const [activeContract, setActiveContract] = useState(contract);
+  const [deployments, setDeployments] = useState([]);
   
   const orderedArgumentValues = useMemo(() => {
     if (!deploymentArguments) return null;
@@ -27,6 +27,17 @@ const Contract = ({ contract }) => {
       (argument) => argument.value
     );
   }, [deploymentArguments]);
+
+  useEffect(() => {
+    const loadDeployments = async () => {
+      const deployments = await getContractDeployments({
+        projectId: project.id
+      });
+      setDeployments(deployments);
+    }
+
+    loadDeployments();
+  }, [])
 
   const onArgsChange = (args) => {
     if (!args) {
@@ -47,27 +58,20 @@ const Contract = ({ contract }) => {
   const onDeploy = async (receipt) => {
     const { chainId } = await provider.getNetwork()
 
-    const updatedContract = {
-      ...contract,
+    const deployment = {
+      contractId: contract.id,
+      projectId: project.id,
+      deployed_at: Date.now(),
       info: {
-        ...contract.info,
-        deployments: [
-          ...(contract.info.deployments || []),
-          {
-            network: chainId,
-            deployedAt: Date.now(),
-            deploymentArguments: deploymentArguments,
-            ...receipt,
-          }
-        ]
+        network: chainId,
+        deploymentArguments: deploymentArguments,
+        ...receipt  
       }
     }
 
-    setActiveContract(updatedContract)
+    const newDeployment = await createContractDeployment(deployment)
 
-    const newContract = await upsertContract(updatedContract)
-
-    setActiveContract(newContract)
+    setDeployments([...deployments, newDeployment])
   }
 
   return (
@@ -83,14 +87,14 @@ const Contract = ({ contract }) => {
           {dateStringDiffToWords(contract.compiled_at + 'Z')}
         </div>
         <div className='flex text-xs'>
-          {activeContract.info?.description && 
+          {contract.info?.description && 
             <div className=''>
               <h2 className='text-sm font-bold mb-3'>
                 Contract Description
               </h2>
               <div className='prose-sm scale-90 -translate-x-7 -translate-y-3'>
                 <ReactMarkdown>
-                  {activeContract.info.description}
+                  {contract.info.description}
                 </ReactMarkdown>
               </div>
             </div>
@@ -134,10 +138,11 @@ const Contract = ({ contract }) => {
           </div>
         </div>
       </div>
-      {activeContract.info?.deployments &&
+      {deployments.length > 0 &&
         <div className='py-6'>
           <SolidityContractDeployments
-            deployments={activeContract.info.deployments}
+            provider={provider}
+            deployments={deployments}
           />
         </div>
       }   

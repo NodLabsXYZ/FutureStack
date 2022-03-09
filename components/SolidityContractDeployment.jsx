@@ -10,7 +10,36 @@ import {
   BoldTitleAndValue
 } from '.'
 
-const SolidityContractDeployment = ({ deployment }) => {
+import { ethers } from 'ethers'
+import * as zksync from 'zksync';
+import { useEffect } from 'react';
+
+const SolidityContractDeployment = ({ provider, deployment }) => {
+  
+  useEffect(() => {
+    const tryzksync = async () => {
+      const syncProvider = await zksync.getDefaultProvider('rinkeby');
+      const ethWallet = provider.getSigner()
+
+      const syncWallet = await zksync.Wallet.fromEthSigner(ethWallet, syncProvider);
+
+      const contract = new ethers.Contract(address, abi, provider)                
+      const signer = provider.getSigner()
+      const connected = contract.connect(signer)
+      const tx = await connected[name](...inputValues.current)
+      if (tx.wait) {
+        const receipt = await tx.wait()
+        setResponse(receipt)
+      } else {
+        setResponse(tx)
+      }    
+
+      console.log(syncWallet, zksync);
+    }
+
+    tryzksync();
+  }, [])
+
   return (
     <div 
       className='border p-3 mr-3 text-sm'

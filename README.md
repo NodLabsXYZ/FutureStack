@@ -26,16 +26,9 @@ Started local development setup.
 Create a .env file in the root directory of the project.
 Fill in the values provided in .env.template with the values provided by `supabase start`.
 
-You will likely need to migrate the database:
+You will likely need to setup and migrate the database:
 
-- `npx prisma migrate deploy`
-- Open up the supabase studio at [http://localhost:54323](http://localhost:54323)
-  - Click on the "Default Project"
-  - Click on the "Database" tab (on the left navigation bar)
-  - Click on "Extensions"
-  - Select the "MODDATETIME" extension and confirm it's selection
-  - Go to the "SQL Editor" tab (on the left navigation bar)
-  - Copy the contents of "prisma/extra_migrations.sql" and paste it into the SQL Editor
+- Run the migrations `npx prisma migrate deploy`
 
 You can also run `npx prisma db seed` to seed the database.
 
