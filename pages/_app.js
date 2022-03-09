@@ -4,6 +4,7 @@ import { FutureStackLayout } from '../components';
 import { supabaseClient } from '../lib';
 import '../styles/globals.css'
 import '../styles/index.css'
+import { AppWrapper } from '../context/state';
 
 const publicRoutes = ['', 'login', 'arweave', 'uploader']
 
@@ -15,7 +16,7 @@ function FutureStackApp({ Component, pageProps }) {
     console.log("REFERRER", document.referrer)
     const _user = supabaseClient.auth.user()
 
-    if (!_user && !publicRoutes.includes(router.pathname.split('/')[1] || '')) { 
+    if (!_user && !publicRoutes.includes(router.pathname.split('/')[1] || '')) {
       router.push('/')
       return;
     }
@@ -36,12 +37,14 @@ function FutureStackApp({ Component, pageProps }) {
   }, [user, router])
 
   return (
-    <FutureStackLayout user={user}>
-      <Component 
-        user={user} 
-        {...pageProps} 
-      />
-    </FutureStackLayout>
+    <AppWrapper>
+      <FutureStackLayout user={user}>
+        <Component
+          user={user}
+          {...pageProps}
+        />
+      </FutureStackLayout>
+    </AppWrapper>
   )
 }
 
