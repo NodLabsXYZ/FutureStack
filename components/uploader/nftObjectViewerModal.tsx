@@ -25,7 +25,7 @@ function NftContent(props: NftContentProps) {
     return (
         <div className="sm:flex">
             <div className="mb-4 flex-shrink-0 sm:mb-0 sm:mr-4">
-                <img className="w-64 h-64 flex-shrink-0 mx-10 mt-32 rounded-lg" src={props.preview} alt={props.name} />
+                <img className="w-64 flex-shrink-0 mx-10 mt-32 rounded-lg" src={props.preview} alt={props.name} />
             </div>
             <div>
                 <h4 className="text-lg font-bold">{props.name}</h4>

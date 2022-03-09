@@ -14,6 +14,8 @@ import { FileWithPreview } from '../../types/FileWithPreview'
 import { createArrayBufferNftObjects, createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
 import { useAppContext } from '../../context/state';
+import NextLink from '../NextLink';
+
 type UploaderProps = {
 }
 
@@ -69,9 +71,9 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
       // }
 
       // console.log('appContext :>> ', appContext);
-      
+
       // SECOND TRY - local storage
-      
+
 
       for (let index = 0; index < nftObjs.length; index++) {
         const nftObj = nftObjs[index];
@@ -109,7 +111,7 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
 
 
       // FIRST TRY - FileReader
-      
+
       // let counter = 0;
       // nftObjs.forEach(nftObj => {
       //   const reader = new FileReader();
@@ -154,9 +156,9 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
     console.log('nftObjs :>> ', nftObjs);
 
     console.log('appContext :>> ', appContext);
-    
+
     appContext.push('hello');
-    
+
     console.log('appContext :>> ', appContext);
   }
 
@@ -215,13 +217,14 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
 
         <main className={styles.main}>
           <Error showError={errorMessage} message={errorMessage} />
-          <div>
-            Before uploading your metadata, make sure it complies with&nbsp;
-            <a href="https://docs.opensea.io/docs/metadata-standards" target='_blank' rel="noreferrer" className="text-blue-600 visited:text-purple-600">
-              OpenSea&apos;s Metadata Standards
-            </a>
-            &nbsp;if your NFTs will be on Ethereum or Polygon.
-          </div>
+          <NextLink href='/arweave/howItWorks'>
+            <button
+              type="button"
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              How It Works
+            </button>
+          </NextLink>
           <br />
           <br />
           <UploadImages setImageFiles={setImageFiles} updateImageBytes={updateImageBytes} />
