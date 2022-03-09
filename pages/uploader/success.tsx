@@ -4,14 +4,34 @@ import styles from '../../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import { CopyBlock, dracula } from "react-code-blocks";
 
-type UploadResultProps = {
+type UploadResultDisplayProps = {
     baseURI: string,
     fileNames: string[]
 }
 
-function UploadResultDisplay(props: UploadResultProps) {
+type BaseUrlDisplayProps = {
+    baseURI: string
+}
+
+type MetadataFileNamesDisplayProps = {
+    fileNames: string[]
+}
+
+function BaseUriDisplay(props: BaseUrlDisplayProps): JSX.Element {
     let display = 'const baseURI = "' + props.baseURI + '";\n';
-    display = display.concat('const metadataFileNames = [\n');
+    return (
+        <div className='mt-4'>
+            <CopyBlock
+                text={display}
+                language={'javascript'}
+                theme={dracula}
+            />
+        </div>
+    )
+}
+
+function MetadataFileNamesDisplay(props: MetadataFileNamesDisplayProps): JSX.Element {
+    let display = 'const metadataFileNames = [\n';
     const elementList = [];
     for (let index = 0; index < props.fileNames.length; index++) {
         const fileName = props.fileNames[index]
@@ -24,14 +44,68 @@ function UploadResultDisplay(props: UploadResultProps) {
         }
     }
     display = display.concat('];');
-
     return (
-        <div className='mt-4 w-3/4'>
+        <div className='mt-4'>
             <CopyBlock
                 text={display}
                 language={'javascript'}
                 theme={dracula}
             />
+        </div>
+    )
+}
+
+function ContractTokenUriDisplay(): JSX.Element {
+    let display = 
+`function tokenURI(uint256 tokenId) public view returns (string memory) {
+    return abi.encodePacked(_baseURI() + tokenId + ".json");
+}`;
+    return (
+        <div className='mt-4'>
+            <code>YourContract.sol</code>
+            <CopyBlock
+                text={display}
+                language={'javascript'}
+                theme={dracula}
+                codeBlock
+            />
+        </div>
+    )
+}
+
+function UploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
+    const exampleMetadataURI = props.baseURI + props.fileNames[0];
+    return (
+        <div className='mt-4  w-2/3 left-1/3'>
+            <p className="text-m mt-2 text-center">
+                This is the base URI you'll use in your contract.
+            </p>
+            <BaseUriDisplay baseURI={props.baseURI} />
+            <br />
+            <p className="text-m mt-2 text-center">
+                These are the file names that, when appended to the end of the base URI,
+                will return the metadata for that token.
+            </p>
+            <MetadataFileNamesDisplay fileNames={props.fileNames} />
+            <p className="text-m mt-2 text-center">
+                Test it out here:
+                <br />
+                <a
+                    className='underline text-blue-600 visited:text-purple-600'
+                    href={exampleMetadataURI}
+                    target='_blank'
+                    rel="noreferrer"
+                >
+                    {exampleMetadataURI}
+                </a>
+            </p>
+            <br />
+            <p className="text-m mt-2 text-center">
+                You can easily and gas-efficiently return these values in the contract without
+                needing to take any information about the new token from your UI when minting.
+                All you need to do is:
+            </p>
+            <ContractTokenUriDisplay />
         </div>
     )
 }
@@ -61,9 +135,7 @@ export default function Success({ Component, pageProps }: AppProps) {
                         Upload Successful
                     </h3>
                     <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                            Use the metadata URIs in your application. Paste one in the browser to see what metadata gets returned.
-                        </p>
+
                     </div>
                 </div>
                 <UploadResultDisplay baseURI={baseURI} fileNames={fileNames} />
