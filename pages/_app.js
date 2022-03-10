@@ -4,7 +4,6 @@ import { FutureStackLayout } from '../components';
 import { supabaseClient } from '../lib';
 import '../styles/globals.css'
 import '../styles/index.css'
-import { AppWrapper } from '../context/state';
 
 const publicRoutes = ['', 'login', 'arweave', 'uploader']
 
@@ -37,14 +36,12 @@ function FutureStackApp({ Component, pageProps }) {
   }, [user, router])
 
   return (
-    <AppWrapper>
-      <FutureStackLayout user={user}>
-        <Component
-          user={user}
-          {...pageProps}
-        />
-      </FutureStackLayout>
-    </AppWrapper>
+    <FutureStackLayout user={user}>
+      <Component
+        user={user}
+        {...pageProps}
+      />
+    </FutureStackLayout>
   )
 }
 
