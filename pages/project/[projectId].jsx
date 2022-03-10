@@ -3,10 +3,10 @@ import { Project } from '../../components/projects';
 
 const ProjectPage = () => {
   const router = useRouter()
-  const { id } = router.query
+  const { projectId } = router.query
   
   return (
-    <Project id={id} />
+    <Project id={projectId} />
   )
 }
 

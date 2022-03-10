@@ -5,7 +5,7 @@ import { TWCircleSpinner } from ".";
 
 const ProjectWrapper = ({ children }) => {
   const router = useRouter()
-  const projectId = router.query.id 
+  const projectId = router.query.projectId 
   
   const [project, setProject] = useState()
 

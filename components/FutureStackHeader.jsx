@@ -44,17 +44,17 @@ const FutureStackHeader = ({ user }) => {
           </span>
         }
         {!user && 
-          <NextLink href='/login'>
-            <TWButton
-              classMap={{
-                rounded: 'rounded-full'
-              }}
-            >
+          <TWButton
+            classMap={{
+              rounded: 'rounded-full'
+            }}
+          >
+            <NextLink href='/login'>
               <a className='px-3 py-1'>
                 Sign In
               </a>
-            </TWButton>
-          </NextLink>
+            </NextLink>
+          </TWButton>
         }
       </div>
     </TWCleanHeader>

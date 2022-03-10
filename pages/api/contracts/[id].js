@@ -5,11 +5,11 @@ import {
 } from '../../../lib/server'
 
 export default async function handle(req, res) {
-  const { id } = req.query
+  const { contractDeploymentId } = req.query
   const data = req.body
   const contract = await prismaClient.contract.update({
     where: {
-      id
+      id: contractDeploymentId
     },
     data: data
   })

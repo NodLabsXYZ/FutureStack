@@ -6,7 +6,7 @@ import { getContractDeployment } from '../../lib/queries'
 
 const ContractDeploymentPage = () => {
   const router = useRouter()
-  const deploymentId = router.query.id 
+  const deploymentId = router.query.contractDeploymentId
   
   const [deployment, setDeployment] = useState()
 
