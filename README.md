@@ -75,3 +75,4 @@ npx prisma db deploy
 - Gate access to the `/uploader/uploading` page to those who have already paid
 - Change cost estimate in `upload.tsx` to check for Bundlr price (right now it's just vanilla arweave)
 - Downloading example files doesn't work (hard to do that with .zip files)
+- For some reason the call to /uploadBundlr gets called twice

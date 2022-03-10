@@ -1,9 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import Bundlr from '@bundlr-network/client';
 import { IncomingForm } from 'formidable';
-import { existsSync, mkdirSync, renameSync, writeFileSync } from 'fs';
+import { existsSync, mkdirSync, renameSync, writeFileSync, rmSync } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-import { estimatePriceForDirInAtomicUnits, getBaseURIFromFile, getBundlrBalance, getFileNamesFromManifest, getURIsFromParentTxn, uploadFolderToBundlr } from "../../../utils/bundlr";
+import { estimatePriceForDirInAtomicUnits, getBaseURIFromFile, getFileNamesFromManifest, getURIsFromParentTxn, uploadFolderToBundlr } from "../../../utils/bundlr";
+import { BUNDLR, TEMP_NFT_DATA_DIR } from '../../../utils/bundlrConfig';
+import Bundlr from '@bundlr-network/client/build/common/bundlr';
 
 // disable body parser for file reading
 export const config = {
@@ -24,35 +25,28 @@ type Data = {
     metadataFileNames: string[]
 }
 
-// Extract to constants
-
-const tempDir = 'tempNftData/'
-const bundlrNetworkUrl = 'https://node1.bundlr.network/'
-const currency = 'solana'
-
-if (process.env["SOL_PRIVATE_KEY"] === '' || !process.env["SOL_PRIVATE_KEY"]) {
-    throw new Error("No SOL_PRIVATE_KEY. Set SOL_PRIVATE_KEY environment variable.");
-}
-const key = process.env["SOL_PRIVATE_KEY"];
-// const currency = 'arweave'
-
-// if (process.env["ARWEAVE_KEY"] === '' || !process.env["ARWEAVE_KEY"]) {
-//     throw new Error("No ARWEAVE_KEY. Set ARWEAVE_KEY environment variable.");
-// }
-// const key = JSON.parse(process.env["ARWEAVE_KEY"]);
-
-const bundlr = new Bundlr(bundlrNetworkUrl, currency, key);
-
 export default async (
     req: NextApiRequest,
     res: NextApiResponse<Data>
 ) => {
-    const bundlrAddress = bundlr.address;
-    console.log('bundlrAddress :>> ', bundlrAddress);
-
     // Create ID for temp folder with images and metadata
     const tempId = uuidv4();
 
+    // Create temp dirs with tempId
+    const parentTempDir = TEMP_NFT_DATA_DIR + tempId;
+    createDir(parentTempDir);
+    const imageTempDir = parentTempDir + '/images';
+    createDir(imageTempDir);
+    const metadataTemptDir = parentTempDir + '/metadata';
+    createDir(metadataTemptDir);
+
+    // A copy of the manifest and bulk txn id get created after Bundlr completes
+    const imageManifestPath = parentTempDir + '/images-manifest.json';
+    const imageBundleTxnIdPath = parentTempDir + '/images-id.txt';
+    const metadataManifestPath = parentTempDir + '/metadata-manifest.json';
+    const metadataBundleTxnIdPath = parentTempDir + '/metadata-id.txt';
+
+    // Read files from request
     const data: any = await new Promise((resolve, reject) => {
         const form = new IncomingForm({ keepExtensions: true });
 
@@ -62,8 +56,51 @@ export default async (
         })
     })
 
-    console.log('data :>> ', data);
+    const nftObjectIds = getNftObjectIds(data);
 
+    const tempNftObjects = getTempNftObjects(nftObjectIds, data, tempId);
+
+    moveImagesToTempDir(tempNftObjects);
+
+    await fundBundlrAccountIfNecessary(BUNDLR, imageTempDir);
+
+    await uploadFolderToBundlr(BUNDLR, imageTempDir);
+
+    updateMetadataWithImageUriAndSaveAsTempFile(
+        imageBundleTxnIdPath,
+        imageManifestPath,
+        tempNftObjects,
+        metadataTemptDir
+    );
+
+    await uploadFolderToBundlr(BUNDLR, metadataTemptDir);
+
+    const baseURI = getBaseURIFromFile(metadataBundleTxnIdPath);
+    const metadataFileNames = getFileNamesFromManifest(metadataManifestPath);
+
+    console.log('baseURI :>> ', baseURI);
+    console.log('metadataFileNames :>> ', metadataFileNames);
+
+    deleteDirAndContents(parentTempDir);
+
+    res.status(200).json({ baseURI, metadataFileNames })
+}
+
+const createDir = (path: string): void => {
+    if (!existsSync(path)) {
+        mkdirSync(path);
+    }
+}
+
+function deleteDirAndContents(parentTempDir: string): void {
+    try {
+        rmSync(parentTempDir, { recursive: true });
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+function getNftObjectIds(data: any) {
     const nftObjectIds = [];
     for (const nftObjectId in data.fields) {
         if (Object.prototype.hasOwnProperty.call(data.fields, nftObjectId)) {
@@ -71,17 +108,19 @@ export default async (
         }
     }
     nftObjectIds.sort();
+    return nftObjectIds;
+}
 
-    // Create TempNftObjects
+function getTempNftObjects(nftObjectIds: string[], data: any, tempId: string): TempNftObject[] {
     const tempNftObjects = [];
     for (let index = 0; index < nftObjectIds.length; index++) {
         const nftObjectString = data.fields[nftObjectIds[index]];
         const rawNftObject = JSON.parse(nftObjectString);
 
-        const clientTempImagePath = rawNftObject.clientTempFilePath
+        const clientTempImagePath = rawNftObject.clientTempFilePath;
 
         const fileName = rawNftObject.imageFileName;
-        const serverTempImagePath = tempDir + tempId + '/images/' + fileName
+        const serverTempImagePath = TEMP_NFT_DATA_DIR + tempId + '/images/' + fileName;
 
         const metadata = JSON.parse(rawNftObject.metadata);
 
@@ -91,71 +130,13 @@ export default async (
             serverTempImagePath,
             fileName,
             metadata
-        }
+        };
         tempNftObjects.push(tempNftObject);
     }
+    return tempNftObjects;
+}
 
-
-    console.log('tempNftObjects :>> ', tempNftObjects);
-
-    // Sort metadata strings
-    // const metadataIds = [];
-    // for (const metadata in data.fields) {
-    //     if (Object.prototype.hasOwnProperty.call(data.fields, metadata)) {
-    //         metadataIds.push(metadata);
-    //     }
-    // }
-    // metadataIds.sort();
-
-
-    // // Sort image files
-    // const fileIds = [];
-    // for (const file in data.files) {
-    //     if (Object.prototype.hasOwnProperty.call(data.files, file)) {
-    //         fileIds.push(file);
-    //     }
-    // }
-    // fileIds.sort();
-
-    // // get clientImagePaths
-    // const imageClientTempPaths: string[] = [];
-    // for (let index = 0; index < fileIds.length; index++) {
-    //     const file = data.files[fileIds[index]];
-    //     imageClientTempPaths.push(file.filepath);
-    // }
-
-
-    // // Create TempNftObjects
-    // const numberOfItemsToUpload = imageClientTempPaths.length;
-    // const tempNftObjects: TempNftObject[] = [];
-    // for (let index = 0; index < numberOfItemsToUpload; index++) {
-    //     const clientTempImagePath = imageClientTempPaths[index]
-    //     const fileId = fileIds[index];
-
-    //     const imageFileName = data.files[fileId].originalFilename;
-    //     const serverTempImagePath = tempDir + tempId + '/images/' + imageFileName
-
-    //     const metadataId = metadataIds[index]
-    //     const metadata = JSON.parse(data.fields[metadataId]);
-
-
-    //     const tempNftObject: TempNftObject = {
-    //         clientTempImagePath,
-    //         serverTempImagePath,
-    //         metadata
-    //     }
-    //     tempNftObjects.push(tempNftObject);
-    // }
-
-    // Create temp dir with tempId
-    const parentTempDirForThisUpload = tempDir + tempId;
-    createDir(parentTempDirForThisUpload);
-    const imageTempDirForThisUpload = parentTempDirForThisUpload + '/images';
-    createDir(imageTempDirForThisUpload);
-    const metadataTemptDirForThisUpload = parentTempDirForThisUpload + '/metadata';
-    createDir(metadataTemptDirForThisUpload);
-
-    // Move to unified directory
+function moveImagesToTempDir(tempNftObjects: TempNftObject[]) {
     for (let index = 0; index < tempNftObjects.length; index++) {
         const tempNftObject = tempNftObjects[index];
         renameSync(
@@ -163,11 +144,13 @@ export default async (
             tempNftObject.serverTempImagePath
         );
     }
+}
 
-    // If bundlr account does not have anough AR, fund it
+async function fundBundlrAccountIfNecessary(bundlr: Bundlr, imageTempDirForThisUpload: string) {
     const estimatedPriceBN = await estimatePriceForDirInAtomicUnits(bundlr, imageTempDirForThisUpload);
     const estimatedPrice = estimatedPriceBN.toNumber();
-    const balance = await getBundlrBalance(bundlr);
+    console.log('estimatedPrice :>> ', estimatedPrice);
+    const balance = await bundlr.getLoadedBalance().then(bn => bn.toNumber());
     console.log('loadedBalance :>> ', balance);
 
     if (estimatedPrice >= balance) {
@@ -179,41 +162,15 @@ export default async (
         console.log('fundAmount :>> ', fundAmount);
         console.log('=====================');
     }
+}
 
-    // Upload image dir to Bundlr
-    await uploadFolderToBundlr(bundlr, imageTempDirForThisUpload);
-    // A copy of the manifest has been written to tempNftData\<tempId>\images-manifest.json
-    // A copy of the bulk txnId has been written to tempNftData\<tempId>\images-id.txt
-
-    const imageManifestPath = parentTempDirForThisUpload + '/images-manifest.json';
-    const imageBulkTxnIdPath = parentTempDirForThisUpload + '/images-id.txt';
-
-    // Add newly created imageURIs to metadata and create JSON file to upload
-    const imageURIs = await getURIsFromParentTxn(imageBulkTxnIdPath, imageManifestPath);
+function updateMetadataWithImageUriAndSaveAsTempFile(imageBundleTxnIdPath: string, imageManifestPath: string, tempNftObjects: TempNftObject[], metadataTemptDir: string) {
+    const imageURIs = getURIsFromParentTxn(imageBundleTxnIdPath, imageManifestPath);
     for (let index = 0; index < tempNftObjects.length; index++) {
         const tempNftObject = tempNftObjects[index];
         tempNftObject.metadata.image = imageURIs[index];
-        const metadataFilePath = metadataTemptDirForThisUpload + '/' + index + '.json';
+        const metadataFilePath = metadataTemptDir + '/' + index + '.json';
         const metadataString = JSON.stringify(tempNftObject.metadata);
         writeFileSync(metadataFilePath, metadataString, 'utf-8');
-    }
-
-    // Upload metadata
-    await uploadFolderToBundlr(bundlr, metadataTemptDirForThisUpload);
-    const metadataManifestPath = parentTempDirForThisUpload + '/metadata-manifest.json';
-    const metadataBulkTxnIdPath = parentTempDirForThisUpload + '/metadata-id.txt';
-
-    const baseURI = getBaseURIFromFile(metadataBulkTxnIdPath);
-    const metadataFileNames = getFileNamesFromManifest(metadataManifestPath);
-
-    console.log('baseURI :>> ', baseURI);
-    console.log('metadataFileNames :>> ', metadataFileNames);
-
-    res.status(200).json({ baseURI, metadataFileNames })
-}
-
-const createDir = (path: string): void => {
-    if (!existsSync(path)) {
-        mkdirSync(path);
     }
 }

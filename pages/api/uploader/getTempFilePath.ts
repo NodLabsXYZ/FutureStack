@@ -15,6 +15,17 @@ export const config = {
 type Data = {
     clientTempFilePath: string
 }
+/*
+This is done on the server because the 'formidable' package gives
+access to a local file stored on the client's machine. This is hacky
+and I don't like it, but it works for now. In the future I'd like to 
+figure out a way to get the local file without needing to call the server
+(or not need a local client file at all).
+
+One way would be to store a dataURL or base64 encode the files, but if
+the user has 100 images to upload that would probably go past the limit
+that's allowed to be in local storage, which is 2MB-10MB depending on browser.
+*/
 
 export default async (
     req: NextApiRequest,

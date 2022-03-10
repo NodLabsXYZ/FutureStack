@@ -1,8 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { IncomingForm } from 'formidable'
-import { connectToLocalArweave, connectToArweave, generateTestKey, ArweaveNftUploader } from 'arweave-nft-uploader'
-import Arweave from 'arweave'
-import { JWKInterface } from 'arweave/node/lib/wallet';
 import { readFileSync } from 'fs';
 
 
@@ -16,6 +13,10 @@ export const config = {
 type Data = {
     json: any
 }
+
+// NOTE:
+// This is done on the server because React doesn't have access to 'fs'
+// So I couldn't find a way for the client to open and read the submitted JSON files.
 
 export default async (
     req: NextApiRequest,
@@ -51,42 +52,4 @@ export default async (
     const json = JSON.parse(readFileSync(paths[0], 'utf8'));
 
     res.status(200).json({ json })
-
-
-    // const numberOfItemsToUpload = Math.ceil(paths.length / 2);
-
-    // const orderedImagePaths = paths.splice(0, numberOfItemsToUpload);
-    // const orderedMetadataPaths = paths;
-
-    // console.log('orderedImagePaths :>> ', orderedImagePaths);
-    // console.log('orderedMetadataPaths :>> ', orderedMetadataPaths);
-
-    // const uris: string[] = [];
-    // for (let index = 0; index < numberOfItemsToUpload; index++) {
-    //     const imagePath = orderedImagePaths[index];
-    //     const metadataPath = orderedMetadataPaths[index];
-
-    //     if (!imagePath || !metadataPath) {
-    //         res.status(500);
-    //     }
-
-    //     console.log('imagePath :>> ', imagePath);
-    //     console.log('metadataPath :>> ', metadataPath);
-
-    //     try {
-    //         const metadataUri = await arweaveNftUploader.uploadSingleImagePathAndMetadataPath(
-    //             imagePath!,
-    //             metadataPath!
-    //         )
-    //         console.log('metadataUri from next server :>> ', metadataUri);
-
-    //         uris.push(metadataUri);
-    //     } catch (error) {
-    //         console.error(error);
-    //     }
-
-
-    // }
-
-    // res.status(200).json({ uris })
 }

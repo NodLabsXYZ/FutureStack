@@ -9,7 +9,7 @@ import { getCostToSaveBytesInDollars } from '../../utils/costEstimator'
 import EstimatedCost from '../../components/uploader/estimatedCost'
 import UploadModal from '../../components/uploader/uploadModal';
 import Error from '../../components/uploader/error';
-import ConfirmUpload from '../../components/uploader/confirmUpload';
+import ConfirmUpload from './confirmUpload';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import { createArrayBufferNftObjects, createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
@@ -32,8 +32,6 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
   const [showConfirmUpload, setShowConfirmUpload] = useState(false);
   const [nftObjects, setNftObjects] = useState<NftObject[]>();
 
-  const appContext = useAppContext();
-
   const updateImageBytes = async (bytes: number) => {
     console.log('updateImageBytes :>> ', bytes);
     setImageBytes(bytes);
@@ -53,149 +51,16 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
       setErrorMessage("There must be the same number of image and metadata files.");
     } else {
       const nftObjs = await createNftObjects(imageFiles, metadataFiles);
-      console.log('nftObjs :>> ', nftObjs);
       setNftObjects(nftObjs);
 
-      // THIRD TRY - React Context
-
-      // // first, remove everything from the current state
-      // for (let index = 0; index < appContext.length; index++) {
-      //   appContext.pop();
-      // }
-      // console.log('appContext :>> ', appContext);
-
-      // // Add nft objects to react context
-      // for (let index = 0; index < nftObjs.length; index++) {
-      //   const nftObj = nftObjs[index];
-      //   appContext.push(nftObj);
-      // }
-
-      // console.log('appContext :>> ', appContext);
-
-      // SECOND TRY - local storage
-
-
-      for (let index = 0; index < nftObjs.length; index++) {
-        const nftObj = nftObjs[index];
-        const formData = new FormData();
-
-        formData.append('image', nftObj.imageFile);
-
-        const options = {
-          method: 'POST',
-          body: formData
-        }
-
-
-        const response = await fetch('/api/uploader/getTempFilePath', options);
-
-        const { clientTempFilePath } = await response.json();
-
-
-        console.log('clientTempFilePath :>> ', clientTempFilePath);
-
-        const newNftObj = {
-          clientTempFilePath,
-          imageFileName: nftObj.imageFile.name,
-          metadata: nftObj.metadata
-        }
-        const numberOfItemsToUpload = (index + 1).toString()
-        localStorage.setItem(index.toString(), JSON.stringify(newNftObj));
-        localStorage.setItem('numberOfItemsToUpload', numberOfItemsToUpload);
-      }
+      await addNftObjsToLocalStorage(nftObjs)
 
       // Remove this item of localStorage so the uploading.tsx page does not redirect
       localStorage.removeItem('baseURI');
       localStorage.removeItem('metadataFileNames');
 
-
-
-      // FIRST TRY - FileReader
-
-      // let counter = 0;
-      // nftObjs.forEach(nftObj => {
-      //   const reader = new FileReader();
-      //   reader.addEventListener('load', async () => {
-
-      //     const formData = new FormData();
-
-      //     formData.append('image', nftObj.imageFile);
-
-      //     const options = {
-      //       method: 'POST',
-      //       body: formData
-      //     }
-
-
-      //     const response = await fetch('/api/uploader/getFilePath', options);
-
-      //     const { filePath: imageFilePath } = await response.json();
-
-
-      //     console.log('imageFilePath :>> ', imageFilePath);
-
-      //     const newNftObj = {
-      //       // imageFile: reader.result.toString(),
-      //       imageFilePath,
-      //       metadata: nftObj.metadata
-      //     }
-      //     localStorage.setItem(counter.toString(), JSON.stringify(newNftObj));
-      //     counter++;
-      //     localStorage.setItem('numberOfItemsToUpload', counter.toString());
-      //   });
-
-      //   reader.readAsDataURL(nftObj.imageFile);
-      // });
-
       setShowConfirmUpload(true);
     }
-  }
-
-  const testAddToReactContext = async () => {
-    const nftObjs = await createNftObjects(imageFiles, metadataFiles);
-    console.log('nftObjs :>> ', nftObjs);
-
-    console.log('appContext :>> ', appContext);
-
-    appContext.push('hello');
-
-    console.log('appContext :>> ', appContext);
-  }
-
-  const testBundlrUpload = async () => {
-    // const arrayBufferNftObjects = await createArrayBufferNftObjects(imageFiles, metadataFiles);
-
-    // const formData = new FormData();
-    // for (let index = 0; index < arrayBufferNftObjects.length; index++) {
-    //   const arrayBufferNftObject = arrayBufferNftObjects[index];
-
-    //   formData.append('file_' + index, new Blob([arrayBufferNftObject.arrayBufferFile]));
-
-    //   formData.append('metadata_' + index, arrayBufferNftObject.metadata);
-    // }
-
-    const nftObjs = await createNftObjects(imageFiles, metadataFiles);
-    setNftObjects(nftObjs);
-
-    const formData = new FormData();
-    for (let index = 0; index < nftObjs.length; index++) {
-      const nftObj = nftObjs[index];
-
-
-      formData.append('image_' + index, nftObj.imageFile);
-
-      formData.append('metadata_' + index, nftObj.metadata);
-    }
-
-
-    const options = {
-      method: 'POST',
-      body: formData
-    }
-
-    const response = await fetch('/api/uploader/uploadToBundlr', options);
-
-
   }
 
   if (showConfirmUpload) {
@@ -285,3 +150,34 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
 }
 
 export default Uploader;
+
+async function addNftObjsToLocalStorage(nftObjs: NftObject[]): Promise<void> {
+  for (let index = 0; index < nftObjs.length; index++) {
+    const nftObj = nftObjs[index]
+    const formData = new FormData()
+
+    formData.append('image', nftObj.imageFile)
+
+    const options = {
+      method: 'POST',
+      body: formData
+    }
+
+
+    const response = await fetch('/api/uploader/getTempFilePath', options)
+
+    const { clientTempFilePath } = await response.json()
+
+
+    console.log('clientTempFilePath :>> ', clientTempFilePath)
+
+    const newNftObj = {
+      clientTempFilePath,
+      imageFileName: nftObj.imageFile.name,
+      metadata: nftObj.metadata
+    }
+    const numberOfItemsToUpload = (index + 1).toString()
+    localStorage.setItem(index.toString(), JSON.stringify(newNftObj))
+    localStorage.setItem('numberOfItemsToUpload', numberOfItemsToUpload)
+  }
+}

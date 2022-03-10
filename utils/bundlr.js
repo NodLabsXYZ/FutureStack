@@ -9,7 +9,7 @@ export const getBundlr = (bundlrNetworkUrl, currency, walletKey, rpcUrl) => {
     return new Bundlr.default(bundlrNetworkUrl, currency, walletKey, { providerUrl: rpcUrl });
 };
 
-export const getBundlrBalance = async (bundlr) => {
+export const getBundlrBalanceInFullUnits = async (bundlr) => {
     const balance = await bundlr.getLoadedBalance()
     const amount = bundlr.utils.unitConverter(balance).toNumber();
     return amount;
