@@ -1,33 +1,30 @@
 import {
-  ContractDeployment
+  ContractDeploymentPreview
 } from '.'
 
-const ContractDeployments = ({ provider, deployments }) => {
+const ContractDeployments = ({ deployments }) => {
   return (
     <div>
-      <h2 className='font-bold'>Deployments</h2>
+      <h2 className='font-bold'>Deployed Contracts</h2>
+      {deployments.length === 0 && (
+        <p className='text-sm pt-3'>
+          You have not yet deployed any contracts.
+        </p>
+      )}
       {deployments.sort(
         (a, b) => b.deployedAt - a.deployedAt
       ).map(
         (deployment, index) => (
           <div 
             key={`deployment-${index}`}
-            className='pt-3'
+            className='pt-3 flex'
           >
-            <ContractDeployment
-              provider={provider}
+            <ContractDeploymentPreview
               deployment={deployment}
             />
           </div>
         )
       )}
-      <div className='text-xs pt-1'>
-        Run `nod import` or `nod import [ADDRESS]` from any project to
-        <br/>
-        import contract information (network, abi, and address).
-        <br/><br/>
-        Example: `nod import {deployments[0].contractAddress}`
-      </div>
     </div>
   )
 }

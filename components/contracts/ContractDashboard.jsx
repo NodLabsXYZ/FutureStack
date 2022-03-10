@@ -4,7 +4,7 @@ import { TWCircleSpinner } from "..";
 import { getContractDeployments, getContracts } from "../../lib/queries";
 import { supabaseClient } from "../../lib";
 
-const ContractsDashboard = ({ project }) => {
+const ContractDashboard = ({ project }) => {
   const [deployments, setDeployments] = useState([]);
   const [contracts, setContracts] = useState();
   const [precompiledContracts, setPrecompiledContracts] = useState();
@@ -34,12 +34,6 @@ const ContractsDashboard = ({ project }) => {
       <h2 className='text-lg'>Contracts: {project.title}</h2>
 
       <div className='py-6'>
-        <h2 className='font-bold'>Deployed Contracts</h2>
-        {deployments.length === 0 && (
-          <p className='text-sm pt-3'>
-            You have not yet deployed any contracts.
-          </p>
-        )}
         {deployments.length > 0 && (
           <ContractDeployments
             deployments={deployments}
@@ -146,4 +140,4 @@ const ContractsDashboard = ({ project }) => {
   )
 }
 
-export default ContractsDashboard;
+export default ContractDashboard;

@@ -1,11 +1,11 @@
-import { ContractsDashboard } from "../../../../components/contracts";
-import { ProjectLoader } from '../../../../components';
+import { ContractDashboard } from "../../../../components/contracts";
+import { ProjectWrapper } from '../../../../components';
 
 const ContractsPage = () => {
   return (
-    <ProjectLoader>
-      <ContractsDashboard />
-    </ProjectLoader>
+    <ProjectWrapper>
+      <ContractDashboard />
+    </ProjectWrapper>
   )
 }
 

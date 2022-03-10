@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react'
-import { ProjectLoader, TWCircleSpinner } from '../../../../components';
+import { ProjectWrapper, TWCircleSpinner } from '../../../../components';
 import { Contract } from '../../../../components/contracts';
 import { getContract } from '../../../../lib/queries';
 
@@ -30,11 +30,11 @@ const ContractPage = () => {
   }
 
   return (
-    <ProjectLoader>
+    <ProjectWrapper>
       <Contract
         contract={contract}
       />
-    </ProjectLoader>
+    </ProjectWrapper>
   )
 }
 

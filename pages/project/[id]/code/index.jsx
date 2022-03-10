@@ -1,11 +1,11 @@
 import { CodeDashboard } from "../../../../components/code";
-import { ProjectLoader } from "../../../../components";
+import { ProjectWrapper } from "../../../../components";
 
 const CodePage = () => {
   return (
-    <ProjectLoader>
+    <ProjectWrapper>
       <CodeDashboard />
-    </ProjectLoader>
+    </ProjectWrapper>
   );
 }
 

@@ -16,8 +16,8 @@ import { ContractFunction } from '.';
 // import { useEffect } from 'react';
 
 const ContractDeployment = ({ provider, deployment }) => {
-  const { info, deployed_at } = deployment;
-  const { abi } = deployment.contract.info;
+  const { contract, info, deployed_at } = deployment;
+  const { abi } = contract.info;
 
   // Experimenting with zksync
   // Need to `yarn add zksync` first
@@ -71,54 +71,57 @@ const ContractDeployment = ({ provider, deployment }) => {
   }
 
   return (
-    <div 
-      className='border p-3 mr-3 text-sm'
-    >
-      <div className='font-bold'>
-        {ethereumNetworkIdToName(info.network)}: 
-        &nbsp;
-        {dateStringDiffToWords(deployed_at)}
-      </div>
-      <div className='flex'>
-        <div className='text-xs pt-3'>
-          <BoldTitleAndValue
-            title="Address"
-            value={info.contractAddress}
-          />
-          <BoldTitleAndValue
-            title="Gas Used"
-            value={commify(info.gasUsed)}
-          />
-          <BoldTitleAndValue
-            title="Cost"
-            value={`${bigNumberToEth(
-              bigNumberFrom(info.effectiveGasPrice).mul(
-                bigNumberFrom(info.gasUsed)
-              )
-            )} ETH`}
-          />
-          <BoldTitleAndValue
-            title="Arguments"
-            value={(
-              <div className='pl-3'>
-                {info.deploymentArguments.map(
-                  (arg, argIndex) => (
-                    <BoldTitleAndValue
-                      key={`deployment-arg-${deployment.id}-${argIndex}`}
-                      title={arg.name || argIndex + 1}
-                      value={arg.value || arg}
-                    />
-                  )
-                )}
-              </div>
-            )}
-          />
+    <div>
+      <h2 className='font-bold mb-6'>{contract.name}</h2>
+      <div 
+        className='border p-3 mr-3'
+      >
+        <div className='font-bold'>
+          {ethereumNetworkIdToName(info.network)}: 
+          &nbsp;
+          {dateStringDiffToWords(deployed_at)}
         </div>
-        <div className='text-sm'>
-          <div className='font-bold'>
-            Interact With Contract
+        <div className='flex'>
+          <div className='text-xs pt-3'>
+            <BoldTitleAndValue
+              title="Address"
+              value={info.contractAddress}
+            />
+            <BoldTitleAndValue
+              title="Gas Used"
+              value={commify(info.gasUsed)}
+            />
+            <BoldTitleAndValue
+              title="Cost"
+              value={`${bigNumberToEth(
+                bigNumberFrom(info.effectiveGasPrice).mul(
+                  bigNumberFrom(info.gasUsed)
+                )
+              )} ETH`}
+            />
+            <BoldTitleAndValue
+              title="Arguments"
+              value={(
+                <div className='pl-3'>
+                  {info.deploymentArguments.map(
+                    (arg, argIndex) => (
+                      <BoldTitleAndValue
+                        key={`deployment-arg-${deployment.id}-${argIndex}`}
+                        title={arg.name || argIndex + 1}
+                        value={arg.value || arg}
+                      />
+                    )
+                  )}
+                </div>
+              )}
+            />
           </div>
-          {abiFunctions()}
+          <div className='text-sm'>
+            <div className='font-bold'>
+              Interact With Contract
+            </div>
+            {abiFunctions()}
+          </div>
         </div>
       </div>
     </div>

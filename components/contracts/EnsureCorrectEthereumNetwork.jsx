@@ -1,7 +1,7 @@
 import {
   TWCircleSpinner,
   WrongEthereumNetworkMessage
-} from '.'
+} from '..'
 
 import { useEffect, useState } from 'react';
 

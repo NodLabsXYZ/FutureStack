@@ -1,11 +1,11 @@
-import { ProjectLoader } from "../../../../components";
+import { ProjectWrapper } from "../../../../components";
 import { AssetDashboard } from "../../../../components/uploader";
 
 const AssetPage = () => {
   return (
-    <ProjectLoader>
+    <ProjectWrapper>
       <AssetDashboard />
-    </ProjectLoader>
+    </ProjectWrapper>
   );
 }
 

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { getProject } from '../lib/queries';
 import { TWCircleSpinner } from ".";
 
-const ProjectLoader = ({ children }) => {
+const ProjectWrapper = ({ children }) => {
   const router = useRouter()
   const projectId = router.query.id 
   
@@ -42,4 +42,4 @@ const ProjectLoader = ({ children }) => {
   )
 }
 
-export default ProjectLoader;
+export default ProjectWrapper;
