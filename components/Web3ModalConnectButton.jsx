@@ -3,14 +3,14 @@ import {
   TWButton
 } from '.'
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ethers } from "ethers";
 
 const Web3ModalConnectButton = (props) => {
   const { web3Modal, onConnect, children, ...twButtonProps } = props
   const [cachedProvider, setCachedProvider] = useState(web3Modal.cachedProvider)
 
-  const onConnectLocal = async () => {
+  const onConnectLocal = useCallback(async () => {
     try {
       const instance = await web3Modal.connect();
       const provider = new ethers.providers.Web3Provider(instance);
@@ -29,13 +29,13 @@ const Web3ModalConnectButton = (props) => {
           console.error(`Web3Modal Error: ${e}`)
       }
     }
-  }
+  }, [web3Modal, onConnect])
 
   useEffect(() => {
     if (cachedProvider) {
       onConnectLocal()
     }
-  }, [cachedProvider])
+  }, [cachedProvider, onConnectLocal])
   
   if (cachedProvider) {
     return <TWCircleSpinner />

@@ -72,6 +72,7 @@ const ContractFunction: FunctionComponent<ContractFunctionProps> = ({ provider, 
                 {input.name}: 
               </label>
               <input 
+                className='w-16'
                 onChange={(e: any) => onChange(input, index, e.target.value)}
               />
             </div>
@@ -80,7 +81,9 @@ const ContractFunction: FunctionComponent<ContractFunctionProps> = ({ provider, 
         <TWButton
           classMap={{
             margin: '-mt-2',
-            background: 'bg-white'
+            background: 'bg-white',
+            rounded: 'rounded-full',
+            text: 'text-black'
           }}
           onClick={onClick}
         >

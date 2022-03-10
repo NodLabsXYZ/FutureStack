@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   ethereumNetworkIdToName,
   dateStringDiffToWords,
@@ -7,7 +8,8 @@ import {
 } from '../../lib'
 
 import {
-  BoldTitleAndValue
+  BoldTitleAndValue,
+  ConnectWalletButton
 } from '..'
 import { ContractFunction } from '.';
 
@@ -15,9 +17,11 @@ import { ContractFunction } from '.';
 // import * as zksync from 'zksync';
 // import { useEffect } from 'react';
 
-const ContractDeployment = ({ provider, deployment }) => {
+const ContractDeployment = ({ deployment }) => {
   const { contract, info, deployed_at } = deployment;
   const { abi } = contract.info;
+  const networkName = ethereumNetworkIdToName(info.network);
+  const [provider, setProvider] = useState()
 
   // Experimenting with zksync
   // Need to `yarn add zksync` first
@@ -72,17 +76,34 @@ const ContractDeployment = ({ provider, deployment }) => {
 
   return (
     <div>
-      <h2 className='font-bold mb-6'>{contract.name}</h2>
+      <div className='flex justify-between'>
+        <h2 className='font-bold mb-6'>{contract.name}</h2>
+        {!provider && 
+          <div className='mr-6'>
+            <ConnectWalletButton
+              onConnect={setProvider}
+            />
+          </div>
+        }
+      </div>
       <div 
         className='border p-3 mr-3'
       >
         <div className='font-bold'>
-          {ethereumNetworkIdToName(info.network)}: 
+          {networkName}: 
           &nbsp;
           {dateStringDiffToWords(deployed_at)}
         </div>
         <div className='flex'>
-          <div className='text-xs pt-3'>
+          <div className='text-sm pt-3'>
+            <a
+              className='pt-3 text-blue-600 underline'
+              href={`https://${networkName !== 'Mainnet' && `${networkName}.`}etherscan.io/address/${info.contractAddress}`}
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              Etherscan
+            </a>
             <BoldTitleAndValue
               title="Address"
               value={info.contractAddress}
@@ -116,11 +137,15 @@ const ContractDeployment = ({ provider, deployment }) => {
               )}
             />
           </div>
-          <div className='text-sm'>
+          <div className='text-sm pl-6'>
             <div className='font-bold'>
               Interact With Contract
             </div>
-            {abiFunctions()}
+            {provider ? abiFunctions() : 
+              <div className='py-6'>
+                Please connect your wallet in order to interact with the contract.
+              </div>
+            }
           </div>
         </div>
       </div>
