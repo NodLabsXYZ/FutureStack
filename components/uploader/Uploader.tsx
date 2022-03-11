@@ -30,6 +30,18 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showConfirmUpload, setShowConfirmUpload] = useState(false);
   const [nftObjects, setNftObjects] = useState<NftObject[]>();
+  const [showLinkToExistingUploads, setShowLinkToExistingUploads] = useState(false);
+
+  useEffect(() => {
+    if (window) {
+      const baseURIFromLocal = localStorage.getItem('baseURI');
+      const metadataFileNames = localStorage.getItem('metadataFileNames');
+      if (baseURIFromLocal && metadataFileNames) {
+        setShowLinkToExistingUploads(true);
+      }
+    }
+  }, []);
+
 
   const updateImageBytes = async (bytes: number) => {
     console.log('updateImageBytes :>> ', bytes);
@@ -90,6 +102,21 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
             </button>
           </NextLink>
           <br />
+          {
+            showLinkToExistingUploads ? (
+              <NextLink href='/uploader/success'>
+                <button
+                  type="button"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  View Last Upload
+                </button>
+              </NextLink>
+
+            ) : (
+              <></>
+            )
+        }
           <br />
           <UploadImages setImageFiles={setImageFiles} updateImageBytes={updateImageBytes} />
           <br />
