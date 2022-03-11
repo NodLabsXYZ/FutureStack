@@ -5,7 +5,7 @@ import {
 
 import {
   BoldTitleAndValue
-} from '.'
+} from '..'
 
 import { ethers } from 'ethers';
 import { useEffect, useMemo, useRef, useState } from 'react';

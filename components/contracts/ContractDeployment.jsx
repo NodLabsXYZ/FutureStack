@@ -138,9 +138,12 @@ const ContractDeployment = ({ deployment }) => {
             />
           </div>
           <div className='text-sm pl-6'>
-            <div className='font-bold'>
+            <div 
+              className='font-bold'
+            >
               Interact With Contract
             </div>
+            
             {provider ? abiFunctions() : 
               <div className='py-6'>
                 Please connect your wallet in order to interact with the contract.
