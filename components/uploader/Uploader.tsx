@@ -13,7 +13,6 @@ import ConfirmUpload from './confirmUpload';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import { createArrayBufferNftObjects, createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
-import { useAppContext } from '../../context/state';
 import NextLink from '../NextLink';
 
 type UploaderProps = {
@@ -162,7 +161,6 @@ async function addNftObjsToLocalStorage(nftObjs: NftObject[]): Promise<void> {
       method: 'POST',
       body: formData
     }
-
 
     const response = await fetch('/api/uploader/getTempFilePath', options)
 
