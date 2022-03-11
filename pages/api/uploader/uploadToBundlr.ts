@@ -34,19 +34,19 @@ const uploadToBundlr = async (
     const tempId = uuidv4();
 
     // Create temp dirs with tempId
-    const parentTempDir = TEMP_NFT_DATA_DIR + tempId;
-    console.log('TEMP_NFT_DATA_DIR :>> ', TEMP_NFT_DATA_DIR);
-    createDir(parentTempDir);
-    const imageTempDir = parentTempDir + '/images';
+    createDir(TEMP_NFT_DATA_DIR);
+    const parentTempDirForThisUpload = TEMP_NFT_DATA_DIR + tempId;
+    createDir(parentTempDirForThisUpload);
+    const imageTempDir = parentTempDirForThisUpload + '/images';
     createDir(imageTempDir);
-    const metadataTemptDir = parentTempDir + '/metadata';
+    const metadataTemptDir = parentTempDirForThisUpload + '/metadata';
     createDir(metadataTemptDir);
 
     // A copy of the manifest and bulk txn id get created after Bundlr completes
-    const imageManifestPath = parentTempDir + '/images-manifest.json';
-    const imageBundleTxnIdPath = parentTempDir + '/images-id.txt';
-    const metadataManifestPath = parentTempDir + '/metadata-manifest.json';
-    const metadataBundleTxnIdPath = parentTempDir + '/metadata-id.txt';
+    const imageManifestPath = parentTempDirForThisUpload + '/images-manifest.json';
+    const imageBundleTxnIdPath = parentTempDirForThisUpload + '/images-id.txt';
+    const metadataManifestPath = parentTempDirForThisUpload + '/metadata-manifest.json';
+    const metadataBundleTxnIdPath = parentTempDirForThisUpload + '/metadata-id.txt';
 
     // Read files from request
     const data: any = await new Promise((resolve, reject) => {
@@ -83,7 +83,7 @@ const uploadToBundlr = async (
     console.log('baseURI :>> ', baseURI);
     console.log('metadataFileNames :>> ', metadataFileNames);
 
-    deleteDirAndContents(parentTempDir);
+    deleteDirAndContents(parentTempDirForThisUpload);
 
     res.status(200).json({ baseURI, metadataFileNames })
 }
