@@ -19,7 +19,7 @@ import { ContractFunction } from '.';
 
 const ContractDeployment = ({ deployment }) => {
   const { contract, info, deployed_at } = deployment;
-  const { abi } = contract.info;
+  const { abi, contractAddress } = contract.info;
   const networkName = ethereumNetworkIdToName(info.network);
   const [provider, setProvider] = useState()
 
@@ -72,6 +72,15 @@ const ContractDeployment = ({ deployment }) => {
         index={index}
       />
     ))
+  }
+  
+  const frontEndJs = () => {
+    return JSON.stringify({
+      "deployedAt": deployed_at,
+      "address": contractAddress,
+      "abi": abi,
+      "network": info.network
+    }, null, 2)
   }
 
   return (
@@ -136,6 +145,20 @@ const ContractDeployment = ({ deployment }) => {
                 </div>
               )}
             />
+
+            <div className='pt-6'>
+              <div className='font-bold'>
+                Integrate With Front End
+              </div>
+              <p>
+                Copy and paste the following code into contracts/contract.js in your project.
+              </p>
+              <textarea
+                className='w-full h-64 text-sm bg-slate-200 p-3'
+                value={frontEndJs()}
+                readOnly
+              />
+            </div>
           </div>
           <div className='text-sm pl-6'>
             <div 
