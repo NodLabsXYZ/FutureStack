@@ -27,7 +27,7 @@ the user has 100 images to upload that would probably go past the limit
 that's allowed to be in local storage, which is 2MB-10MB depending on browser.
 */
 
-export default async (
+const getTempFilePath = async (
     req: NextApiRequest,
     res: NextApiResponse<Data>
 ) => {
@@ -48,3 +48,5 @@ export default async (
 
     res.status(200).json({ clientTempFilePath })
 }
+
+export default getTempFilePath;

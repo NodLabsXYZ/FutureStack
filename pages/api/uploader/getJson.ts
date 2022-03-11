@@ -18,7 +18,7 @@ type Data = {
 // This is done on the server because React doesn't have access to 'fs'
 // So I couldn't find a way for the client to open and read the submitted JSON files.
 
-export default async (
+const getJson = async (
     req: NextApiRequest,
     res: NextApiResponse<Data>
 ) => {
@@ -53,3 +53,5 @@ export default async (
 
     res.status(200).json({ json })
 }
+
+export default getJson;

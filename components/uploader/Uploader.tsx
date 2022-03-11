@@ -11,7 +11,7 @@ import UploadModal from '../../components/uploader/uploadModal';
 import Error from '../../components/uploader/error';
 import ConfirmUpload from './confirmUpload';
 import { FileWithPreview } from '../../types/FileWithPreview'
-import { createArrayBufferNftObjects, createNftObjects } from '../../utils/createNftObjects'
+import { createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
 import NextLink from '../NextLink';
 

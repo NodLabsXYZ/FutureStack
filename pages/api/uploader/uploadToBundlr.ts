@@ -25,7 +25,7 @@ type Data = {
     metadataFileNames: string[]
 }
 
-export default async (
+const uploadToBundlr = async (
     req: NextApiRequest,
     res: NextApiResponse<Data>
 ) => {
@@ -174,3 +174,5 @@ function updateMetadataWithImageUriAndSaveAsTempFile(imageBundleTxnIdPath: strin
         writeFileSync(metadataFilePath, metadataString, 'utf-8');
     }
 }
+
+export default uploadToBundlr;

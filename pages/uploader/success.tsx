@@ -78,7 +78,7 @@ function UploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
     return (
         <div className='mt-4  w-2/3 left-1/3'>
             <p className="text-m mt-2 text-center">
-                This is the base URI you'll use in your contract.
+                This is the base URI you&apos;ll use in your contract.
             </p>
             <BaseUriDisplay baseURI={props.baseURI} />
             <br />

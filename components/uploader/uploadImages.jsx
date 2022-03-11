@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { formatBytes } from '../../utils/formatters';
+import Image from 'next/image'
 
 export default class UploadImages extends Component {
   constructor(props) {
@@ -38,7 +39,12 @@ export default class UploadImages extends Component {
         {this.state.files.map((file) => (
           <li key={file.name} className="relative">
             <div className="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
-              <img src={file.preview} alt="" className="object-cover pointer-events-none" />
+              <Image 
+                src={file.preview} 
+                alt="" 
+                className="object-cover pointer-events-none" 
+                layout="fill"
+              />
             </div>
             <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">{file.name}</p>
             <p className="block text-sm font-medium text-gray-500 pointer-events-none">{formatBytes(file.size)}</p>

@@ -2,6 +2,7 @@ import React from 'react';
 import NextLink from '../../components/NextLink';
 import styles from '../../styles/Home.module.css'
 import { CodeBlock, dracula } from "react-code-blocks";
+import Image from 'next/image';
 
 // This is to fix 'document not found' error from the react-json-view package
 // const ReactJson = React.lazy(() => import('react-json-view'));
@@ -49,7 +50,13 @@ function ExampleImageAndMetadata(): JSX.Element {
         null, 2)
     return (
         <div className='mt-4'>
-            <img className="w-80 ml-60 flex-shrink-0 mx-10 rounded-lg" src={exampleImage} alt={name} />
+            <Image 
+                className="w-80 ml-60 flex-shrink-0 mx-10 rounded-lg" 
+                src={exampleImage}
+                alt={name} 
+                height={200}
+                width={270}
+            />
             <div>
                 <div className='mt-4 text-left'>
                     {/* <ReactJson
@@ -101,7 +108,7 @@ const downloadExample = () => {
     console.log('example downloading...');
 }
 
-export default function HowItWorks(): JSX.Element {
+const HowItWorks = () => {
     return (
         <main className={styles.main}>
             <div className='w-2/3 text-center'>
@@ -110,7 +117,7 @@ export default function HowItWorks(): JSX.Element {
                 <h2 className='text-lg text-center font-semibold mb-2'>What an NFT actually is</h2>
                 <p>
                     Because it takes so much money to store data on chains like Ethereum, an NFT is mostly
-                    just a URL pointer (called the <code>TokenURI</code>) to the NFT's information, called the <code>metadata</code>.
+                    just a URL pointer (called the <code>TokenURI</code>) to the NFT&apos;s information, called the <code>metadata</code>.
                     Within this metadata is another URL pointing to where the image is stored.
                 </p>
                 <hr className='mt-4' />
@@ -131,7 +138,7 @@ export default function HowItWorks(): JSX.Element {
                 <hr className='mt-4' />
                 <h2 className='text-lg text-center font-semibold mt-2 mb-2'>Creating your images and metadata</h2>
                 <p>
-                    Here's an example of an image and its associated metadata that could be used when creating an NFT:
+                    Here&apos;s an example of an image and its associated metadata that could be used when creating an NFT:
                 </p>
                 <ExampleImageAndMetadata />
                 <p className='mt-4'>
@@ -171,7 +178,7 @@ export default function HowItWorks(): JSX.Element {
                 <hr className='mt-4' />
                 <h2 className='text-lg text-center font-semibold mt-2 mb-2'>The result of the upload</h2>
                 <p>
-                    When the upload finishes, you'll get two things:
+                    When the upload finishes, you&apos;ll get two things:
                     <ul className='m-2'>
                         <li>
                             A <code>baseURI</code> that looks something like:
@@ -221,3 +228,5 @@ export default function HowItWorks(): JSX.Element {
         </main>
     )
 }
+
+export default HowItWorks;

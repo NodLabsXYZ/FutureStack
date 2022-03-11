@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 import { NftObject } from "../../types/NftObject";
 import EllipsisText from "react-ellipsis-text";
 import { getNameFromMetadataString } from "../../utils/metadataUtils";
+import Image from 'next/image'
 
 type NftObjectGridProps = {
     nftObjects: NftObject[],
@@ -30,7 +31,11 @@ export default function NftObjectGrid(props: NftObjectGridProps) {
                         type="button"
                         onClick={() => showNft(nftObj)}
                     >
-                        <img className="h-32 flex-shrink-0 mx-auto rounded-lg" src={nftObj.imageFile.preview} alt={nftObj.imageFile.name} />
+                        <Image 
+                            className="h-32 flex-shrink-0 mx-auto rounded-lg" 
+                            src={nftObj.imageFile.preview} 
+                            alt={nftObj.imageFile.name} 
+                        />
                         <h3 className="mt-6 text-gray-900 text-sm font-medium">{getNameFromMetadataString(nftObj.metadata)}</h3>
                         <dl className="mt-1 flex-grow flex flex-col justify-between">
                             <dt className="sr-only">Metadata</dt>

@@ -4,6 +4,8 @@ import { Dialog, Transition } from '@headlessui/react'
 import { NftObject } from '../../types/NftObject'
 import React from 'react';
 import { getNameFromMetadataString } from "../../utils/metadataUtils";
+import Image from 'next/image'
+
 
 // This is to fix 'document not found' error from the react-json-view package
 const ReactJson = React.lazy(() => import('react-json-view'));
@@ -25,7 +27,12 @@ function NftContent(props: NftContentProps) {
     return (
         <div className="sm:flex">
             <div className="mb-4 flex-shrink-0 sm:mb-0 sm:mr-4">
-                <img className="w-64 flex-shrink-0 mx-10 mt-32 rounded-lg" src={props.preview} alt={props.name} />
+                <Image 
+                    className="w-64 flex-shrink-0 mx-10 mt-32 rounded-lg" 
+                    src={props.preview} 
+                    alt={props.name} 
+                    layout="fill"
+                />
             </div>
             <div>
                 <h4 className="text-lg font-bold">{props.name}</h4>
@@ -37,7 +44,8 @@ function NftContent(props: NftContentProps) {
                             displayObjectSize={false}
                             displayDataTypes={false}
                             enableClipboard={false}
-                        />                    </Suspense>
+                        />                    
+                    </Suspense>
                 </div>
             </div>
         </div>
