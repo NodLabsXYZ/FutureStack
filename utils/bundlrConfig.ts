@@ -1,6 +1,7 @@
 import Bundlr from '@bundlr-network/client';
+import { serverPath } from './constants';
 
-export const TEMP_NFT_DATA_DIR = '/public/tempNftData/'
+export const TEMP_NFT_DATA_DIR = serverPath('/public/tempNftData/');
 export const BUNDLR_NODE_URL = 'https://node1.bundlr.network/'
 // choose 'solana' or 'arweave'
 export const CHOSEN_BUNDLR_CURRENCY = 'solana'

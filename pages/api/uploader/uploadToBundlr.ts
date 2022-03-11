@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { estimatePriceForDirInAtomicUnits, getBaseURIFromFile, getFileNamesFromManifest, getURIsFromParentTxn, uploadFolderToBundlr } from "../../../utils/bundlr";
 import { BUNDLR, TEMP_NFT_DATA_DIR } from '../../../utils/bundlrConfig';
 import Bundlr from '@bundlr-network/client/build/common/bundlr';
+import { serverPath } from '../../../utils/constants';
 
 // disable body parser for file reading
 export const config = {
@@ -34,6 +35,7 @@ const uploadToBundlr = async (
 
     // Create temp dirs with tempId
     const parentTempDir = TEMP_NFT_DATA_DIR + tempId;
+    console.log('TEMP_NFT_DATA_DIR :>> ', TEMP_NFT_DATA_DIR);
     createDir(parentTempDir);
     const imageTempDir = parentTempDir + '/images';
     createDir(imageTempDir);
