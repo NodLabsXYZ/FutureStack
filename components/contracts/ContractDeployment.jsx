@@ -75,12 +75,16 @@ const ContractDeployment = ({ deployment }) => {
   }
   
   const frontEndJs = () => {
-    return JSON.stringify({
+    const stringified = JSON.stringify({
       "deployedAt": deployed_at,
-      "address": contractAddress,
+      "address": info.contractAddress,
       "abi": abi,
       "network": info.network
     }, null, 2)
+
+    return `const ContractInfo = ${stringified};
+    
+export default ContractInfo;`
   }
 
   return (

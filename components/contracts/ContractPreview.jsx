@@ -18,7 +18,7 @@ const ContractPreview = ({ project, contract }) => {
               <span className='font-semibold mr-1'>
                 Last Compiled: 
               </span>
-              {dateStringDiffToWords(contract.compiledAt)}
+              {dateStringDiffToWords(contract.compiled_at)}
             </div>
           </div>
         </a>
