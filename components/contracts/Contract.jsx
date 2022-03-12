@@ -87,7 +87,7 @@ const Contract = ({ project, contract }) => {
         <span className='font-semibold mr-1'>
           Last Compiled: 
         </span>
-        {dateStringDiffToWords(contract.compiled_at + 'Z')}
+        {dateStringDiffToWords(contract.compiled_at)}
       </div>
 
       {deployments.length > 0 &&

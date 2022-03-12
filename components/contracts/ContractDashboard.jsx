@@ -52,7 +52,7 @@ const ContractDashboard = ({ project }) => {
               (contract, index) => (
                 <div 
                   key={`contract-${index}`}
-                  className='py-3'
+                  className='py-3 mr-3'
                 >
                   <ContractPreview
                     project={project}
@@ -124,7 +124,7 @@ const ContractDashboard = ({ project }) => {
               (contract, index) => (
                 <div
                   key={`precompiled-contract-${index}`}
-                  className='py-3'
+                  className='py-3 mr-3'
                 >
                   <ContractPreview
                     project={project}
