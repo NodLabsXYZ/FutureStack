@@ -7,7 +7,6 @@ export default class UploadImages extends Component {
   constructor(props) {
     super(props);
     this.onDrop = (files) => {
-      console.log('files pre-map', files)
       files.sort(function (a, b) {
         const nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
         if (nameA < nameB) //sort string ascending
@@ -16,13 +15,12 @@ export default class UploadImages extends Component {
           return 1;
         return 0; //default return value (no sorting)
       });
-      console.log('files post sort :>> ', files);
       files = files.map(file => Object.assign(file, { preview: URL.createObjectURL(file) }));
       let totalBytes = 0;
       files.forEach(file => {
         totalBytes += file.size;
       });
-      console.log('files post-map', files)
+      console.log('image files :>> ', files);
       props.setImageFiles(files);
       props.updateImageBytes(totalBytes);
       this.setState({ files, isDropComplete: true })

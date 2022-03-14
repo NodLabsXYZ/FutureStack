@@ -3,7 +3,7 @@ import { IncomingForm } from 'formidable';
 import { existsSync, mkdirSync, renameSync, writeFileSync, rmSync } from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { estimatePriceForDirInAtomicUnits, getBaseURIFromFile, getFileNamesFromManifest, getURIsFromParentTxn, uploadFolderToBundlr } from "../../../utils/bundlr";
-import { BUNDLR, TEMP_NFT_DATA_DIR } from '../../../utils/bundlrConfig';
+import { BUNDLR, TEMP_DIR } from '../../../utils/bundlrConfig';
 import Bundlr from '@bundlr-network/client/build/common/bundlr';
 import { serverPath } from '../../../utils/constants';
 
@@ -26,7 +26,7 @@ type Data = {
     metadataFileNames: string[]
 }
 
-const uploadToBundlr = async (
+const uploadNftsToBundlr = async (
     req: NextApiRequest,
     res: NextApiResponse<Data>
 ) => {
@@ -34,8 +34,8 @@ const uploadToBundlr = async (
     const tempId = uuidv4();
 
     // Create temp dirs with tempId
-    createDir(TEMP_NFT_DATA_DIR);
-    const parentTempDirForThisUpload = TEMP_NFT_DATA_DIR + tempId;
+    createDir(TEMP_DIR);
+    const parentTempDirForThisUpload = TEMP_DIR + tempId;
     createDir(parentTempDirForThisUpload);
     const imageTempDir = parentTempDirForThisUpload + '/images';
     createDir(imageTempDir);
@@ -122,7 +122,7 @@ function getTempNftObjects(nftObjectIds: string[], data: any, tempId: string): T
         const clientTempImagePath = rawNftObject.clientTempFilePath;
 
         const fileName = rawNftObject.imageFileName;
-        const serverTempImagePath = TEMP_NFT_DATA_DIR + tempId + '/images/' + fileName;
+        const serverTempImagePath = TEMP_DIR + tempId + '/images/' + fileName;
 
         const metadata = JSON.parse(rawNftObject.metadata);
 
@@ -177,4 +177,4 @@ function updateMetadataWithImageUriAndSaveAsTempFile(imageBundleTxnIdPath: strin
     }
 }
 
-export default uploadToBundlr;
+export default uploadNftsToBundlr;

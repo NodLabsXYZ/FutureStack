@@ -27,11 +27,13 @@ function NftContent(props: NftContentProps) {
     return (
         <div className="sm:flex">
             <div className="mb-4 flex-shrink-0 sm:mb-0 sm:mr-4">
-                <Image 
-                    className="w-64 flex-shrink-0 mx-10 mt-32 rounded-lg" 
-                    src={props.preview} 
-                    alt={props.name} 
-                    layout="fill"
+                <Image
+                    className="w-64 flex-shrink-0 mx-10 mt-32 rounded-lg"
+                    src={props.preview}
+                    alt={props.name}
+                    width={240}
+                    height={240}
+                    layout="intrinsic"
                 />
             </div>
             <div>
@@ -44,7 +46,7 @@ function NftContent(props: NftContentProps) {
                             displayObjectSize={false}
                             displayDataTypes={false}
                             enableClipboard={false}
-                        />                    
+                        />
                     </Suspense>
                 </div>
             </div>

@@ -6,7 +6,7 @@ import { NftObject } from '../../types/NftObject'
 import NftObjectGrid from './nftObjectGrid'
 import NftObjectViewerModal from './nftObjectViewerModal'
 import { useState } from 'react'
-import UploadModal from './uploadModal'
+import UploadFilesModal from './UploadFilesModal'
 import ConfirmPaymentTypeModal from './confirmPaymentTypeModal'
 
 

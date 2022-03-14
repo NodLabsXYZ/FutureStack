@@ -4,25 +4,21 @@ import Spinner from '../../components/uploader/spinner';
 import styles from '../../styles/Home.module.css'
 import { FAKE_BUNDLR } from '../../utils/constants';
 import store from 'store2';
-
-type TempNftData = {
-    clientTempFilePath: string,
-    name: string,
-    metadata: string
-}
+import { StoreName } from '../../enums/storeEnums';
+import { TempNftData, TempFileData } from '../../types/TempData';
 
 type UploadData = {
     baseURI: string,
     metadataFileNames: string[]
 }
 
-const getNftData = (): TempNftData[] => {
-    const uploaderStore = store.namespace('uploader')
-    const numberOfItemsToUpload = +uploaderStore('numberOfItemsToUpload');
+const getNfts = (): TempNftData[] => {
+    const nftUploaderStore = store.namespace(StoreName.nftUploader)
+    const numberOfItemsToUpload = +nftUploaderStore('numberOfItemsToUpload');
 
     const nfts = [];
     for (let index = 0; index < numberOfItemsToUpload; index++) {
-        const nftDataString = uploaderStore(index.toString());
+        const nftDataString = nftUploaderStore(index.toString());
         const nftData: TempNftData = JSON.parse(nftDataString);
 
         nfts.push(nftData);
@@ -30,42 +26,43 @@ const getNftData = (): TempNftData[] => {
     return nfts
 }
 
-const uploadToArweave = async (
+const getFiles = (): TempFileData[] => {
+    const fileUploaderStore = store.namespace(StoreName.filesUploader);
+    const numberOfItemsToUpload = +fileUploaderStore('numberOfItemsToUpload');
+
+    const files = [];
+    for (let index = 0; index < numberOfItemsToUpload; index++) {
+        const fileDataString = fileUploaderStore(index.toString());
+        const fileData: TempNftData = JSON.parse(fileDataString);
+
+        files.push(fileData);
+    }
+    return files
+}
+
+const handleUploadFiles = async (
+    files: TempFileData[],
+    router: NextRouter
+): Promise<void> => {
+    const { baseURI, metadataFileNames } = await uploadBulk(files, '/api/uploader/uploadFilesToBundlr');
+
+    saveResultToLocalStorageAndRouteToSuccess(router, StoreName.filesUploader, baseURI, metadataFileNames)
+}
+
+const handleUploadNfts = async (
     nftObjects: TempNftData[],
     router: NextRouter
 ): Promise<void> => {
-    const uploaderStore = store.namespace('uploader');
+    const { baseURI, metadataFileNames } = await uploadBulk(nftObjects, '/api/uploader/uploadNftsToBundlr');
 
-    let baseURI: string;
-    let metadataFileNames: string[];
-
-    /*
-        This is to stub the bundlr call so we're not spending real SOL each time we test.
-        You can change this value in /utils/constants.ts
-        HOWEVER if you use the test data Tommy provided (or any other data you've uploaded before)
-        it will be free 💸
-    */
-    if (FAKE_BUNDLR) {
-        baseURI = 'https://arweave.net/HgSjSaOKq2mTSLvNb_2b224fA-r86z6Ogi0xTOWKaio/';
-        metadataFileNames = ['0.json', '1.json', '2.json', '3.json']
-        await new Promise(r => setTimeout(r, 5000));
-    } else {
-        const result = await uploadBulk(nftObjects);
-        baseURI = result.baseURI;
-        metadataFileNames = result.metadataFileNames;
-    }
-
-    uploaderStore('baseURI', baseURI);
-    uploaderStore('metadataFileNames', metadataFileNames.join(','));
-
-    router.push('/uploader/success')
+    saveResultToLocalStorageAndRouteToSuccess(router, StoreName.nftUploader, baseURI, metadataFileNames)
 }
 
-const uploadBulk = async (nftObjects: TempNftData[]): Promise<UploadData> => {
+const uploadBulk = async (objects: TempFileData[] | TempNftData[], uploadEndpoint: string): Promise<UploadData> => {
     const formData = new FormData();
-    for (let index = 0; index < nftObjects.length; index++) {
-        const nftObject = nftObjects[index];
-        formData.append(index.toString(), JSON.stringify(nftObject));
+    for (let index = 0; index < objects.length; index++) {
+        const obj = objects[index];
+        formData.append(index.toString(), JSON.stringify(obj));
     }
 
     const options = {
@@ -73,16 +70,33 @@ const uploadBulk = async (nftObjects: TempNftData[]): Promise<UploadData> => {
         body: formData
     }
 
-    const response = await fetch('/api/uploader/uploadToBundlr', options);
+    const response = await fetch(uploadEndpoint, options);
 
     const { baseURI, metadataFileNames } = await response.json();
     return { baseURI, metadataFileNames };
 }
 
+
+const saveResultToLocalStorageAndRouteToSuccess =
+    (
+        router: NextRouter,
+        uploadType: StoreName,
+        baseURI: string,
+        metadataFileNames: string[]
+    ): void => {
+        const generalUploadStore = store.namespace(StoreName.generalUploader);
+
+        generalUploadStore('lastSuccessfulUpload', uploadType);
+        generalUploadStore('baseURI', baseURI);
+        generalUploadStore('metadataFileNames', metadataFileNames.join(','));
+
+        router.push('/uploader/success')
+    }
+
 const routeToSuccessIfUploadComplete = (router: NextRouter): boolean => {
-    const uploaderStore = store.namespace('uploader');
-    const baseURIFromLocal = uploaderStore('baseURI');
-    const metadataFileNamesFromLocal = uploaderStore('metadataFileNames');
+    const generalUploadStore = store.namespace(StoreName.generalUploader);
+    const baseURIFromLocal = generalUploadStore('baseURI');
+    const metadataFileNamesFromLocal = generalUploadStore('metadataFileNames');
 
     const isUploadComplete = baseURIFromLocal?.length > 0 || metadataFileNamesFromLocal?.length > 0;
 
@@ -94,23 +108,36 @@ const routeToSuccessIfUploadComplete = (router: NextRouter): boolean => {
 
 
 export default function Uploading() {
-    const [isUploading, setIsUploading] = useState(false);
-    const [percentCompleted, setPercentCompleted] = useState(0);
     const router = useRouter();
+    const generalUploadStore = store.namespace(StoreName.generalUploader);
+
+    const [isUploading, setIsUploading] = useState(false);
 
 
     const isLocalStorageAvailable = typeof window !== "undefined";
     if (isLocalStorageAvailable && !isUploading) {
         const isUploadComplete = routeToSuccessIfUploadComplete(router);
+        const uploadType: StoreName = generalUploadStore.get('nextUploadType');
+        console.log('uploadType :>> ', uploadType);
 
         if (isUploadComplete) {
             return (<></>);
         }
-        const nftObjects = getNftData();
 
         try {
             setIsUploading(true);
-            uploadToArweave(nftObjects, router);
+            if (uploadType === StoreName.nftUploader) {
+                console.log('uploading nfts...');
+                const nftObjects = getNfts();
+                handleUploadNfts(nftObjects, router);
+            } else if (uploadType === StoreName.filesUploader) {
+                const files = getFiles();
+                console.log('uploading files...');
+                console.log('files :>> ', files);
+                handleUploadFiles(files, router);
+            } else {
+                throw new Error("Error reading nextUploadType from local storage");
+            }
         } catch (error) {
             console.error(error);
         }
