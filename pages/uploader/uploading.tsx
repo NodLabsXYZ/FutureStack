@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Spinner from '../../components/uploader/spinner';
 import styles from '../../styles/Home.module.css'
 import { FAKE_BUNDLR } from '../../utils/constants';
+import store from 'store2';
 
 type TempNftData = {
     clientTempFilePath: string,
@@ -16,11 +17,12 @@ type UploadData = {
 }
 
 const getNftData = (): TempNftData[] => {
-    const numberOfItemsToUpload = +localStorage.getItem('numberOfItemsToUpload');
+    const uploaderStore = store.namespace('uploader')
+    const numberOfItemsToUpload = +uploaderStore('numberOfItemsToUpload');
 
     const nfts = [];
     for (let index = 0; index < numberOfItemsToUpload; index++) {
-        const nftDataString = localStorage.getItem(index.toString());
+        const nftDataString = uploaderStore(index.toString());
         const nftData: TempNftData = JSON.parse(nftDataString);
 
         nfts.push(nftData);
@@ -32,6 +34,7 @@ const uploadToArweave = async (
     nftObjects: TempNftData[],
     router: NextRouter
 ): Promise<void> => {
+    const uploaderStore = store.namespace('uploader');
 
     let baseURI: string;
     let metadataFileNames: string[];
@@ -52,8 +55,8 @@ const uploadToArweave = async (
         metadataFileNames = result.metadataFileNames;
     }
 
-    localStorage.setItem('baseURI', baseURI);
-    localStorage.setItem('metadataFileNames', metadataFileNames.join(','));
+    uploaderStore('baseURI', baseURI);
+    uploaderStore('metadataFileNames', metadataFileNames.join(','));
 
     router.push('/uploader/success')
 }
@@ -77,8 +80,9 @@ const uploadBulk = async (nftObjects: TempNftData[]): Promise<UploadData> => {
 }
 
 const routeToSuccessIfUploadComplete = (router: NextRouter): boolean => {
-    const baseURIFromLocal = localStorage.getItem('baseURI');
-    const metadataFileNamesFromLocal = localStorage.getItem('metadataFileNames');
+    const uploaderStore = store.namespace('uploader');
+    const baseURIFromLocal = uploaderStore('baseURI');
+    const metadataFileNamesFromLocal = uploaderStore('metadataFileNames');
 
     const isUploadComplete = baseURIFromLocal?.length > 0 || metadataFileNamesFromLocal?.length > 0;
 

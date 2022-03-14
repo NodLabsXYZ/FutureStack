@@ -3,6 +3,7 @@ import { CheckIcon } from '@heroicons/react/outline'
 import styles from '../../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import { CopyBlock, dracula } from "react-code-blocks";
+import store from 'store2';
 
 type UploadResultDisplayProps = {
     baseURI: string,
@@ -111,13 +112,14 @@ function UploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
 }
 
 export default function Success({ Component, pageProps }: AppProps) {
+    const uploaderStore = store.namespace('uploader')
     const [baseURI, setBaseURI] = useState<string>();
     const [fileNames, setFileNames] = useState<string[]>([]);
     useEffect(() => {
         if (window) {
-            const baseURIFromLocal = localStorage.getItem('baseURI');
+            const baseURIFromLocal = uploaderStore('baseURI');
             setBaseURI(baseURIFromLocal);
-            const metadataFileNames = localStorage.getItem('metadataFileNames');
+            const metadataFileNames = uploaderStore('metadataFileNames');
             if (metadataFileNames) {
                 const fileNameArray = metadataFileNames.split(',');
                 setFileNames(fileNameArray);

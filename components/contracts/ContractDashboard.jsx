@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ContractPreview, ContractDeployments } from '.';
 import { TWCircleSpinner } from "..";
+import { BlockchainDashboard } from '../blockchains';
 import { getContractDeployments, getContracts } from "../../lib/queries";
 import { supabaseClient } from "../../lib";
 
@@ -132,6 +133,18 @@ const ContractDashboard = ({ project }) => {
                   />
                 </div>
               )
+            )}
+          </div>
+        </div>
+      }
+      
+      {process.env.GANACHE_SERVICE_URL &&
+        <div className='py-6'>
+          <h2 className='font-semibold'>Private Blockchains</h2>
+
+          <div className='py-6'>
+            {deployments.length > 0 && (
+              <BlockchainDashboard />
             )}
           </div>
         </div>

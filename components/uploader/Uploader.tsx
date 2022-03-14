@@ -14,11 +14,13 @@ import { FileWithPreview } from '../../types/FileWithPreview'
 import { createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
 import NextLink from '../NextLink';
+import store from 'store2';
 
 type UploaderProps = {
 }
 
 const Uploader: FunctionComponent<UploaderProps> = () => {
+  const uploaderStore = store.namespace('uploader')
   const [imageFiles, setImageFiles] = useState<FileWithPreview[]>([]);
   const [imageBytes, setImageBytes] = useState(0);
   const [imageCost, setImageCost] = useState(0);
@@ -34,8 +36,8 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
 
   useEffect(() => {
     if (window) {
-      const baseURIFromLocal = localStorage.getItem('baseURI');
-      const metadataFileNames = localStorage.getItem('metadataFileNames');
+      const baseURIFromLocal = uploaderStore('baseURI');
+      const metadataFileNames = uploaderStore('metadataFileNames');
       if (baseURIFromLocal && metadataFileNames) {
         setShowLinkToExistingUploads(true);
       }
@@ -43,7 +45,7 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
   }, []);
 
 
-  console.log(localStorage.getItem('metadataFileNames'))
+  console.log(uploaderStore('metadataFileNames'))
 
   const updateImageBytes = async (bytes: number) => {
     console.log('updateImageBytes :>> ', bytes);
@@ -69,8 +71,8 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
       await addNftObjsToLocalStorage(nftObjs)
 
       // Remove this item of localStorage so the uploading.tsx page does not redirect
-      localStorage.removeItem('baseURI');
-      localStorage.removeItem('metadataFileNames');
+      uploaderStore.remove('baseURI');
+      uploaderStore.remove('metadataFileNames');
 
       setShowConfirmUpload(true);
     }
@@ -181,6 +183,8 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
 export default Uploader;
 
 async function addNftObjsToLocalStorage(nftObjs: NftObject[]): Promise<void> {
+  const uploaderStore = store.namespace('uploader');
+
   for (let index = 0; index < nftObjs.length; index++) {
     const nftObj = nftObjs[index]
     const formData = new FormData()
@@ -205,7 +209,7 @@ async function addNftObjsToLocalStorage(nftObjs: NftObject[]): Promise<void> {
       metadata: nftObj.metadata
     }
     const numberOfItemsToUpload = (index + 1).toString()
-    localStorage.setItem(index.toString(), JSON.stringify(newNftObj))
-    localStorage.setItem('numberOfItemsToUpload', numberOfItemsToUpload)
+    uploaderStore(index.toString(), JSON.stringify(newNftObj))
+    uploaderStore('numberOfItemsToUpload', numberOfItemsToUpload)
   }
 }

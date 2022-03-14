@@ -6,8 +6,11 @@ import Spinner from './spinner';
 import { useRouter } from 'next/router'
 import SuccessBanner from './successBanner';
 import { XIcon } from '@heroicons/react/solid'
+import store from 'store2';
 
 export default function UploadModal(props) {
+    const uploaderStore = store.namespace('uploader')
+
     const [showSpinner, setShowSpinner] = useState(false);
     const [isPaymentChosen, setIsPaymentChosen] = useState(false);
     const cancelButtonRef = useRef(null)
@@ -53,7 +56,7 @@ export default function UploadModal(props) {
             if (uris) {
                 console.log('uris :>> ', uris);
 
-                localStorage.setItem('uris', uris);
+                uploaderStore('uris', uris);
 
                 router.push('uploader/success')
             }
