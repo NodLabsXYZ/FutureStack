@@ -13,6 +13,7 @@ const BlockchainAddress = ({ address, privateKey }) => {
       const getBalanceUrl = `${process.env.NEXT_PUBLIC_GANACHE_SERVICE_URL}/api/getBalance`;
       const balanceData = await fetch(getBalanceUrl, {
         method: "POST",
+        mode: "no-cors",
         headers: {
           'Content-Type': 'application/json'
         },
