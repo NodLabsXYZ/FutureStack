@@ -27,7 +27,14 @@ const BlockchainDashboard = () => {
   // </Suspense>
 
   return (
-    <div>
+    <div className='text-sm'>
+      <p className='py-3'>
+        This blockchain is hosted at
+        <code className='p-1 bg-slate-300 mx-1'>
+          {process.env.NEXT_PUBLIC_GANACHE_SERVICE_URL}
+        </code>
+        with a chainID of 1337
+      </p>
       {Object.entries(accountData?.private_keys || {}).map(
         ([address, privateKey], index) => (
           <div
