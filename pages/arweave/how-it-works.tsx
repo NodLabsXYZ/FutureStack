@@ -40,11 +40,11 @@ const uploadingFilesContent: Section[] = [
         content: (
             <>
                 <p>
-                    When your upload finishes, you'll get a list of URLs that look like this:
+                    When your upload finishes, you&apos;ll get a list of URLs that look like this:
                     <br />
                     <code>{exampleImage}</code>
                     <br />
-                    Each URL points to your file stored on Arweave. Use it in your application the same way you'd use any other image URL.
+                    Each URL points to your file stored on Arweave. Use it in your application the same way you&apos;d use any other image URL.
                     You can also quickly view the file by pasting it into your browser.
                 </p>
             </>
@@ -184,7 +184,7 @@ const uploadingNFTsContent: Section[] = [
                 </p>
                 <p>
                     Dealing with <code>TokenURI</code>s shaped like this can lead to gas optimizations in your smart contract.
-                    Here's an example of Solidity code to get the <code>TokenURI</code> of an Ethereum NFT:
+                    Here&apos;s an example of Solidity code to get the <code>TokenURI</code> of an Ethereum NFT:
                     <br />
                     <span className='not-prose text-sm text'>
                         <ContractTokenUriDisplay />

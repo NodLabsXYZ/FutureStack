@@ -2,7 +2,7 @@
 import { Dispatch, Fragment, SetStateAction, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import EstimatedCost from './estimatedCost'
-import Spinner from './spinner';
+import { LargeSpinner } from './spinners';
 import { useRouter } from 'next/router'
 import SuccessBanner from './successBanner';
 import { XIcon } from '@heroicons/react/solid'
@@ -71,7 +71,7 @@ export default function UploadFilesModal(props: UploadFilesModalProps) {
                             {
                                 loading ?
                                     (
-                                        <Spinner />
+                                        <LargeSpinner />
                                     ) :
                                     (
                                         <>

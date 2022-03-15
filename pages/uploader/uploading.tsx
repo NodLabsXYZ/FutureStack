@@ -1,6 +1,6 @@
 import { NextRouter, useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import Spinner from '../../components/uploader/spinner';
+import { LargeSpinner } from '../../components/uploader/spinners';
 import styles from '../../styles/Home.module.css'
 import { FAKE_BUNDLR } from '../../utils/constants';
 import store from 'store2';
@@ -151,7 +151,7 @@ export default function Uploading() {
                 <div className='place-content-center text-center'>
                     <br />
                     <br />
-                    <Spinner />
+                    <LargeSpinner />
                     <br />
                     <br />
                     <p>Please wait while your images and metadata are being uploaded to Arweave.</p>

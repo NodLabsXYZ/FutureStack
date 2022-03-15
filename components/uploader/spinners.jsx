@@ -8,9 +8,14 @@ const override = `
 
 const color = '#4F5AE5';
 
-export default function Spinner() {
+export function LargeSpinner() {
     return (
         <ClipLoader color={color} loading={true} css={override} size={150} />
-        // <span>Loading...</span>
+    );
+}
+
+export function SmallSpinner() {
+    return (
+        <ClipLoader color={color} loading={true} css={override} size={50} />
     );
 }

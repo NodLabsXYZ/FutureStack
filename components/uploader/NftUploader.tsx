@@ -17,6 +17,7 @@ import NextLink from '../NextLink';
 import store from 'store2';
 import { StoreName } from "../../enums/storeEnums"
 import { addNftObjsToLocalStorage } from "../../utils/localStorageUtils"
+import { SmallSpinner } from "./spinners"
 
 type UploaderProps = {
 }
@@ -34,6 +35,7 @@ const NftUploader: FunctionComponent<UploaderProps> = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const [showConfirmUpload, setShowConfirmUpload] = useState(false);
   const [nftObjects, setNftObjects] = useState<NftObject[]>();
+  const [loading, setLoading] = useState(false);
 
   const updateImageBytes = async (bytes: number) => {
     console.log('updateImageBytes :>> ', bytes);
@@ -50,6 +52,7 @@ const NftUploader: FunctionComponent<UploaderProps> = () => {
   }
 
   const continueToUpload = async () => {
+    setLoading(true);
     if (imageFiles.length !== metadataFiles.length) {
       setErrorMessage("There must be the same number of image and metadata files.");
     } else {
@@ -65,6 +68,7 @@ const NftUploader: FunctionComponent<UploaderProps> = () => {
       // So Uploading.tsx knows what local files to grab (there may be some leftover from the other type)
       generalUploaderStore('nextUploadType', StoreName.nftUploader)
 
+      setLoading(false);
       setShowConfirmUpload(true);
     }
   }
@@ -114,7 +118,7 @@ const NftUploader: FunctionComponent<UploaderProps> = () => {
           }
 
           {
-            imageBytes > 0 && metadataBytes > 0 ?
+            imageBytes > 0 && metadataBytes > 0 && !loading ?
               (
                 <>
                   <br />
@@ -128,6 +132,12 @@ const NftUploader: FunctionComponent<UploaderProps> = () => {
                 </>
               ) :
               (<></>)
+          }
+          {
+            loading &&
+            <span className="mt-2">
+              <SmallSpinner />
+            </span>
           }
 
         </main>

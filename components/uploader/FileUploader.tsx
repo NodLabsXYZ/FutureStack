@@ -15,6 +15,7 @@ import UploadFiles from './UploadFiles';
 import { FileListDisplay } from "./FileListDisplay";
 import { addFilesToLocalStorage } from "../../utils/localStorageUtils";
 import { StoreName } from "../../enums/storeEnums";
+import { SmallSpinner } from "./spinners";
 
 const FileUploader: FunctionComponent = () => {
     const generalUploaderStore = store.namespace(StoreName.generalUploader)
@@ -25,6 +26,7 @@ const FileUploader: FunctionComponent = () => {
     const [showError, setShowError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [showLinkToExistingUploads, setShowLinkToExistingUploads] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (window) {
@@ -65,7 +67,7 @@ const FileUploader: FunctionComponent = () => {
         in UploadFilesModal.tsx, but I can't figure out how to do that before Stripe does it's redirect.
     */
     const saveFilesToLocalAndOpenModal = async () => {
-        // Loading spinner here?
+        setLoading(true);
         await addFilesToLocalStorage(files);
 
         // Remove this item of localStorage so the uploading.tsx page does not redirect
@@ -75,6 +77,7 @@ const FileUploader: FunctionComponent = () => {
         // So Uploading.tsx knows what local files to grab (there may be some leftover from the other type)
         generalUploaderStore('nextUploadType', StoreName.filesUploader)
 
+        setLoading(false);
         setOpenModal(true);
     }
 
@@ -111,7 +114,7 @@ const FileUploader: FunctionComponent = () => {
                 }
 
                 {
-                    files.length > 0 ?
+                    files.length > 0 && !loading ?
                         (
                             <>
                                 <br />
@@ -125,6 +128,12 @@ const FileUploader: FunctionComponent = () => {
                             </>
                         ) :
                         (<></>)
+                }
+                {
+                    loading &&
+                    <span className="mt-2">
+                        <SmallSpinner />
+                    </span>
                 }
 
             </main>
