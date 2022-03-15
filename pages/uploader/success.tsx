@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { CopyBlock, dracula } from "react-code-blocks";
 import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
+import ContractTokenUriDisplay from '../../components/uploader/ContractUriDisplay';
 
 type UploadResultDisplayProps = {
     baseURI: string,
@@ -52,24 +53,6 @@ function MetadataFileNamesDisplay(props: MetadataFileNamesDisplayProps): JSX.Ele
                 text={display}
                 language={'javascript'}
                 theme={dracula}
-            />
-        </div>
-    )
-}
-
-function ContractTokenUriDisplay(): JSX.Element {
-    let display =
-        `function tokenURI(uint256 tokenId) public view returns (string memory) {
-    return abi.encodePacked(_baseURI() + tokenId + ".json");
-}`;
-    return (
-        <div className='mt-4'>
-            <code>YourContract.sol</code>
-            <CopyBlock
-                text={display}
-                language={'javascript'}
-                theme={dracula}
-                codeBlock
             />
         </div>
     )
@@ -126,7 +109,9 @@ function NftUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
                 needing to take any information about the new token from your UI when minting.
                 All you need to do is:
             </p>
-            <ContractTokenUriDisplay />
+            <div className='mt-4'>
+                <ContractTokenUriDisplay />
+            </div>
         </div>
     )
 }

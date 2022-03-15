@@ -5,11 +5,7 @@ import { NftObject } from '../../types/NftObject'
 import React from 'react';
 import { getNameFromMetadataString } from "../../utils/metadataUtils";
 import Image from 'next/image'
-
-
-// This is to fix 'document not found' error from the react-json-view package
-const ReactJson = React.lazy(() => import('react-json-view'));
-
+import JsonDisplay from '../JsonDisplay';
 
 type NftObjectViewerModalProps = {
     open: boolean
@@ -39,15 +35,9 @@ function NftContent(props: NftContentProps) {
             <div>
                 <h4 className="text-lg font-bold">{props.name}</h4>
                 <div className='mt-4'>
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <ReactJson
-                            src={JSON.parse(props.metadata)}
-                            theme="bright:inverted"
-                            displayObjectSize={false}
-                            displayDataTypes={false}
-                            enableClipboard={false}
-                        />
-                    </Suspense>
+                    <JsonDisplay
+                        src={JSON.parse(props.metadata)}
+                    />
                 </div>
             </div>
         </div>
