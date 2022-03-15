@@ -87,32 +87,6 @@ const FileUploader: FunctionComponent = () => {
 
             <main className={styles.main}>
                 <Error showError={errorMessage} message={errorMessage} />
-                <NextLink href='/arweave/howItWorks'>
-                    <a
-                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                        target='_blank'
-                        rel="noopener noreferrer"
-                    >
-                        How It Works
-                    </a>
-                </NextLink>
-                <br />
-                {
-                    showLinkToExistingUploads ? (
-                        <NextLink href='/uploader/success'>
-                            <button
-                                type="button"
-                                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                View Last Upload
-                            </button>
-                        </NextLink>
-
-                    ) : (
-                        <></>
-                    )
-                }
-                <br />
                 <UploadFiles addFiles={addFiles} updateFilesBytes={updateFilesBytes} />
                 <br />
 
