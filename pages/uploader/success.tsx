@@ -155,7 +155,7 @@ function FileUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
     )
 }
 
-export default function Success({ Component, pageProps }: AppProps) {
+export default function UploadSuccess({ Component, pageProps }: AppProps) {
     const generalUploaderStore = store.namespace(StoreName.generalUploader);
     const [baseURI, setBaseURI] = useState<string>();
     const [fileNames, setFileNames] = useState<string[]>([]);

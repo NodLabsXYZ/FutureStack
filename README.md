@@ -70,16 +70,3 @@ npx prisma migrate dev --name [MIGRATION NAME]
 ### Deploy database changes
 
 npx prisma db deploy
-
-## Arweave Uploader to-do
-- Gate access to the `/uploader/uploading` page to those who have already paid
-- Change cost estimate in `upload.tsx` to check for Bundlr price (right now it's just vanilla arweave)
-- Downloading example files doesn't work (hard to do that with .zip files)
-- For some reason the call to /uploadBundlr gets called twice
-- Consider just using the "preview" part of the image as the local file when uploading - I don't think it is lossy
-- The cost to upload doesn't show a loading state when computing after drag n drop. Swap for a ... while loading
-- show spinner when saving things to local storage
-- Handle credit card errors
-- Update upload size correctly on drag n drop
-- Error handling for bundlr calls
-- Seems to error out a lot when funding bundlr account. Easiest workaround is just having a lot of money in the prod Solana wallet
