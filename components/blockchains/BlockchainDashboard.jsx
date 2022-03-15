@@ -9,12 +9,8 @@ const BlockchainDashboard = () => {
 
   useEffect(() => {
     const loadAccountData = async () => {
-      const accountJson = await fetch(`${process.env.NEXT_PUBLIC_GANACHE_SERVICE_URL}/api/accounts`, {
-        mode: "no-cors",
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+      const accountJson = await fetch(`${process.env.NEXT_PUBLIC_GANACHE_SERVICE_URL}/api/accounts`)
+      console.log("accountJson", accountJson)
       const _accountData = await accountJson.json()
       setAccountData(_accountData);
     }
@@ -24,12 +20,8 @@ const BlockchainDashboard = () => {
 
   useEffect(() => {
     const loadChainId = async () => {
-      const chainJson = await fetch(`${process.env.NEXT_PUBLIC_GANACHE_SERVICE_URL}/api/chainId`, {
-        mode: "no-cors",
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
+      const chainJson = await fetch(`${process.env.NEXT_PUBLIC_GANACHE_SERVICE_URL}/api/chainId`)
+      console.log("chainJson", chainJson)
       const chainData = await chainJson.json()
       setChainId(chainData.chainId);
     }

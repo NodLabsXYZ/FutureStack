@@ -11,15 +11,15 @@ const BlockchainAddress = ({ address, privateKey }) => {
   useEffect(() => {
     const loadBalances = async () => {
       const getBalanceUrl = `${process.env.NEXT_PUBLIC_GANACHE_SERVICE_URL}/api/getBalance`;
-      const balanceData = await fetch(getBalanceUrl, {
+      const balanceJson = await fetch(getBalanceUrl, {
         method: "POST",
-        mode: "no-cors",
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ address }),
       })
-      const _balance = await balanceData.json()
+      console.log("balanceJson", balanceJson)
+      const _balance = await balanceJson.json()
       setBalance(ethers.BigNumber.from(_balance.hexValue));
       setTempBalance(_balance.stringValue)
     }
