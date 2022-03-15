@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         ],
         mode: 'payment',
         success_url: `${req.headers.origin}/uploader/uploading`,
-        cancel_url: `${req.headers.origin}/?canceled=true`,
+        cancel_url: `${req.headers.origin}/arweave`,
       });
       res.redirect(303, session.url);
     } catch (err) {

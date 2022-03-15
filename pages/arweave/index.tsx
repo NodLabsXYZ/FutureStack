@@ -1,11 +1,27 @@
+import { useEffect, useState } from 'react'
 import { ArweaveHeader } from '../../components/uploader';
 import { NextLink, TWButton } from '../../components';
+import store from 'store2';
+import { StoreName } from '../../enums/storeEnums';
 
 const ArweavePage = () => {
+  const generalUploaderStore = store.namespace(StoreName.generalUploader);
+  const [showLinkToExistingUploads, setShowLinkToExistingUploads] = useState(false);
+
+  useEffect(() => {
+    if (window) {
+      const baseURIFromLocal = generalUploaderStore('baseURI');
+      const metadataFileNames = generalUploaderStore('metadataFileNames');
+      if (baseURIFromLocal && metadataFileNames) {
+        setShowLinkToExistingUploads(true);
+      }
+    }
+  }, []);
+
   return (
     <div>
       <ArweaveHeader />
-      
+
       <div className='text-center mt-12'>
         Arweave stores your files permanently for a single up-front payment.
         <br />
@@ -14,6 +30,34 @@ const ArweavePage = () => {
         <br />
         <br />
         This is ideal for NFT projects but works well for any file.
+
+        <br />
+        <br />
+        <NextLink href='/arweave/howItWorks'>
+          <a
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          >
+            How It Works
+          </a>
+        </NextLink>
+        <br />
+        <br />
+        {
+          showLinkToExistingUploads ? (
+            <NextLink href='/uploader/success'>
+              <button
+                type="button"
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              >
+                View Last Upload
+              </button>
+            </NextLink>
+
+          ) : (
+            <></>
+          )
+        }
+
       </div>
 
       <div className='mt-12 flex justify-center'>

@@ -9,6 +9,7 @@ import {
   TWButton,
   TWCleanHeader
 } from '.'
+import { hideForUploaderInitialLaunch } from '../utils/featureFlags'
 
 const FutureStackHeader = ({ user }) => {
 
@@ -34,29 +35,34 @@ const FutureStackHeader = ({ user }) => {
           </a>
         </NextLink>
       </h1>
-      <div className='-mt-2'>
-        {user && 
-          <span
-            className='cursor-pointer'
-            onClick={signout}
-          >
-            Sign Out
-          </span>
-        }
-        {!user && 
-          <TWButton
-            classMap={{
-              rounded: 'rounded-full'
-            }}
-          >
-            <NextLink href='/login'>
-              <a className='px-3 py-1'>
-                Sign In
-              </a>
-            </NextLink>
-          </TWButton>
-        }
-      </div>
+      {
+        hideForUploaderInitialLaunch ? <></> :
+        (
+        <div className='-mt-2'>
+          {user &&
+            <span
+              className='cursor-pointer'
+              onClick={signout}
+            >
+              Sign Out
+            </span>
+          }
+          {!user &&
+            <TWButton
+              classMap={{
+                rounded: 'rounded-full'
+              }}
+            >
+              <NextLink href='/login'>
+                <a className='px-3 py-1'>
+                  Sign In
+                </a>
+              </NextLink>
+            </TWButton>
+          }
+        </div>
+        )
+      }
     </TWCleanHeader>
   )
 }

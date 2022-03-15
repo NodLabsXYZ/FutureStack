@@ -51,4 +51,4 @@ yarn-error.log*
 **/supabase/.env
 
 # Local temp files for Bundlr upload
-tempNftData/*
+temp/*

@@ -1,5 +1,5 @@
 import { NextRouter, useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Spinner from '../../components/uploader/spinner';
 import styles from '../../styles/Home.module.css'
 import { FAKE_BUNDLR } from '../../utils/constants';
@@ -106,6 +106,12 @@ const routeToSuccessIfUploadComplete = (router: NextRouter): boolean => {
     }
 }
 
+const handleUploadError = (error: Error, router: NextRouter) => {
+    console.error('Upload failed:');
+    console.error(error);
+    router.push('/uploader/error');
+}
+
 
 export default function Uploading() {
     const router = useRouter();
@@ -113,12 +119,10 @@ export default function Uploading() {
 
     const [isUploading, setIsUploading] = useState(false);
 
-
     const isLocalStorageAvailable = typeof window !== "undefined";
     if (isLocalStorageAvailable && !isUploading) {
         const isUploadComplete = routeToSuccessIfUploadComplete(router);
         const uploadType: StoreName = generalUploadStore.get('nextUploadType');
-        console.log('uploadType :>> ', uploadType);
 
         if (isUploadComplete) {
             return (<></>);
@@ -127,23 +131,19 @@ export default function Uploading() {
         try {
             setIsUploading(true);
             if (uploadType === StoreName.nftUploader) {
-                console.log('uploading nfts...');
                 const nftObjects = getNfts();
-                handleUploadNfts(nftObjects, router);
+                handleUploadNfts(nftObjects, router).catch(error => handleUploadError(error, router));
             } else if (uploadType === StoreName.filesUploader) {
                 const files = getFiles();
-                console.log('uploading files...');
-                console.log('files :>> ', files);
-                handleUploadFiles(files, router);
+                handleUploadFiles(files, router).catch(error => handleUploadError(error, router));
             } else {
                 throw new Error("Error reading nextUploadType from local storage");
             }
         } catch (error) {
             console.error(error);
+            router.push('/error');
         }
     }
-
-
 
     return (
         <div>
