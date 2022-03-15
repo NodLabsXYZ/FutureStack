@@ -4,16 +4,27 @@ import BlockchainAddress from "./BlockchainAddress";
 const ReactJson = React.lazy(() => import('react-json-view'));
 
 const BlockchainDashboard = () => {
+  const [chainId, setChainId] = useState(null);
   const [accountData, setAccountData] = useState()
 
   useEffect(() => {
     const loadAccountData = async () => {
-      const rawAccountData = await fetch(`${process.env.NEXT_PUBLIC_GANACHE_SERVICE_URL}/api/accounts`)
-      const _accountData = await rawAccountData.json()
+      const accountJson = await fetch(`${process.env.NEXT_PUBLIC_GANACHE_SERVICE_URL}/api/accounts`)
+      const _accountData = await accountJson.json()
       setAccountData(_accountData);
     }
     
     loadAccountData();
+  }, [])
+
+  useEffect(() => {
+    const loadChainId = async () => {
+      const chainJson = await fetch(`${process.env.NEXT_PUBLIC_GANACHE_SERVICE_URL}/api/chainId`)
+      const chainData = await chainJson.json()
+      setChainId(chainData.chainId);
+    }
+    
+    loadChainId();
   }, [])
 
   // <Suspense fallback={<div>Loading...</div>}>
@@ -33,7 +44,11 @@ const BlockchainDashboard = () => {
         <code className='p-1 bg-slate-300 mx-1'>
           {process.env.NEXT_PUBLIC_GANACHE_SERVICE_URL}
         </code>
-        with a chainID of 1337
+        {chainId && (
+          <span>
+            with a chainID of {chainId}
+          </span>
+        )}
       </p>
       {Object.entries(accountData?.private_keys || {}).map(
         ([address, privateKey], index) => (
