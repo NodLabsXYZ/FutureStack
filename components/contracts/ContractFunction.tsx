@@ -59,7 +59,8 @@ const ContractFunction: FunctionComponent<ContractFunctionProps> = ({ provider, 
         <div className='font-semibold'>{name}</div>
         <div className='ml-3 text-xs text-gray-800'>
           ({inputs.map((input: any) => `${input.name}: ${input.type}`).join(', ')}) 
-          &nbsp;=&gt;&nbsp; 
+          &nbsp;=
+          &nbsp; 
           {outputs.map((output: any) => output.type).join(', ')}
           {outputs.length === 0 && 'void'}
         </div>

@@ -25,6 +25,14 @@ const Project = ({ id }) => {
     )
   }
 
+  const button = (href, label) => (
+    <TWButton classMap={{ padding: 'p-0 '}}>
+      <NextLink href={href}>
+        <a className='block px-3 py-1'>{label}</a>
+      </NextLink>
+    </TWButton>
+  )
+
   return (
     <div>     
       <h2 className='text-lg'>
@@ -34,26 +42,14 @@ const Project = ({ id }) => {
         {project.title}
       </h2>
       <div className='flex pt-6'>
-      <div className='border p-6 mr-6'>
-          <NextLink href={`/project/${id}/code`}>
-            <TWButton>
-              <a>Code</a>
-            </TWButton>
-          </NextLink>
+        <div className='border p-6 mr-6'>
+          {button(`/project/${id}/code`, 'Code')}
         </div>
         <div className='border p-6 mr-6'>
-          <NextLink href={`/project/${id}/contract`}>
-            <TWButton>
-              <a>Contracts</a>
-            </TWButton>
-          </NextLink>
+          {button(`/project/${id}/contract`, 'Contracts')}
         </div>
         <div className='border p-6 mr-6'>
-          <NextLink href={`/project/${id}/asset`}>
-            <TWButton>
-              <a>Assets</a>
-            </TWButton>
-          </NextLink>
+          {button(`/project/${id}/asset`, 'Assets')}
         </div>
       </div>
     </div>

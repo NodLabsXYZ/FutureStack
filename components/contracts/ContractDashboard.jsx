@@ -138,7 +138,7 @@ const ContractDashboard = ({ project }) => {
         </div>
       }
       
-      {process.env.GANACHE_SERVICE_URL &&
+      {process.env.NEXT_PUBLIC_GANACHE_SERVICE_URL &&
         <div className='py-6'>
           <h2 className='font-semibold'>Private Blockchains</h2>
 
