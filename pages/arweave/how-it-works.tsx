@@ -10,7 +10,7 @@ import ContractTokenUriDisplay from '../../components/uploader/ContractUriDispla
 
 type Section = {
     title: string,
-    content: string | JSX.Element
+    content: JSX.Element
 }
 
 type AccordionProps = {
@@ -27,13 +27,28 @@ const exampleMetadataLink = exampleMetadataBaseURI + '0.json';
 const uploadingFilesContent: Section[] = [
     {
         title: "Supported file types",
-        content:
-            "All file types, directories, and any quantity of each is supported.",
+        content: (
+            <>
+                <p>
+                    All file types, directories, and any quantity of each is supported.
+                </p>
+            </>
+        )
     },
     {
         title: "Upload results and how to use them",
-        content:
-            "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        content: (
+            <>
+                <p>
+                    When your upload finishes, you'll get a list of URLs that look like this:
+                    <br />
+                    <code>{exampleImage}</code>
+                    <br />
+                    Each URL points to your file stored on Arweave. Use it in your application the same way you'd use any other image URL.
+                    You can also quickly view the file by pasting it into your browser.
+                </p>
+            </>
+        )
     },
 ]
 
@@ -54,13 +69,18 @@ const uploadingNFTsContent: Section[] = [
     },
     {
         title: "Arweave can store data for NFTs on any blockchain and works with OpenSea",
-        content:
-            "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
-    },
-    {
-        title: "Why Arweave is perfect for NFT image and metadata storage",
-        content:
-            "I don't know, but the flag is a big plus. Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.",
+        content: (
+            <>
+                <p>
+                    Any public and private blockchain can reference Arweave URLs.
+                    NFT metadata can be stored and queried by marketplaces like OpenSea with no extra configuration
+                    as long as it complies with&nbsp;
+                    <a href="https://docs.opensea.io/docs/metadata-standards" target='_blank' rel="noreferrer" className="text-blue-600 visited:text-purple-600">
+                        OpenSea&apos;s Metadata Standards
+                    </a>.
+                </p>
+            </>
+        )
     },
     {
         title: "How to create and format your images and metadata",
@@ -163,7 +183,8 @@ const uploadingNFTsContent: Section[] = [
                     </a>
                 </p>
                 <p>
-                    Dealing with <code>TokenURI</code>s shaped like this can lead to gas optimizations in your smart contract:
+                    Dealing with <code>TokenURI</code>s shaped like this can lead to gas optimizations in your smart contract.
+                    Here's an example of Solidity code to get the <code>TokenURI</code> of an Ethereum NFT:
                     <br />
                     <span className='not-prose text-sm text'>
                         <ContractTokenUriDisplay />
@@ -199,13 +220,7 @@ function Accordion(props: AccordionProps) {
                                     </Disclosure.Button>
                                 </dt>
                                 <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                                    {
-                                        typeof section.content === 'string' ? (
-                                            <p className="text-base text-gray-500">{section.content}</p>
-                                        ) : (
-                                            <>{section.content}</>
-                                        )
-                                    }
+                                    {section.content}
                                 </Disclosure.Panel>
                             </>
                         )}
@@ -290,7 +305,7 @@ const downloadExample = () => {
 
 const HowItWorks = () => {
     return (
-        <div className="relative py-16 bg-white overflow-hidden">
+        <div className="relative pb-12 bg-white overflow-hidden">
             <div className="hidden lg:block lg:absolute lg:inset-y-0 lg:h-full lg:w-full">
                 <div className="relative h-full text-lg max-w-prose mx-auto" aria-hidden="true">
                     <svg
