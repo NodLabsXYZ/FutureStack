@@ -1,33 +1,35 @@
 import { FunctionComponent } from "react"
 import Head from 'next/head'
 import styles from '../../styles/Home.module.css'
-import UploadImages from '../../components/uploader/uploadImages'
+import UploadImages from './uploadImages'
 import { useEffect, useState } from 'react'
 import { formatBytes } from '../../utils/formatters';
-import UploadMetadata from '../../components/uploader/uploadMetadata'
+import UploadMetadata from './uploadMetadata'
 import { getCostToSaveBytesInDollars } from '../../utils/costEstimator'
-import EstimatedCost from '../../components/uploader/estimatedCost'
-import UploadModal from '../../components/uploader/uploadModal';
-import Error from '../../components/uploader/error';
+import EstimatedCost from './estimatedCost'
+import UploadFilesModal from './UploadFilesModal';
+import Error from './error';
 import ConfirmUpload from './confirmUpload';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import { createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
 import NextLink from '../NextLink';
 import store from 'store2';
+import { StoreName } from "../../enums/storeEnums"
+import { addNftObjsToLocalStorage } from "../../utils/localStorageUtils"
 
 type UploaderProps = {
 }
 
-const Uploader: FunctionComponent<UploaderProps> = () => {
-  const uploaderStore = store.namespace('uploader')
+const NftUploader: FunctionComponent<UploaderProps> = () => {
+  const nftUploaderStore = store.namespace(StoreName.nftUploader);
+  const generalUploaderStore = store.namespace(StoreName.generalUploader);
   const [imageFiles, setImageFiles] = useState<FileWithPreview[]>([]);
   const [imageBytes, setImageBytes] = useState(0);
   const [imageCost, setImageCost] = useState(0);
   const [metadataFiles, setMetadataFiles] = useState<File[]>([]);
   const [metadataBytes, setMetadataBytes] = useState(0);
   const [metadataCost, setMetadataCost] = useState(0);
-  const [openModal, setOpenModal] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showConfirmUpload, setShowConfirmUpload] = useState(false);
@@ -36,16 +38,14 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
 
   useEffect(() => {
     if (window) {
-      const baseURIFromLocal = uploaderStore('baseURI');
-      const metadataFileNames = uploaderStore('metadataFileNames');
+      const baseURIFromLocal = generalUploaderStore('baseURI');
+      const metadataFileNames = generalUploaderStore('metadataFileNames');
       if (baseURIFromLocal && metadataFileNames) {
         setShowLinkToExistingUploads(true);
       }
     }
   }, []);
 
-
-  console.log(uploaderStore('metadataFileNames'))
 
   const updateImageBytes = async (bytes: number) => {
     console.log('updateImageBytes :>> ', bytes);
@@ -71,8 +71,11 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
       await addNftObjsToLocalStorage(nftObjs)
 
       // Remove this item of localStorage so the uploading.tsx page does not redirect
-      uploaderStore.remove('baseURI');
-      uploaderStore.remove('metadataFileNames');
+      generalUploaderStore.remove('baseURI');
+      generalUploaderStore.remove('metadataFileNames');
+
+      // So Uploading.tsx knows what local files to grab (there may be some leftover from the other type)
+      generalUploaderStore('nextUploadType', StoreName.nftUploader)
 
       setShowConfirmUpload(true);
     }
@@ -165,51 +168,9 @@ const Uploader: FunctionComponent<UploaderProps> = () => {
           }
 
         </main>
-
-        <UploadModal
-          open={openModal}
-          setOpenModal={setOpenModal}
-          setShowError={setShowError}
-          setErrorMessage={setErrorMessage}
-          cost={imageCost + metadataCost}
-          imageFiles={imageFiles}
-          metadataFiles={metadataFiles}
-        />
       </div>
     )
   }
 }
 
-export default Uploader;
-
-async function addNftObjsToLocalStorage(nftObjs: NftObject[]): Promise<void> {
-  const uploaderStore = store.namespace('uploader');
-
-  for (let index = 0; index < nftObjs.length; index++) {
-    const nftObj = nftObjs[index]
-    const formData = new FormData()
-
-    formData.append('image', nftObj.imageFile)
-
-    const options = {
-      method: 'POST',
-      body: formData
-    }
-
-    const response = await fetch('/api/uploader/getTempFilePath', options)
-
-    const { clientTempFilePath } = await response.json()
-
-
-    console.log('clientTempFilePath :>> ', clientTempFilePath)
-
-    const newNftObj = {
-      clientTempFilePath,
-      imageFileName: nftObj.imageFile.name,
-      metadata: nftObj.metadata
-    }
-    const numberOfItemsToUpload = (index + 1).toString()
-    uploaderStore(index.toString(), JSON.stringify(newNftObj))
-    uploaderStore('numberOfItemsToUpload', numberOfItemsToUpload)
-  }
-}
+export default NftUploader;

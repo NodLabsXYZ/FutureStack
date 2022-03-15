@@ -1,11 +1,10 @@
 import Bundlr from '@bundlr-network/client';
+import { Currency } from '../enums/bundlrEnums';
 import { serverPath } from './constants';
 
-export const TEMP_NFT_DATA_DIR = 'temp/';
-// export const TEMP_NFT_DATA_DIR = serverPath('/public/tempNftData/');
+export const TEMP_DIR = 'temp/';
 export const BUNDLR_NODE_URL = 'https://node1.bundlr.network/'
-// choose 'solana' or 'arweave'
-export const CHOSEN_BUNDLR_CURRENCY = 'solana'
+export const CHOSEN_BUNDLR_CURRENCY = Currency.solana
 
 // string for Sol private key, object for Arweave (which is a JSON web key AKA JWK)
 let key: string | object;

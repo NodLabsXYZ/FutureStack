@@ -42,7 +42,7 @@ const getTempFilePath = async (
         })
     })
 
-    const file = data.files.image;
+    const file = data.files.file;
 
     const clientTempFilePath = file.filepath;
 

@@ -4,6 +4,7 @@ import styles from '../../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import { CopyBlock, dracula } from "react-code-blocks";
 import store from 'store2';
+import { StoreName } from '../../enums/storeEnums';
 
 type UploadResultDisplayProps = {
     baseURI: string,
@@ -57,8 +58,8 @@ function MetadataFileNamesDisplay(props: MetadataFileNamesDisplayProps): JSX.Ele
 }
 
 function ContractTokenUriDisplay(): JSX.Element {
-    let display = 
-`function tokenURI(uint256 tokenId) public view returns (string memory) {
+    let display =
+        `function tokenURI(uint256 tokenId) public view returns (string memory) {
     return abi.encodePacked(_baseURI() + tokenId + ".json");
 }`;
     return (
@@ -74,7 +75,26 @@ function ContractTokenUriDisplay(): JSX.Element {
     )
 }
 
-function UploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
+function UploadedFilesFullUriDisplay(props: UploadResultDisplayProps): JSX.Element {
+    let display = '';
+    const elementList = [];
+    for (let index = 0; index < props.fileNames.length; index++) {
+        const fileName = props.fileNames[index]
+        const isNotOnLastElement = index !== props.fileNames.length - 1
+        display = display.concat(props.baseURI + fileName + '\n');
+    }
+    return (
+        <div className='mt-4'>
+            <CopyBlock
+                text={display}
+                language={'text'}
+                theme={dracula}
+            />
+        </div>
+    )
+}
+
+function NftUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
     const exampleMetadataURI = props.baseURI + props.fileNames[0];
     return (
         <div className='mt-4  w-2/3 left-1/3'>
@@ -111,19 +131,46 @@ function UploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
     )
 }
 
+function FileUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
+    const exampleFileURI = props.baseURI + props.fileNames[0];
+    return (
+        <div className='mt-4  w-2/3 left-1/3'>
+            <p className="text-m mt-2 text-center">
+                Here are the links to your files hosted permanently on Arweave:
+            </p>
+            <UploadedFilesFullUriDisplay baseURI={props.baseURI} fileNames={props.fileNames} />
+            <p className="text-m mt-2 text-center">
+                To view, just paste them into your browser. Test one out here:
+                <br />
+                <a
+                    className='underline text-blue-600 visited:text-purple-600'
+                    href={exampleFileURI}
+                    target='_blank'
+                    rel="noreferrer"
+                >
+                    {exampleFileURI}
+                </a>
+            </p>
+        </div>
+    )
+}
+
 export default function Success({ Component, pageProps }: AppProps) {
-    const uploaderStore = store.namespace('uploader')
+    const generalUploaderStore = store.namespace(StoreName.generalUploader);
     const [baseURI, setBaseURI] = useState<string>();
     const [fileNames, setFileNames] = useState<string[]>([]);
+    const [uploadType, setUploadType] = useState<StoreName>();
     useEffect(() => {
         if (window) {
-            const baseURIFromLocal = uploaderStore('baseURI');
+            const baseURIFromLocal = generalUploaderStore('baseURI');
             setBaseURI(baseURIFromLocal);
-            const metadataFileNames = uploaderStore('metadataFileNames');
+            const metadataFileNames = generalUploaderStore('metadataFileNames');
             if (metadataFileNames) {
                 const fileNameArray = metadataFileNames.split(',');
                 setFileNames(fileNameArray);
             }
+            const uploadTypeFromLocal = generalUploaderStore('lastSuccessfulUpload');
+            setUploadType(uploadTypeFromLocal);
         }
     }, []);
     return (
@@ -140,7 +187,13 @@ export default function Success({ Component, pageProps }: AppProps) {
 
                     </div>
                 </div>
-                <UploadResultDisplay baseURI={baseURI} fileNames={fileNames} />
+                {
+                    uploadType === StoreName.nftUploader ? (
+                        <NftUploadResultDisplay baseURI={baseURI} fileNames={fileNames} />
+                    ) : (
+                        <FileUploadResultDisplay baseURI={baseURI} fileNames={fileNames} />
+                    )
+                }
             </main>
         </div>
     )
