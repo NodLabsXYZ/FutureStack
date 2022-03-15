@@ -28,6 +28,8 @@ const FileUploader: FunctionComponent = () => {
 
     useEffect(() => {
         if (window) {
+            // Re-initialize generalUploaderStore to have access in useEffect
+            const generalUploaderStore = store.namespace(StoreName.generalUploader)
             const baseURIFromLocal = generalUploaderStore('baseURI');
             const metadataFileNames = generalUploaderStore('metadataFileNames');
             if (baseURIFromLocal && metadataFileNames) {

@@ -5,11 +5,11 @@ import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 
 const ArweavePage = () => {
-  const generalUploaderStore = store.namespace(StoreName.generalUploader);
   const [showLinkToExistingUploads, setShowLinkToExistingUploads] = useState(false);
-
+  
   useEffect(() => {
     if (window) {
+      const generalUploaderStore = store.namespace(StoreName.generalUploader);
       const baseURIFromLocal = generalUploaderStore('baseURI');
       const metadataFileNames = generalUploaderStore('metadataFileNames');
       if (baseURIFromLocal && metadataFileNames) {

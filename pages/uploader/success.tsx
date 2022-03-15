@@ -141,12 +141,12 @@ function FileUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
 }
 
 export default function UploadSuccess({ Component, pageProps }: AppProps) {
-    const generalUploaderStore = store.namespace(StoreName.generalUploader);
     const [baseURI, setBaseURI] = useState<string>();
     const [fileNames, setFileNames] = useState<string[]>([]);
     const [uploadType, setUploadType] = useState<StoreName>();
     useEffect(() => {
         if (window) {
+            const generalUploaderStore = store.namespace(StoreName.generalUploader);
             const baseURIFromLocal = generalUploaderStore('baseURI');
             setBaseURI(baseURIFromLocal);
             const metadataFileNames = generalUploaderStore('metadataFileNames');
