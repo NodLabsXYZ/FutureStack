@@ -1,19 +1,13 @@
 import {
   FutureStackHeader, FutureStackNavigation
 } from '.'
-import { hideForUploaderInitialLaunch } from '../utils/featureFlags';
 
-const FutureStackLayout = ({ user, children }) => {
+const FutureStackLayout = ({ user, publicRoute, children }) => {
 
   return (
     <div className='container px-6 mx-auto'>
-      <FutureStackHeader user={user} />
-      {
-        hideForUploaderInitialLaunch ? <></> :
-          (
-            <FutureStackNavigation />
-          )
-      }
+      <FutureStackHeader publicRoute={publicRoute} user={user} />
+      {!publicRoute && <FutureStackNavigation />}
       {children}
     </div>
   )

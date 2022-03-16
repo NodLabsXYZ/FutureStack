@@ -9,9 +9,8 @@ import {
   TWButton,
   TWCleanHeader
 } from '.'
-import { hideForUploaderInitialLaunch } from '../utils/featureFlags'
 
-const FutureStackHeader = ({ user }) => {
+const FutureStackHeader = ({ publicRoute, user }) => {
 
   const signout = () => {
     supabaseClient.auth.signOut()
@@ -35,9 +34,7 @@ const FutureStackHeader = ({ user }) => {
           </a>
         </NextLink>
       </h1>
-      {
-        hideForUploaderInitialLaunch ? <></> :
-        (
+      {!publicRoute && (
         <div className='-mt-2'>
           {user &&
             <span
@@ -61,8 +58,7 @@ const FutureStackHeader = ({ user }) => {
             </TWButton>
           }
         </div>
-        )
-      }
+      )}
     </TWCleanHeader>
   )
 }

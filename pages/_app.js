@@ -10,12 +10,12 @@ const publicRoutes = ['', 'login', 'arweave', 'uploader', 'error']
 function FutureStackApp({ Component, pageProps }) {
   const router = useRouter();
   const [user, setUser] = useState()
+  const publicRoute = publicRoutes.includes(router.pathname.split('/')[1] || '');
 
   useEffect(() => {
-    console.log("REFERRER", document.referrer)
     const _user = supabaseClient.auth.user()
 
-    if (!_user && !publicRoutes.includes(router.pathname.split('/')[1] || '')) {
+    if (!_user && !publicRoute) {
       router.push('/')
       return;
     }
@@ -33,10 +33,10 @@ function FutureStackApp({ Component, pageProps }) {
     );
 
     return data.unsubscribe;
-  }, [user, router])
+  }, [user, router, publicRoute])
 
   return (
-    <FutureStackLayout user={user}>
+    <FutureStackLayout publicRoute={publicRoute} user={user}>
       <Component
         user={user}
         {...pageProps}
