@@ -1,7 +1,7 @@
 import { CodeBlock, dracula } from "react-code-blocks";
 import Image from 'next/image';
 import { JsonDisplay } from '../components';
-import { ContractTokenUriDisplay } from '../components/uploader';
+import { ContractUriDisplay } from '../components/uploader';
 import InformationAlertBar from '../components/InfoAlertBar';
 
 const exampleImageBaseURI = 'https://arweave.net/cvToh8C_sM9FYhGcpWqSAOLJqO2Anv6V4QXtT3VOLh4/';
@@ -145,7 +145,7 @@ const uploaderContent = {
             Here&apos;s an example of Solidity code to get the <code>TokenURI</code> of an Ethereum NFT:
             <br />
             <span className='not-prose text-sm text'>
-                <ContractTokenUriDisplay />
+                <ContractUriDisplay />
             </span>
         </p>
     </>
