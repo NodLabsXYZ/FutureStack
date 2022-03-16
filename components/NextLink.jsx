@@ -1,8 +1,13 @@
 import Link from 'next/link'
 
 const NextLink = (props) => {
+  let { as, href } = props
+  if (!as) {
+    as = href
+  }
+
   return (
-    <Link {...props}>
+    <Link as={as} {...props}>
       {props.children}
     </Link>
   );

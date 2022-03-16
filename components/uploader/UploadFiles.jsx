@@ -1,8 +1,6 @@
 import React, { Component, Dispatch, SetStateAction } from 'react';
 import Dropzone from 'react-dropzone';
-import { formatBytes } from '../../utils/formatters';
-import Image from 'next/image'
-import { FileWithPreview } from '../../types/FileWithPreview';
+import { FileListDisplay } from "./FileListDisplay";
 
 export default class UploadFiles extends Component {
   constructor(props) {
@@ -24,6 +22,15 @@ export default class UploadFiles extends Component {
   }
 
   render() {
+
+    if (this.state.isDropComplete) {
+      return (
+        <aside>
+          <FileListDisplay files={this.state.files} />
+        </aside>
+      )
+    }
+
     return (
       <Dropzone onDrop={this.onDrop}>
         {({ getRootProps, getInputProps }) => (
@@ -47,7 +54,7 @@ export default class UploadFiles extends Component {
                     strokeLinejoin="round"
                   />
                 </svg>
-                Drag and drop or click to select image folder
+                Drag and drop or click to select files
                 <input {...getInputProps()} directory="" webkitdirectory="" type="file" />
               </button>
             </div>
