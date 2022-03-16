@@ -1,199 +1,23 @@
-import React, { useEffect, useState } from 'react';
 import NextLink from '../../components/NextLink';
-import styles from '../../styles/Home.module.css'
-import { CodeBlock, dracula } from "react-code-blocks";
-import Image from 'next/image';
 import { Disclosure } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/outline'
-import JsonDisplay from '../../components/JsonDisplay';
-import ContractTokenUriDisplay from '../../components/uploader/ContractUriDisplay';
-import InformationAlertBar from '../../components/InfoAlertBar';
-
-type Section = {
-    title: string,
-    content: JSX.Element
-}
+import { uploaderContent } from '../../lib'
 
 type AccordionProps = {
-    sectionList: Section[]
+    sectionList: string[]
 }
 
-const exampleImageBaseURI = 'https://arweave.net/cvToh8C_sM9FYhGcpWqSAOLJqO2Anv6V4QXtT3VOLh4/';
-const exampleFileName = '1.jpg';
-const exampleImage = exampleImageBaseURI + exampleFileName;
-const exampleMetadataBaseURI = 'https://arweave.net/HgSjSaOKq2mTSLvNb_2b224fA-r86z6Ogi0xTOWKaio/';
-const exampleMetadataFileNames = "['0.json', '1.json', '2.json', ...]"
-const exampleMetadataLink = exampleMetadataBaseURI + '0.json';
-
-const uploadingFilesContent: Section[] = [
-    {
-        title: "Supported file types",
-        content: (
-            <>
-                <p>
-                    All file types, directories, and any quantity of each is supported.
-                </p>
-            </>
-        )
-    },
-    {
-        title: "Upload results and how to use them",
-        content: (
-            <>
-                <p>
-                    When your upload finishes, you&apos;ll get a list of URLs that look like this:
-                    <br />
-                    <code>{exampleImage}</code>
-                    <br />
-                    Each URL points to your file stored on Arweave. Use it in your application the same way you&apos;d use any other image URL.
-                    You can also quickly view the file by pasting it into your browser.
-                </p>
-            </>
-        )
-    },
+const uploadingFilesContent: string[] = [
+    "Supported file types",
+    "Upload results and how to use them",
 ]
 
-const uploadingNFTsContent: Section[] = [
-    {
-        title: "What an NFT actually is",
-        content: (
-            <>
-                Because it takes so much money to store data on chains like Ethereum, an NFT is mostly
-                a URL pointer (called the <code>TokenURI</code>) to information about the NFT, called the <code>metadata</code>.
-                This <code>metadata</code> is a JSON file that has different attributes and traits of the NFT, including another
-                URL pointing to where the image is stored.
-                <br /><br />
-                The <code>TokenURI</code> which points to the metadata and <code>ImageURI</code> which points to the image can be URLs that point
-                to files stored on Arweave.
-            </>
-        )
-    },
-    {
-        title: "Arweave can store data for NFTs on any blockchain and works with OpenSea",
-        content: (
-            <>
-                <p>
-                    Any public and private blockchain can reference Arweave URLs.
-                    NFT metadata can be stored and queried by marketplaces like OpenSea with no extra configuration
-                    as long as it complies with&nbsp;
-                    <a href="https://docs.opensea.io/docs/metadata-standards" target='_blank' rel="noreferrer" className="text-blue-600 visited:text-purple-600">
-                        OpenSea&apos;s Metadata Standards
-                    </a>.
-                </p>
-            </>
-        )
-    },
-    {
-        title: "How to create and format your images and metadata",
-        content: (
-            <>
-                <p>Each NFT should have two files associated with it:</p>
-                <ul role="list">
-                    <li>An image file (<code>.png</code>, <code>.jpeg</code>, <code>.gif</code>, etc.)</li>
-                    <li>A metadata file (<code>.json</code>) with the traits of the NFT</li>
-                </ul>
-                <p>
-                    Before uploading your metadata, make sure it complies with&nbsp;
-                    <a href="https://docs.opensea.io/docs/metadata-standards" target='_blank' rel="noreferrer" className="text-blue-600 visited:text-purple-600">
-                        OpenSea&apos;s Metadata Standards
-                    </a>
-                    &nbsp;if your NFTs will be on Ethereum or Polygon.
-                </p>
-                <p>Here&apos;s an example of an image and its associated metadata that could be used when creating an NFT:</p>
-                <ExampleImageAndMetadata />
-                <InformationAlertBar text={
-                    (<>The <code>image</code> property of your metadata needs to exist but can just be an empty string. This will get
-                        overwritten in the upload process.</>)
-                }/>
-                <p>
-                    Recommended tools to create your metadata:
-                    <ul role="list">
-                        <li>
-                            <a href="https://www.niftygenerator.xyz/">Nifty Generator</a> (no code required)
-                        </li>
-                        <li>
-                            <a href="https://github.com/HashLips/hashlips_art_engine">HashLips Art Engine</a> (coding required)
-                        </li>
-                    </ul>
-                </p>
-                <p>
-                    Or, play around with some images and metadata that already work:
-                    <br />
-                    <a href="">Download example images and metadata</a>
-                    <br />
-                    <i>Make sure to unzip the folder before using.</i>
-                </p>
-            </>
-        )
-    },
-    {
-        title: "Getting ready to upload",
-        content: (
-            <>
-                <p>
-                    When you upload your NFT assets, you&apos;ll need to upload two separate directories: one for your images and one for your metadata.
-                </p>
-                <p>
-                    Your files should have the following structure:
-                </p>
-                <ExampleFileStructure />
-                <p>
-                    <strong>The files will be read in alphanumeric order.</strong> The first image file will be matched with the
-                    first metadata file and uploaded together. The best way to do this is to name them by incrementing
-                    number. However, it is not required to have any specific names for your folders or files
-                    when you upload them using this tool.
-                </p>
-                <p>
-                    When uploading, no need to individually select each file. You can just drop or select the entire directory for images or metadata.
-                </p>
-            </>
-        )
-    },
-    {
-        title: "Upload results and how to use them",
-        content: (
-            <>
-                <p>
-                    When the upload finishes, you&apos;ll get two things:
-                </p>
-                <ul className='m-2'>
-                    <li>
-                        A <code>baseURI</code> that looks something like:
-                        <br />
-                        <code>{exampleMetadataBaseURI}</code>
-                    </li>
-                    <li>
-                        A list of file names that look like:
-                        <br />
-                        <code>{exampleMetadataFileNames}</code>
-                    </li>
-                </ul>
-                <p>
-                    Each file name can be appended to the end of the <code>baseURI</code> to form the <code>TokenURI</code> of each NFT.
-                    Calling this <code>TokenURI</code> will query Arweave and return the metadata JSON file for that NFT.
-                </p>
-                <p>
-                    Try it out:
-                    <br />
-                    <a
-                        href={exampleMetadataLink}
-                        target='_blank'
-                        rel="noreferrer"
-                    >
-                        {exampleMetadataLink}
-                    </a>
-                </p>
-                <p>
-                    Dealing with <code>TokenURI</code>s shaped like this can lead to gas optimizations in your smart contract.
-                    Here&apos;s an example of Solidity code to get the <code>TokenURI</code> of an Ethereum NFT:
-                    <br />
-                    <span className='not-prose text-sm text'>
-                        <ContractTokenUriDisplay />
-                    </span>
-                </p>
-            </>
-        )
-    },
+const uploadingNFTsContent: string[] = [
+    "What an NFT actually is",
+    "Arweave can store data for NFTs on any blockchain and works with OpenSea",
+    "How to create and format your images and metadata", 
+    "Getting ready to upload",
+    "Upload results and how to use them"
 ]
 
 function classNames(...classes: string[]) {
@@ -206,12 +30,12 @@ function Accordion(props: AccordionProps) {
         <div className="max-w-3xl mx-auto divide-y-2 divide-gray-200">
             <dl className="mt-6 space-y-6 divide-y divide-gray-200">
                 {sectionList.map((section) => (
-                    <Disclosure as="div" key={section.title} className="pt-6">
+                    <Disclosure as="div" key={section} className="pt-6">
                         {({ open }) => (
                             <>
                                 <dt className="text-lg">
                                     <Disclosure.Button className="text-left w-full flex justify-between items-start text-gray-400">
-                                        <span className="font-medium text-gray-900">{section.title}</span>
+                                        <span className="font-medium text-gray-900">{section}</span>
                                         <span className="ml-6 h-7 flex items-center">
                                             <ChevronDownIcon
                                                 className={classNames(open ? '-rotate-180' : 'rotate-0', 'h-6 w-6 transform')}
@@ -221,7 +45,7 @@ function Accordion(props: AccordionProps) {
                                     </Disclosure.Button>
                                 </dt>
                                 <Disclosure.Panel as="dd" className="mt-2 pr-12">
-                                    {section.content}
+                                    {uploaderContent[section]}
                                 </Disclosure.Panel>
                             </>
                         )}
@@ -230,78 +54,6 @@ function Accordion(props: AccordionProps) {
             </dl>
         </div>
     )
-}
-
-function ExampleImageAndMetadata(): JSX.Element {
-    const name = "Business Doge";
-    const metadata = JSON.stringify({
-        "name": name,
-        "description": "The doges living immutably on Ethereum and Arweave have come to take over the metaverse!",
-        "image": exampleImage,
-        "attributes": [
-            {
-                "trait_type": "Favorite Color",
-                "value": "Black"
-            },
-            {
-                "trait_type": "Cuteness Level",
-                "value": "Too much"
-            },
-            {
-                "trait_type": "Fur Type",
-                "value": "Sharp"
-            }
-        ]
-    },
-        null, 2)
-    return (
-        <>
-            <figure>
-                <Image
-                    className="w-full rounded-lg"
-                    src={exampleImage}
-                    alt={name}
-                    height={200}
-                    width={270}
-                />
-            </figure>
-            <figure className='text-sm'>
-                <JsonDisplay
-                    src={JSON.parse(metadata)}
-                />
-            </figure>
-        </>
-    )
-}
-
-function ExampleFileStructure(): JSX.Element {
-    const display =
-        `images/
-├─ 1.jpeg
-├─ 2.jpeg
-├─ 3.jpeg
-├─ ...
-metadata/
-├─ 1.json
-├─ 2.json
-├─ 3.json
-├─ ...
-`
-    return (
-        <figure className='text-left not-prose'>
-            <CodeBlock
-                text={display}
-                language={'text'}
-                theme={dracula}
-                showLineNumbers={false}
-            />
-            <figcaption><i>Both recommended metadata generators will output this file structure.</i></figcaption>
-        </figure>
-    )
-}
-
-const downloadExample = () => {
-    console.log('example downloading...');
 }
 
 const HowItWorks = () => {

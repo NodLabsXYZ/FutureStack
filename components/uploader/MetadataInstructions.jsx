@@ -1,5 +1,6 @@
 import { Disclosure } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/outline'
+import { uploaderContent } from '../../lib'
 
 const MetadataInstructions = () => {
 
@@ -32,8 +33,26 @@ const MetadataInstructions = () => {
                   />
                   Show Example Files
                 </Disclosure.Button>
-                <Disclosure.Panel className="text-gray-500">
-                  EXAMPLE HERE
+                <Disclosure.Panel className="text-gray-500 py-3">
+                  {uploaderContent["Getting ready to upload"]}
+                </Disclosure.Panel>
+              </>
+            )}            
+          </Disclosure>
+        </div>
+        <div className='py-3'>
+          <Disclosure>
+            {({ open }) => (
+              <>
+                <Disclosure.Button className="text-slate-600">
+                  <ChevronDownIcon
+                      className={`${open ? '' : '-rotate-90'} h-4 w-4 transform inline align-text-bottom`}
+                      aria-hidden="true"
+                  />
+                  How to create and format your images and metadata
+                </Disclosure.Button>
+                <Disclosure.Panel className="text-gray-500 py-3">
+                  {uploaderContent["How to create and format your images and metadata"]}
                 </Disclosure.Panel>
               </>
             )}            
@@ -50,8 +69,8 @@ const MetadataInstructions = () => {
                   />
                   Show Example Results
                 </Disclosure.Button>
-                <Disclosure.Panel className="text-gray-500">
-                  RESULTS HERE
+                <Disclosure.Panel className="text-gray-500 py-3">
+                  {uploaderContent["Upload results and how to use them"]}
                 </Disclosure.Panel>
               </>
             )}            
