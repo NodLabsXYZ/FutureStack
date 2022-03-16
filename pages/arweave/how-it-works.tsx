@@ -7,6 +7,7 @@ import { Disclosure } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/outline'
 import JsonDisplay from '../../components/JsonDisplay';
 import ContractTokenUriDisplay from '../../components/uploader/ContractUriDisplay';
+import InformationAlertBar from '../../components/InfoAlertBar';
 
 type Section = {
     title: string,
@@ -100,10 +101,10 @@ const uploadingNFTsContent: Section[] = [
                 </p>
                 <p>Here&apos;s an example of an image and its associated metadata that could be used when creating an NFT:</p>
                 <ExampleImageAndMetadata />
-                <p>
-                    The <code>image</code> property of your metadata needs to exist but can just be an empty string. This will get
-                    overwritten in the upload process.
-                </p>
+                <InformationAlertBar text={
+                    (<>The <code>image</code> property of your metadata needs to exist but can just be an empty string. This will get
+                        overwritten in the upload process.</>)
+                }/>
                 <p>
                     Recommended tools to create your metadata:
                     <ul role="list">
@@ -154,19 +155,19 @@ const uploadingNFTsContent: Section[] = [
             <>
                 <p>
                     When the upload finishes, you&apos;ll get two things:
-                    <ul className='m-2'>
-                        <li>
-                            A <code>baseURI</code> that looks something like:
-                            <br />
-                            <code>{exampleMetadataBaseURI}</code>
-                        </li>
-                        <li>
-                            A list of file names that look like:
-                            <br />
-                            <code>{exampleMetadataFileNames}</code>
-                        </li>
-                    </ul>
                 </p>
+                <ul className='m-2'>
+                    <li>
+                        A <code>baseURI</code> that looks something like:
+                        <br />
+                        <code>{exampleMetadataBaseURI}</code>
+                    </li>
+                    <li>
+                        A list of file names that look like:
+                        <br />
+                        <code>{exampleMetadataFileNames}</code>
+                    </li>
+                </ul>
                 <p>
                     Each file name can be appended to the end of the <code>baseURI</code> to form the <code>TokenURI</code> of each NFT.
                     Calling this <code>TokenURI</code> will query Arweave and return the metadata JSON file for that NFT.
