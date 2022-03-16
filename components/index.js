@@ -1,6 +1,7 @@
 export { default as TWHorizontal } from './TWHorizontal'
 export { default as TWHorizontalSpread } from './TWHorizontalSpread'
 export { default as TWCleanHeader } from './TWCleanHeader'
+export { default as FutureStackFooter } from './FutureStackFooter'
 export { default as FutureStackHeader } from './FutureStackHeader'
 export { default as FutureStackLayout } from './FutureStackLayout'
 export { default as FutureStackNavigation } from './FutureStackNavigation'
