@@ -16,9 +16,6 @@
     "test:ci": "npx jest --runInBand",
     "e2e": "npx playwright test __e2e__"
   },
-  "pre-commit": [
-    "lint"
-  ],
   "dependencies": {
     "@bundlr-network/client": "^0.5.18",
     "@headlessui/react": "^1.5.0",

@@ -140,7 +140,7 @@ const HowItWorks = () => {
                 <div className="mt-6 prose prose-indigo prose-lg text-gray-500 mx-auto">
                     <p>
                         <a href="https://www.arweave.org/" target='_blank' rel="noreferrer">Arweave</a> is
-                        a decentralized storage network that seeks to offer a platform for the <strong>indefinite</strong> storage of data.
+                        a decentralized storage network that seeks to offer a platform for the <strong>indefinite storage</strong> of data.
                     </p>
                     <p>
                         Arweave&apos;s major benefits:
