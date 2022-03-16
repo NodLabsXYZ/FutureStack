@@ -1,7 +1,7 @@
-const ArweaveHeader = () => {
+const ArweaveHeader = ({ title="Uploader" }) => {
   return (
     <h1 className='text-center font-semibold text-2xl'>
-      Arweave Uploader
+      Arweave {title}
     </h1>
   )
 }

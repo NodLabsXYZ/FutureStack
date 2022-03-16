@@ -1,9 +1,10 @@
-import { ArweaveHeader, NftUploader } from "../../components/uploader";
+import { ArweaveHeader, NftUploader, MetadataInstructions } from "../../components/uploader";
 
 const MetadataPage = () => {
   return (
     <div>
-      <ArweaveHeader />
+      <ArweaveHeader title="Files & Metadata Uploader" />
+      <MetadataInstructions />
       <NftUploader />
     </div>
   )

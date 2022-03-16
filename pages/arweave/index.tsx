@@ -26,7 +26,7 @@ const ArweavePage = () => {
         Arweave stores your files permanently for a single up-front payment.
         <br />
         <br />
-        1GB costs just $5 to upload and store forever.
+        500MB costs just $5 to upload and store forever.
         <br />
         <br />
         This is ideal for NFT projects but works well for any file.

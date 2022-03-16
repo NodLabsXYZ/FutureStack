@@ -1,9 +1,10 @@
-import { ArweaveHeader, FileUploader } from "../../components/uploader";
+import { ArweaveHeader, FileInstructions, FileUploader } from "../../components/uploader";
 
 const UploadPage = () => {
   return (
     <div>
-      <ArweaveHeader />
+      <ArweaveHeader title="File Uploader"/>
+      <FileInstructions />
       <FileUploader />
     </div>
   )
