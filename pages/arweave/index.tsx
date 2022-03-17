@@ -52,12 +52,17 @@ const ArweavePage = () => {
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center">
             <h2 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl">Arweave Uploader</h2>
-            <p className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
-              Arweave stores your files permanently for a single up-front payment.
-              <br />
-              500MB costs just $5 to upload and store forever.
-              <br />
-              This is ideal for NFT projects but works well for any file.            </p>
+            <div className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+              <p className="pt-6">
+                Arweave stores your files permanently for a single up-front payment.
+              </p>
+              <p className="pt-6">
+                500MB costs just $5 to upload and store forever.
+              </p>
+              <p className="pt-6">
+                This is ideal for NFT projects but works well for any file.            
+              </p>
+            </div>
           </div>
           <div className="mt-12 max-w-lg mx-auto grid gap-5 lg:grid-cols-2 lg:max-w-none">
 

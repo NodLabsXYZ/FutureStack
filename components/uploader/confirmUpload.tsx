@@ -1,12 +1,9 @@
 import styles from '../../styles/Home.module.css'
 
-import { MailIcon, PhoneIcon } from '@heroicons/react/solid'
-import { FileWithPreview } from '../../types/FileWithPreview'
 import { NftObject } from '../../types/NftObject'
 import NftObjectGrid from './nftObjectGrid'
 import NftObjectViewerModal from './nftObjectViewerModal'
 import { useState } from 'react'
-import UploadFilesModal from './UploadFilesModal'
 import ConfirmPaymentTypeModal from './confirmPaymentTypeModal'
 
 
@@ -23,14 +20,16 @@ export default function ConfirmUpload(props: ConfirmUploadProps) {
     return (
         <div>
             <main className={styles.main}>
-
-                <p className='m-4'>
-                    Please confirm the data you want to upload to Arweave. Click an image to view its full metadata.
-                </p>
-                <p className='m-4 text-center'>
-                    Are the images and metadata mismatched? If so, make sure the image and metadata files match when their names are sorted in alphabetical order.
-                    The easiest way to achieve this is to name your files by number, such as <code>1.jpeg, 2.jpeg, ...</code> and <code>1.json, 2.json, ...</code>
-                </p>
+                <div className='text-sm max-w-prose prose prose-indigo margin-auto'>
+                    <p className='pt-3'>
+                        Please confirm that the images and metadata have been combined together successfully. 
+                        Click an image to view its full metadata.
+                    </p>
+                    <p className='pt-3'>
+                        Are the images and metadata mismatched? If so, make sure the image and metadata files match when their names are sorted in alphabetical order.
+                        The easiest way to achieve this is to name your files by number, such as <code>1.jpeg, 2.jpeg, ...</code> and <code>1.json, 2.json, ...</code>
+                    </p>
+                </div>
                 <NftObjectGrid
                     nftObjects={props.nftObjects}
                     setOpenNftViewerModal={setOpenNftViewerModal}

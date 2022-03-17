@@ -1,29 +1,26 @@
 import { FunctionComponent } from "react"
-import Head from 'next/head'
 import styles from '../../styles/Home.module.css'
 import UploadImages from './uploadImages'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { formatBytes } from '../../utils/formatters';
 import UploadMetadata from './uploadMetadata'
 import { getCostToSaveBytesInDollars } from '../../utils/costEstimator'
 import EstimatedCost from './estimatedCost'
-import UploadFilesModal from './UploadFilesModal';
 import Error from './error';
 import ConfirmUpload from './confirmUpload';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import { createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
-import NextLink from '../NextLink';
 import store from 'store2';
 import { StoreName } from "../../enums/storeEnums"
 import { addNftObjsToLocalStorage } from "../../utils/localStorageUtils"
 import { SmallSpinner } from "./spinners"
 
 type UploaderProps = {
+  onFilesSelected: () => void
 }
 
-const NftUploader: FunctionComponent<UploaderProps> = () => {
-  const nftUploaderStore = store.namespace(StoreName.nftUploader);
+const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
   const generalUploaderStore = store.namespace(StoreName.generalUploader);
   const [imageFiles, setImageFiles] = useState<FileWithPreview[]>([]);
   const [imageBytes, setImageBytes] = useState(0);
@@ -31,7 +28,6 @@ const NftUploader: FunctionComponent<UploaderProps> = () => {
   const [metadataFiles, setMetadataFiles] = useState<File[]>([]);
   const [metadataBytes, setMetadataBytes] = useState(0);
   const [metadataCost, setMetadataCost] = useState(0);
-  const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [showConfirmUpload, setShowConfirmUpload] = useState(false);
   const [nftObjects, setNftObjects] = useState<NftObject[]>();
@@ -69,6 +65,7 @@ const NftUploader: FunctionComponent<UploaderProps> = () => {
       generalUploaderStore('nextUploadType', StoreName.nftUploader)
 
       setLoading(false);
+      onFilesSelected();
       setShowConfirmUpload(true);
     }
   }
@@ -93,17 +90,14 @@ const NftUploader: FunctionComponent<UploaderProps> = () => {
           <br />
           <br />
 
-
           {
-            imageBytes + metadataBytes === 0 ?
-              (<></>) :
-              (
-                <p>Upload size: {formatBytes(imageBytes + metadataBytes)}</p>
-              )
+            imageBytes + metadataBytes !== 0 && (
+              <p>Upload size: {formatBytes(imageBytes + metadataBytes)}</p>
+            )
           }
 
           {
-            imageCost + metadataCost === 0 ? (<></>) : (
+            imageCost + metadataCost !== 0 && (
               <div>
                 <EstimatedCost cost={imageCost + metadataCost} />
               </div>
@@ -111,26 +105,22 @@ const NftUploader: FunctionComponent<UploaderProps> = () => {
           }
 
           {
-            imageBytes > 0 && metadataBytes > 0 && !loading ?
-              (
-                <>
-                  <br />
-                  <button
-                    type="button"
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    onClick={continueToUpload}
-                  >
-                    Continue
-                  </button>
-                </>
-              ) :
-              (<></>)
+            imageBytes > 0 && metadataBytes > 0 && !loading && (
+              <button
+                type="button"
+                className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                onClick={continueToUpload}
+              >
+                Continue
+              </button>
+            )
           }
           {
-            loading &&
-            <span className="mt-2">
-              <SmallSpinner />
-            </span>
+            loading && (
+              <span className="mt-2">
+                <SmallSpinner />
+              </span>
+            )
           }
 
         </main>
