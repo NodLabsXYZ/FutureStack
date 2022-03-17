@@ -149,6 +149,22 @@ const uploaderContent = {
             </span>
         </p>
     </>
+  ),
+  "Why upload metadata": (
+    <>
+        <p className=''>
+            If you are creating NFTs that you want to display on OpenSea, 
+            then it helps to have a metadata file (a file with more information about the artwork)
+            associated with each image (the artwork). 
+            Both the image and the metadata file can be store on Arweave.
+        </p>
+        <p className=''>
+            
+            This tool will upload the image, capture the url, edit the metadata to include that url, 
+            and then upload the metadata. Then your NFTs can point to the appropriate metadata 
+            and services such as Opensea will properly load the metadata and the image to display.
+        </p>
+    </>
   )
 }
 
