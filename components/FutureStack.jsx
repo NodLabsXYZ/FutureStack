@@ -1,8 +1,3 @@
-import {
-  TWConstrainedCenteredContent,
-  TWCircleSpinner,
-  SupabaseMagicLink,
-} from '.'
 import FrontPage from './FrontPage'
 
 import { ProjectsDashboard } from './projects'

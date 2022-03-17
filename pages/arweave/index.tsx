@@ -12,11 +12,11 @@ type UploadCardContent = {
 
 function UploadCard(props: UploadCardContent): JSX.Element {
   return (
-    <div className="s overflow-hidden shadow rounded-lg divide-y divide-gray-200">
+    <div className="s overflow-hidden shadow rounded-lg divide-y divide-gray-200 bg-white">
       <div className="px-4 py-5 sm:px-6 text-center prose">
         <h2>{props.header}</h2>
       </div>
-      <div className="px-4 py-5 sm:p-6 text-center">
+      <div className="px-4 py-5 sm:p-6 text-center text-slate-900">
         {props.subHeader}
         <br />
         <NextLink href={props.buttonHref}>
@@ -51,8 +51,8 @@ const ArweavePage = () => {
       <div className="relative pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center">
-            <h2 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl">Arweave Uploader</h2>
-            <div className="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+            <h2 className="text-3xl tracking-tight font-semibold sm:text-3xl">Arweave Uploader</h2>
+            <div className="mt-3 max-w-2xl mx-auto text-xl sm:mt-4 font-light">
               <p className="pt-6">
                 Arweave stores your files permanently for a single up-front payment.
               </p>
