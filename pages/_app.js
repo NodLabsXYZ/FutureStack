@@ -36,7 +36,7 @@ function FutureStackApp({ Component, pageProps }) {
   }, [user, router, publicRoute])
 
   return (
-    <FutureStackLayout publicRoute={publicRoute} user={user}>
+    <FutureStackLayout user={user}>
       <Component
         user={user}
         {...pageProps}

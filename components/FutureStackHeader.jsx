@@ -10,7 +10,7 @@ import {
   TWCleanHeader
 } from '.'
 
-const FutureStackHeader = ({ publicRoute, user }) => {
+const FutureStackHeader = ({ user }) => {
 
   const signout = () => {
     supabaseClient.auth.signOut()
