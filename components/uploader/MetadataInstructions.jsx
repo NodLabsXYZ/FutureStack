@@ -5,7 +5,7 @@ import { uploaderContent } from '../../lib'
 const MetadataInstructions = () => {
 
   return (
-    <div className='max-w-prose prose text-white mx-auto'>
+    <div className='max-w-prose prose mx-auto'>
       <div className='text-sm pt-3'>
         <p>
           This tool makes it easy to coordinate a collection of images with a collection of metadata.
