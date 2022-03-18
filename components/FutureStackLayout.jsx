@@ -10,7 +10,7 @@ const FutureStackLayout = ({ user, darkMode=false, children }) => {
 
   return (
     <div className={`${darkMode ? 'text-white' : 'text-slate-900'}`} style={gradient}>
-      <div className='container px-6 mx-auto pb-60'>
+      <div className='container px-6 mx-auto pb-36'>
         <FutureStackHeader darkMode={darkMode} user={user} />
         {user && <FutureStackNavigation />}
         {children}

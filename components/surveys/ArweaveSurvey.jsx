@@ -8,7 +8,11 @@ const SurveyComponent = dynamic(() => import("./SurveyComponent"), {
 const ArweaveSurvey = () => {
   
   const onComplete = (result) => {
-    createSurvey(result)
+    createSurvey(
+      'arweave', 
+      result.data['What is your email? (you will have to verify to continue)'], 
+      result
+    )
   }
 
   return (
