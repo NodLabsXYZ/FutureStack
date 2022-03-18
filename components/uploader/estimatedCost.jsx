@@ -1,15 +1,15 @@
 import CurrencyFormat from 'react-currency-format';
 
-export default function EstimatedCost(props) {
+export default function EstimatedCost({ cost, minimumWarning=false }) {
     return (
         <div>
-            {props.cost < .01 ? (
+            {cost < .01 ? (
                 <div>Estimated Cost: <strong>less than a penny</strong></div>
             ) : (
                 <div>
                     Cost:
                     <CurrencyFormat 
-                        value={props.cost} 
+                        value={cost} 
                         displayType={'text'} 
                         decimalScale={2} 
                         thousandSeparator={true} 
@@ -18,7 +18,7 @@ export default function EstimatedCost(props) {
                     />
                 </div>
             )}
-            {props.cost < 5 && (
+            {minimumWarning && cost < 5 && (
                 <div>
                     Minimum $5 charge which can be applied across uploads.
                 </div>

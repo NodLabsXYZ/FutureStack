@@ -55,18 +55,14 @@ export default function ConfirmPaymentTypeModal(props: ConfirmPaymentTypeModalPr
                                     </button>
                                 </div>
                             </div>
-                            <div>
-                                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                    </svg>                </div>
+                            <div>                                
                                 <div className="mt-3 text-center sm:mt-5">
                                     <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
                                         Ready to upload your images and metadata?
                                     </Dialog.Title>
                                     <div className="mt-2">
                                         <p className="text-sm text-gray-500">
-                                            <EstimatedCost cost={props.cost} />
+                                            <EstimatedCost cost={props.cost} minimumWarning={true} />
                                         </p>
                                     </div>
                                 </div>
@@ -117,7 +113,7 @@ export default function ConfirmPaymentTypeModal(props: ConfirmPaymentTypeModalPr
                                         </div>
                                     </div>
 
-                                    <div className='py-3'>
+                                    <div className='py-1'>
                                         Fill out this survey to and get your first upload for free! 
                                         <div className='text-xs font-slate-600'>(max 500MB)</div>
                                     </div>
