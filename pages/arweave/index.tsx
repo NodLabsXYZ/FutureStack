@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import { NextLink, TWButton } from '../../components';
+import { NextLink } from '../../components';
 import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
+import { ArweaveLayout } from '../../components/uploader';
 
 type UploadCardContent = {
   header: string,
@@ -47,11 +48,10 @@ const ArweavePage = () => {
   }, []);
 
   return (
-    <div>
-      <div className="relative px-4 sm:px-6 lg:pt-24 pb-96 lg:px-8">
+    <ArweaveLayout title='Uploader'>
+      <div className="relative px-4 sm:px-6 pb-60 lg:px-8">
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center">
-            <h2 className="text-3xl tracking-tight font-semibold sm:text-3xl">Arweave Uploader</h2>
             <div className="mt-3 max-w-2xl mx-auto text-xl sm:mt-4 font-light">
               <p className="pt-6">
                 Arweave stores your files permanently for a single up-front payment.
@@ -84,34 +84,7 @@ const ArweavePage = () => {
           </div>
         </div>
       </div>
-
-      <div className='text-2xl text-center mt-72 flex w-1/2 mx-auto'>
-        <div className=''>
-          <div className='font-semibold'>
-            New web3 services and infrastructure coming soon.
-          </div>
-          
-          <div className='mt-3 text-lg'>
-            Let us know what&apos;s slowing down your 
-            web3 development process.  
-          </div>          
-          <div className='text-center mt-6'>
-            <TWButton
-              classMap={{
-                background: 'bg-indigo-800',
-                rounder: 'rounded-full'
-              }}
-            >
-              <NextLink href='/'>
-                <a className='px-3 py-1 text-lg align-text-top font-light'>
-                  Learn More
-                </a>
-              </NextLink>
-            </TWButton>
-          </div>        
-        </div>
-      </div>
-    </div>
+    </ArweaveLayout>
   );
 }
 

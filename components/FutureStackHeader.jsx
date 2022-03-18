@@ -10,19 +10,19 @@ import {
   TWCleanHeader
 } from '.'
 
-const FutureStackHeader = ({ user }) => {
+const FutureStackHeader = ({ darkMode=false, user }) => {
 
   const signout = () => {
     supabaseClient.auth.signOut()
   }
 
   return (
-    <TWCleanHeader>
+    <TWCleanHeader classMap={{fontColor: darkMode ? 'text-white' : 'text-slate-900'}}>
       <h1 className='text-lg'>
         <NextLink href='/'>
           <a className='flex'>
             <Image
-              src="/images/white-stack.png"
+              src={`/images/${darkMode ? 'white-' : ''}stack.png`}
               alt="FutureStack Logo"
               width={24}
               height={18}
@@ -53,13 +53,13 @@ const FutureStackHeader = ({ user }) => {
         <TWButton
             classMap={{
               rounded: 'rounded-full',
-              background: 'bg-white',
+              background: darkMode ? 'bg-white' : 'bg-slate-900',
               padding: 'px-1',
               font: 'font-light',
             }}
           >
             <NextLink href='/register'>
-              <a className='px-3 py-1 text-slate-900'>
+              <a className={`px-3 py-1 ${darkMode ? 'text-slate-900' : 'text-white'}`}>
                 Register
               </a>
             </NextLink>

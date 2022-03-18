@@ -10,7 +10,7 @@ const TWCleanHeader = ({ classMap, children }) => {
         classMapMerge(
           {
             leading: 'leading-10',
-            fontColor: 'text-white',
+            fontColor: 'text-slate-900',
             padding: 'py-6'
           },
           classMap

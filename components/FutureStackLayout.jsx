@@ -3,18 +3,19 @@ import {
   FutureStackHeader, FutureStackNavigation
 } from '.'
 
-const FutureStackLayout = ({ user, gradient="", children }) => {
+const FutureStackLayout = ({ user, darkMode=false, children }) => {
+  const gradient = darkMode ? {
+    background: 'linear-gradient(#0C1322 10%, #5B5258 60%, #ECA33B 85%, #DB5224 100%)'
+  } : {}
 
   return (
-    <div className='text-white' style={{ background: 'linear-gradient(#0C1322 10%, #5B5258 60%, #ECA33B 85%, #DB5224 100%);'}}>
-      <div className=''>
-        <div className='container px-6 mx-auto pb-96'>
-          <FutureStackHeader user={user} />
-          {user && <FutureStackNavigation />}
-          {children}
-        </div>
-        <FutureStackFooter />
+    <div className={`${darkMode ? 'text-white' : 'text-slate-900'}`} style={gradient}>
+      <div className='container px-6 mx-auto pb-60'>
+        <FutureStackHeader darkMode={darkMode} user={user} />
+        {user && <FutureStackNavigation />}
+        {children}
       </div>
+      <FutureStackFooter darkMode={darkMode}/>
     </div>
   )
 

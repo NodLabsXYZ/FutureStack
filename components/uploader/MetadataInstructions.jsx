@@ -5,7 +5,7 @@ import { uploaderContent } from '../../lib'
 const MetadataInstructions = () => {
 
   return (
-    <div className='max-w-prose prose prose-indigo mx-auto'>
+    <div className='max-w-prose prose text-white mx-auto'>
       <div className='text-sm pt-3'>
         <p>
           This tool makes it easy to coordinate a collection of images with a collection of metadata.
@@ -16,14 +16,14 @@ const MetadataInstructions = () => {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="text-slate-600 font-semibold">
+                <Disclosure.Button className="font-semibold">
                   <ChevronDownIcon
                       className={`${open ? '' : '-rotate-90'} h-4 w-4 transform inline align-text-bottom`}
                       aria-hidden="true"
                   />
                   Why do I need to do this?
                 </Disclosure.Button>
-                <Disclosure.Panel className="text-gray-500">
+                <Disclosure.Panel className="">
                   {uploaderContent["Why upload metadata"]}
                 </Disclosure.Panel>
               </>
@@ -34,14 +34,14 @@ const MetadataInstructions = () => {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="text-slate-600 font-semibold">
+                <Disclosure.Button className="font-semibold">
                   <ChevronDownIcon
                       className={`${open ? '' : '-rotate-90'} h-4 w-4 transform inline align-text-bottom`}
                       aria-hidden="true"
                   />
                   Show Example Files
                 </Disclosure.Button>
-                <Disclosure.Panel className="text-gray-500">
+                <Disclosure.Panel className="">
                   {uploaderContent["Getting ready to upload"]}
                 </Disclosure.Panel>
               </>
@@ -52,14 +52,14 @@ const MetadataInstructions = () => {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="text-slate-600 font-semibold">
+                <Disclosure.Button className="font-semibold">
                   <ChevronDownIcon
                       className={`${open ? '' : '-rotate-90'} h-4 w-4 transform inline align-text-bottom`}
                       aria-hidden="true"
                   />
                   How to create and format your images and metadata
                 </Disclosure.Button>
-                <Disclosure.Panel className="text-gray-500">
+                <Disclosure.Panel className="">
                   {uploaderContent["How to create and format your images and metadata"]}
                 </Disclosure.Panel>
               </>
@@ -70,14 +70,14 @@ const MetadataInstructions = () => {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="text-slate-600 font-semibold">
+                <Disclosure.Button className="font-semibold">
                   <ChevronDownIcon
                       className={`${open ? '' : '-rotate-90'} h-4 w-4 transform inline align-text-bottom`}
                       aria-hidden="true"
                   />
                   Show Example Results
                 </Disclosure.Button>
-                <Disclosure.Panel className="text-gray-500">
+                <Disclosure.Panel className="">
                   {uploaderContent["Upload results and how to use them"]}
                 </Disclosure.Panel>
               </>

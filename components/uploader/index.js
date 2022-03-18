@@ -1,3 +1,4 @@
+export { default as ArweaveLayout } from './ArweaveLayout';
 export { default as ArweaveHeader } from './ArweaveHeader';
 export { default as AssetDashboard } from './AssetDashboard';
 export { default as NftUploader } from './NftUploader';
