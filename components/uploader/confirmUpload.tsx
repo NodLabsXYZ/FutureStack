@@ -51,6 +51,7 @@ export default function ConfirmUpload(props: ConfirmUploadProps) {
                 setOpen={setOpenNftViewerModal}
                 nftToShow={nftToShow}
             />
+
             <ConfirmPaymentTypeModal
                 open={openConfirmPaymentTypeModal}
                 setOpen={setOpenConfirmPaymentTypeModal}
