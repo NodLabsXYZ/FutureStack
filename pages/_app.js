@@ -5,7 +5,7 @@ import { supabaseClient } from '../lib';
 import '../styles/globals.css'
 import '../styles/index.css'
 
-const publicRoutes = ['', 'login', 'arweave', 'uploader', 'error']
+const publicRoutes = ['', 'login', 'register', 'arweave', 'uploader', 'error']
 
 function FutureStackApp({ Component, pageProps }) {
   const router = useRouter();

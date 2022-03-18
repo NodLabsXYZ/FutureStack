@@ -9,7 +9,8 @@ const TWButton = (props) => {
         classMapMerge(
           {
             fontColor: 'text-white',
-            background: 'bg-green-500',
+            background: 'bg-indigo-800',
+            rounded: 'rounded-full',
             padding: 'px-3 py-1'
           },
           classMap

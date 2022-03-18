@@ -1,11 +1,11 @@
 import { SupabaseMagicLink, TWConstrainedCenteredContent } from "../components";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   return (
     <TWConstrainedCenteredContent>
       <div className='py-24'>
         <h2 className='text-lg text-center font-semibold mb-6'>
-          Magic Link Login
+          Register A New Account
         </h2>
         <SupabaseMagicLink />
       </div>
@@ -13,4 +13,4 @@ const LoginPage = () => {
   )
 }
 
-export default LoginPage;
+export default RegisterPage;

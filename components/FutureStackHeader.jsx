@@ -55,12 +55,12 @@ const FutureStackHeader = ({ user }) => {
               rounded: 'rounded-full',
               background: 'bg-white',
               padding: 'px-1',
-              font: 'font-light text-slate-900',
+              font: 'font-light',
             }}
           >
-            <NextLink href='/login'>
-              <a className='px-3 py-1'>
-                Request Access
+            <NextLink href='/register'>
+              <a className='px-3 py-1 text-slate-900'>
+                Register
               </a>
             </NextLink>
           </TWButton>

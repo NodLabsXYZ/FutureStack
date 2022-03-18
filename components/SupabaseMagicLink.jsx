@@ -27,9 +27,9 @@ const SupabaseMagicLink = () => {
 
   return (
     <div>
-      <h2 className='text-lg text-center font-bold mb-6'>
-        Magic Link Login
-      </h2>
+      <p className='py-6'>
+        Enter your email address and we&apos;ll send you a magic link to log in.
+      </p>
       {error && 
         <div className='text-red-600 py-3'>
           {error.message}

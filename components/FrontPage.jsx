@@ -101,12 +101,7 @@ const FrontPage = () => {
             easily automate testing. No more faucets!
           </div>          
           <div className='text-center mt-6'>
-            <TWButton
-              classMap={{
-                background: 'bg-indigo-800',
-                rounder: 'rounded-full'
-              }}
-            >
+            <TWButton>
               <NextLink href='/arweave'>
                 <a className='px-3 py-1 text-lg align-text-top font-light'>
                   Join Waitlist

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { NextLink } from '../../components';
+import { NextLink, TWButton } from '../../components';
 import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 
@@ -48,7 +48,7 @@ const ArweavePage = () => {
 
   return (
     <div>
-      <div className="relative pb-20 px-4 sm:px-6 lg:pt-24 lg:pb-28 lg:px-8">
+      <div className="relative px-4 sm:px-6 lg:pt-24 pb-96 lg:px-8">
         <div className="relative max-w-7xl mx-auto">
           <div className="text-center">
             <h2 className="text-3xl tracking-tight font-semibold sm:text-3xl">Arweave Uploader</h2>
@@ -85,6 +85,32 @@ const ArweavePage = () => {
         </div>
       </div>
 
+      <div className='text-2xl text-center mt-72 flex w-1/2 mx-auto'>
+        <div className=''>
+          <div className='font-semibold'>
+            New web3 services and infrastructure coming soon.
+          </div>
+          
+          <div className='mt-3 text-lg'>
+            Let us know what&apos;s slowing down your 
+            web3 development process.  
+          </div>          
+          <div className='text-center mt-6'>
+            <TWButton
+              classMap={{
+                background: 'bg-indigo-800',
+                rounder: 'rounded-full'
+              }}
+            >
+              <NextLink href='/'>
+                <a className='px-3 py-1 text-lg align-text-top font-light'>
+                  Learn More
+                </a>
+              </NextLink>
+            </TWButton>
+          </div>        
+        </div>
+      </div>
     </div>
   );
 }
