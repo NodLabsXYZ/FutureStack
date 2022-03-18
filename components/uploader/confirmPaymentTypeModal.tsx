@@ -98,7 +98,7 @@ export default function ConfirmPaymentTypeModal(props: ConfirmPaymentTypeModalPr
                                     <button
                                         type="button"
                                         role="link"
-                                        className="w-full flex items-center justify-center bg-slate-600 border border-transparent text-slate-400 rounded-md py-2 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                                        className="w-full flex items-center justify-center bg-slate-600 border border-transparent text-slate-400 rounded-md py-2 "
                                     >
                                         <span className="sr-only">Pay with crypto</span>
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -107,6 +107,20 @@ export default function ConfirmPaymentTypeModal(props: ConfirmPaymentTypeModalPr
                                         <span className='ml-2'>Pay with crypto</span>
                                     </button>
                                     <div className='text-center'>Coming Soon!</div>
+
+                                    <div className="relative mt-4 mb-4">
+                                        <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                                            <div className="w-full border-t border-gray-200" />
+                                        </div>
+                                        <div className="relative flex justify-center">
+                                            <span className="px-4 bg-white text-sm font-medium text-gray-500">or</span>
+                                        </div>
+                                    </div>
+
+                                    <div className='py-3'>
+                                        Fill out this survey to and get your first upload for free! 
+                                        <div className='text-xs font-slate-600'>(max 500MB)</div>
+                                    </div>
                                 </form>
                             </div>
                         </div>
