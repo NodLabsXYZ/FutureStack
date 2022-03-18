@@ -57,7 +57,7 @@ const FrontPage = () => {
           </div>
           <div className='mt-3 text-lg'>
           Leverage Arweave&apos;s permanent storage 
-          with our steamlined uploading. 
+          with our steamlined uploader. 
           Pay once - store forever.
           </div>          
         </div>
@@ -77,8 +77,8 @@ const FrontPage = () => {
         </div>        
       </div>
 
-      <div className='mt-48 flex justify-between relative'>
-        <div className='opacity-30'>
+      <div className='mt-48 pr-24 flex justify-between relative'>
+        <div className='opacity-30 -mt-12'>
           <Image
             src="/images/stacks.png"
             alt="Stacks"
@@ -86,7 +86,6 @@ const FrontPage = () => {
             height={377}          
           />
         </div>
-        <div></div>
         <div className='float-right'>
           <div className='font-semibold'>
             Private Hosted Blockchain
