@@ -3,11 +3,11 @@ import {
   FutureStackHeader, FutureStackNavigation
 } from '.'
 
-const FutureStackLayout = ({ user, children }) => {
+const FutureStackLayout = ({ user, gradient="", children }) => {
 
   return (
-    <div className='text-white bg-gradient-to-b from-slate-900 via-slate-600 to-transparent'>
-      <div className='bg-gradient-to-t from-orange-600 via-slate-600 to-transparent'>
+    <div className='text-white' style={{ background: 'linear-gradient(#0C1322 10%, #5B5258 70%, #ECA33B 99%, #E55826 100%);'}}>
+      <div className=''>
         <div className='container px-6 mx-auto'>
           <FutureStackHeader user={user} />
           {user && <FutureStackNavigation />}
