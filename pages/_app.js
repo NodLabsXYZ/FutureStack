@@ -26,7 +26,7 @@ function FutureStackApp({ Component, pageProps }) {
     }
 
     setUser(_user)
-    setDarkMode(_user === null);
+    setDarkMode(_user === null && dark.includes(rootPath));
 
     const { data, error } = supabaseClient.auth.onAuthStateChange(
       (event, session) => {
@@ -36,7 +36,7 @@ function FutureStackApp({ Component, pageProps }) {
           setUser(null);
           setDarkMode(dark.includes(rootPath))
         }
-        setDarkMode(_user === null);
+        setDarkMode(_user === null && dark.includes(rootPath));
       }
     );
 
