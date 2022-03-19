@@ -16,7 +16,7 @@ const ArweaveSurveyButton = ({ onClick }) => {
     if (!surveyId && !user) return;
 
     const loadSurvey = async () => {
-      const _survey = await getSurvey(surveyId, user.email)
+      const _survey = await getSurvey(surveyId, user?.email)
 
       if (_survey) {
         surveyStore('id', _survey.id)
