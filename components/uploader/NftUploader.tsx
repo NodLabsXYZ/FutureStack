@@ -66,6 +66,7 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
 
       setLoading(false);
       onFilesSelected();
+      document.body.scrollTop = document.documentElement.scrollTop = 0;
       setShowConfirmUpload(true);
     }
   }

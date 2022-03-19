@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import store from 'store2'
+import { supabaseClient } from '../../lib'
 import { createSurvey } from '../../lib/queries'
 import TWButton from '../TWButton'
 
@@ -13,13 +14,17 @@ const ArweaveSurvey = ({ onCancel }) => {
   const surveyStore = store.namespace('arweaveSurvey')
   
   const onComplete = async (result) => {
+    const email = result.data['What is your email? (you will have to verify to continue)']
     const survey = await createSurvey(
       'arweave', 
-      result.data['What is your email? (you will have to verify to continue)'], 
+      email, 
       result
     )
     
-    console.log(survey)
+    supabaseClient.auth.signIn({ email }).then((response) => {
+      console.log("SIGNIN", response)
+    })
+
     surveyStore('id', survey.id)
     setComplete(true);
   }

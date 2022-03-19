@@ -10,12 +10,12 @@ const SurveyComponent = ({ questions, onComplete }) => {
         root: "bg-red-600"
     },
     navigationButton: "button btn-lg"
-};
+  };
 
   const survey = new Survey.Model(questions)
 
   survey.onComplete.add(onComplete)
-
+  
   survey
     .onUpdateQuestionCssClasses
     .add(function (_survey, options) {
