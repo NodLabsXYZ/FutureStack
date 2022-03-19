@@ -5,11 +5,11 @@ import { supabaseClient } from '../../lib';
 import { getSurvey } from '../../lib/queries'
 
 const ArweaveSurveyButton = ({ onClick }) => {
-  const user = supabaseClient.auth.user
   const surveyStore = store.namespace('arweaveSurvey')
   // surveyStore('id', null)
   const surveyId = surveyStore('id')
 
+  const [user, setUser] = useState(supabaseClient.auth.user())
   const [survey, setSurvey] = useState()
   
   useEffect(() => {
@@ -21,13 +21,23 @@ const ArweaveSurveyButton = ({ onClick }) => {
       if (_survey) {
         surveyStore('id', _survey.id)
         setSurvey(_survey)
-        setVerified()
-        setVerified(_survey.email && user && _survey.email !== user.email)
       }
     }
 
     loadSurvey()
   }, [user, surveyStore, surveyId])
+
+  useEffect(() => {
+    supabaseClient.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === 'SIGNED_IN' && session) {
+          setUser(session.user);
+        } else if (session === null) {
+          setUser(null);
+        }
+      }
+    );
+  }, [])
   
   if (survey?.results?.claimed) {
     return <></>
