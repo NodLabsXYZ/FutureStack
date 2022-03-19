@@ -9,7 +9,6 @@ const MetadataPage = () => {
     <ArweaveLayout title="Files & Metadata Uploader">
       {!filesSelected && <MetadataInstructions />}
       <NftUploader onFilesSelected={() => setFilesSelected(true)} />
-      <ArweaveSurvey />
     </ArweaveLayout>
   )
 }

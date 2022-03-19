@@ -1,11 +1,12 @@
 import dynamic from 'next/dynamic'
 import { createSurvey } from '../../lib/queries'
+import TWButton from '../TWButton'
 
 const SurveyComponent = dynamic(() => import("./SurveyComponent"), {
   ssr: false,
 })
 
-const ArweaveSurvey = () => {
+const ArweaveSurvey = ({ onCancel }) => {
   
   const onComplete = (result) => {
     createSurvey(
@@ -18,6 +19,14 @@ const ArweaveSurvey = () => {
   return (
     <div className="container">
       <SurveyComponent questions={questions} onComplete={onComplete} />
+      <div className='-mt-12 ml-12'>
+        <TWButton
+          classMap={{ background: 'bg-red-400', font: 'text-sm', padding: 'px-6 py-1' }}
+          onClick={() => onCancel()}
+        >
+          Cancel
+        </TWButton>
+      </div>
     </div>
   )
 }
