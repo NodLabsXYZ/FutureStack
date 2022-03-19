@@ -10,9 +10,12 @@ const dark = ['', 'login', 'register']
 
 function FutureStackApp({ Component, pageProps }) {
   const router = useRouter();
+
+  const rootPath = router.pathname.split('/')[1] || ''
+  const publicRoute = publicRoutes.includes(rootPath);
+
   const [user, setUser] = useState()
-  const publicRoute = publicRoutes.includes(router.pathname.split('/')[1] || '');
-  const darkMode = dark.includes(router.pathname.split('/')[1] || '');
+  const [darkMode, setDarkMode] = useState(dark.includes(rootPath))
 
   useEffect(() => {
     const _user = supabaseClient.auth.user()
@@ -23,6 +26,8 @@ function FutureStackApp({ Component, pageProps }) {
     }
 
     setUser(_user)
+
+    setDarkMode(false);
 
     const { data, error } = supabaseClient.auth.onAuthStateChange(
       (event, session) => {
