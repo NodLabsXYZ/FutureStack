@@ -1,4 +1,6 @@
 import dynamic from 'next/dynamic'
+import { useState } from 'react'
+import store from 'store2'
 import { createSurvey } from '../../lib/queries'
 import TWButton from '../TWButton'
 
@@ -7,12 +9,37 @@ const SurveyComponent = dynamic(() => import("./SurveyComponent"), {
 })
 
 const ArweaveSurvey = ({ onCancel }) => {
+  const [complete, setComplete] = useState(false)
+  const surveyStore = store.namespace('arweaveSurvey')
   
-  const onComplete = (result) => {
-    createSurvey(
+  const onComplete = async (result) => {
+    const survey = await createSurvey(
       'arweave', 
       result.data['What is your email? (you will have to verify to continue)'], 
       result
+    )
+    
+    console.log(survey)
+    surveyStore('id', survey.id)
+    setComplete(true);
+  }
+
+  if (complete) {
+    return (
+      <div className="text-center text-lg text-slate-600">
+        <div className='pt-3'>
+          Thank you for completing the survey!
+        </div>
+        <div className='pt-3'>
+          An email has been sent to you. 
+          Please click the link in the email to receive your discount.
+        </div>
+        <div className='pt-6'>
+          <TWButton onClick={onCancel}>
+            Continue
+          </TWButton>
+        </div>
+      </div>
     )
   }
 

@@ -2,15 +2,9 @@
 import { Dispatch, Fragment, SetStateAction, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import EstimatedCost from './estimatedCost'
-import { LargeSpinner } from './spinners';
-import { useRouter } from 'next/router'
-import SuccessBanner from './successBanner';
 import { XIcon } from '@heroicons/react/solid'
-import store from 'store2';
-import { addFilesToLocalStorage } from '../../utils/localStorageUtils';
-import { FileWithPreview } from '../../types/FileWithPreview';
 import { ArweaveSurvey } from '../surveys'
-import TWButton from '../TWButton';
+import ArweaveSurveyButton from './ArweaveSurveyButton';
 
 type UploadFilesModalProps = {
     open: boolean,
@@ -138,18 +132,7 @@ export default function UploadFilesModal(props: UploadFilesModalProps) {
                                                 </div>
                                             </div>
 
-                                            <div className='py-1 text-center'>
-                                                Fill out a survey to get your first upload for free! 
-                                                <span className='ml-1 text-xs font-slate-600'>
-                                                    (up to 500MB)
-                                                </span>
-                                                <TWButton
-                                                    classMap={{ margin: 'mt-3' }}
-                                                    onClick={() => setSurvey(true)}
-                                                >
-                                                    Start Survey
-                                                </TWButton>
-                                            </div>
+                                            <ArweaveSurveyButton onClick={() => setSurvey(true)} />
                                         </form>
                                     </div>
                                 </>
