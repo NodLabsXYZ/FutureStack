@@ -1,5 +1,4 @@
 import { FunctionComponent } from "react"
-import Head from 'next/head'
 import styles from '../../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import { formatBytes } from '../../utils/formatters';
@@ -8,13 +7,15 @@ import EstimatedCost from './estimatedCost'
 import UploadFilesModal from './UploadFilesModal';
 import Error from './error';
 import { FileWithPreview } from '../../types/FileWithPreview'
-import { NftObject } from '../../types/NftObject'
-import NextLink from '../NextLink';
 import store from 'store2';
 import UploadFiles from './UploadFiles';
 import { addFilesToLocalStorage } from "../../utils/localStorageUtils";
 import { StoreName } from "../../enums/storeEnums";
 import { SmallSpinner } from "./spinners";
+import { supabaseClient } from '../../lib'
+import { getSurvey } from '../../lib/queries'
+
+const surveyDiscount = 500000000;
 
 const FileUploader: FunctionComponent = () => {
     const generalUploaderStore = store.namespace(StoreName.generalUploader)
@@ -26,6 +27,7 @@ const FileUploader: FunctionComponent = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [showLinkToExistingUploads, setShowLinkToExistingUploads] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [completedSurvey, setCompletedSurvey] = useState();
 
     useEffect(() => {
         if (window) {
@@ -37,6 +39,7 @@ const FileUploader: FunctionComponent = () => {
                 setShowLinkToExistingUploads(true);
             }
         }
+
     }, []);
 
 
@@ -56,7 +59,7 @@ const FileUploader: FunctionComponent = () => {
         console.log('current filesBytes :>> ', filesBytes);
         const newTotalBytes = filesBytes + bytes;
         console.log('newTotalBytes :>> ', newTotalBytes);
-        setFilesBytes(newTotalBytes);
+        setFilesBytes(newTotalBytes - (completedSurvey ? surveyDiscount : 0));
         const newFilesCost = await getCostToSaveBytesInDollars(newTotalBytes);
         setFilesCost(newFilesCost);
     }
@@ -133,6 +136,7 @@ const FileUploader: FunctionComponent = () => {
                 setShowError={setShowError}
                 setErrorMessage={setErrorMessage}
                 cost={filesCost}
+                bytes={filesBytes}
                 fileCount={files.length}
             />
         </div>

@@ -1,5 +1,6 @@
 export enum StoreName {
     generalUploader = "generalUploader",
     nftUploader = "nftUploader",
-    filesUploader= "filesUploader"
+    filesUploader= "filesUploader",
+    survey = "survey",
 }

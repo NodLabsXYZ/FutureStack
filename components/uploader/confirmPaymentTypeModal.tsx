@@ -68,9 +68,9 @@ export default function ConfirmPaymentTypeModal(props: ConfirmPaymentTypeModalPr
                                                 Ready to upload your images and metadata?
                                             </Dialog.Title>
                                             <div className="mt-2">
-                                                <p className="text-sm text-gray-500">
+                                                <div className="text-sm text-gray-500">
                                                     <EstimatedCost cost={props.cost} minimumWarning={true} />
-                                                </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

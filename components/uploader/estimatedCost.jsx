@@ -3,9 +3,13 @@ import CurrencyFormat from 'react-currency-format';
 export default function EstimatedCost({ cost, minimumWarning=false }) {
     return (
         <div>
-            {cost < .01 ? (
+            {cost < 0 && (
+                <div className='pt-3 font-bold'>Free!</div>
+            )}
+            {cost > 0 && cost < .01 && (
                 <div>Estimated Cost: <strong>less than a penny</strong></div>
-            ) : (
+            )}
+            {cost > .01 && (
                 <div>
                     Cost:
                     <CurrencyFormat 
@@ -18,7 +22,7 @@ export default function EstimatedCost({ cost, minimumWarning=false }) {
                     />
                 </div>
             )}
-            {minimumWarning && cost < 5 && (
+            {minimumWarning && cost > 0 && cost < 5 && (
                 <div>
                     Minimum $5 charge which can be applied across uploads.
                 </div>

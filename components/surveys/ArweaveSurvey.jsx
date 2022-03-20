@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import store from 'store2'
+import { StoreName } from '../../enums/storeEnums'
 import { supabaseClient } from '../../lib'
 import { createSurvey } from '../../lib/queries'
 import TWButton from '../TWButton'
@@ -11,7 +12,7 @@ const SurveyComponent = dynamic(() => import("./SurveyComponent"), {
 
 const ArweaveSurvey = ({ onCancel }) => {
   const [complete, setComplete] = useState(false)
-  const surveyStore = store.namespace('arweaveSurvey')
+  const surveyStore = store.namespace(StoreName.survey)
   
   const onComplete = async (result) => {
     const email = result.data['What is your email? (you will have to verify to continue)']
@@ -25,7 +26,7 @@ const ArweaveSurvey = ({ onCancel }) => {
       console.log("SIGNIN", response)
     })
 
-    surveyStore('id', survey.id)
+    surveyStore('arweave', survey)
     setComplete(true);
   }
 

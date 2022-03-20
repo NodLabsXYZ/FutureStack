@@ -12,6 +12,7 @@ type UploadFilesModalProps = {
     setShowError: Dispatch<SetStateAction<boolean>>,
     setErrorMessage: Dispatch<SetStateAction<string>>,
     cost: number,
+    bytes: number,
     fileCount: number,
 }
 
@@ -80,9 +81,9 @@ export default function UploadFilesModal(props: UploadFilesModalProps) {
                                                 </p>
                                             </div>
                                             <div className="m-2">
-                                                <p className="text-sm text-gray-500">
+                                                <div className="text-sm text-gray-500">
                                                     <EstimatedCost cost={props.cost} minimumWarning={true} />
-                                                </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

@@ -1,61 +1,43 @@
-import { useEffect, useState } from 'react';
 import { TWButton } from '..'
 import store from 'store2';
-import { supabaseClient } from '../../lib';
-import { getSurvey } from '../../lib/queries'
 
 const ArweaveSurveyButton = ({ onClick }) => {
-  const surveyStore = store.namespace('arweaveSurvey')
-  // surveyStore('id', null)
-  const surveyId = surveyStore('id')
-
-  const [user, setUser] = useState(supabaseClient.auth.user())
-  const [survey, setSurvey] = useState()
+  const surveyStore = store.namespace('survey')
+  const survey = surveyStore('arweave')
   
-  useEffect(() => {
-    if (!surveyId && !user) return;
+  const retake = () => {
+    surveyStore('survey', null)
+    setSurvey(null)
+    onClick()
+  }
 
-    const loadSurvey = async () => {
-      const _survey = await getSurvey(surveyId, user?.email)
-
-      if (_survey) {
-        surveyStore('id', _survey.id)
-        setSurvey(_survey)
-      }
-    }
-
-    loadSurvey()
-  }, [user, surveyStore, surveyId])
-
-  useEffect(() => {
-    supabaseClient.auth.onAuthStateChange(
-      (event, session) => {
-        if (event === 'SIGNED_IN' && session) {
-          setUser(session.user);
-        } else if (session === null) {
-          setUser(null);
-        }
-      }
-    );
-  }, [])
-  
   if (survey?.results?.claimed) {
     return <></>
   }
 
-  if (surveyId) {
-    const verified = survey && user && survey?.email === user.email
-    
+  if (survey) {
     return (
       <div className='text-center'>
         <div className='pb-3'>
           Thank you for completing the survey. 
         </div>
         <div>
-          {verified ? 
-            "Your discount has been applied above" :
-            "Please confirm your email address to apply the discount."            
-          }          
+          {survey.verified && "Your discount has been applied above"}
+          {!survey.verified && (
+            <>
+              <div className='pb-3'>
+                Please confirm your email address to apply the discount.
+              </div>
+              <div className='text-center'>
+                <a
+                  className='text-blue-600 underline cursor-pointer'
+                  onClick={retake}
+                >
+                  Retake Survey
+                </a>
+              </div>
+            </>
+          )}        
         </div>
       </div>
     )
