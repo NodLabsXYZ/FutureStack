@@ -5,6 +5,9 @@ import EstimatedCost from './estimatedCost'
 import { XIcon } from '@heroicons/react/solid'
 import { ArweaveSurvey } from '../surveys'
 import ArweaveSurveyButton from './ArweaveSurveyButton'
+import { useRouter } from 'next/router'
+import TWButton from '../TWButton'
+import NextLink from '../NextLink'
 
 type ConfirmPaymentTypeModalProps = {
     open: boolean
@@ -13,8 +16,9 @@ type ConfirmPaymentTypeModalProps = {
 }
 
 export default function ConfirmPaymentTypeModal(props: ConfirmPaymentTypeModalProps) {
+    const router = useRouter()
     const cancelButtonRef = useRef(null)
-    const [survey, setSurvey] = useState(false)
+    const [survey, setSurvey] = useState(null)
 
     return (
         <Transition.Root show={props.open} as={Fragment}>
@@ -60,7 +64,7 @@ export default function ConfirmPaymentTypeModal(props: ConfirmPaymentTypeModalPr
                             </div>
                             {survey ? (
                                 <ArweaveSurvey onCancel={() => setSurvey(false)} />
-                            ) : (
+                            ) : (props.cost > 0) ? (
                                 <>
                                     <div>                                
                                         <div className="mt-3 text-center sm:mt-5">
@@ -124,6 +128,29 @@ export default function ConfirmPaymentTypeModal(props: ConfirmPaymentTypeModalPr
                                         </form>
                                     </div>
                                 </>
+                            ) : (
+                                <div className='py-12 text-center'>
+                                    <div className='text-lg font-bold mb-6'>
+                                        Start Upload
+                                    </div>
+                                    <div>
+                                        There is no charge for this upload.
+                                    </div>
+                                    <TWButton
+                                        classMap={{
+                                            padding: '',
+                                            margin: 'mt-6'
+                                        }}
+                                    >
+                                        <NextLink
+                                            href='/uploader/uploading'
+                                        >
+                                            <a className='block px-3 py-1'>
+                                                Start Upload
+                                            </a>
+                                        </NextLink>                                        
+                                    </TWButton>
+                                </div>
                             )}
                         </div>
                     </Transition.Child>
