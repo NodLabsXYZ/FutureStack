@@ -12,10 +12,7 @@ import UploadFiles from './UploadFiles';
 import { addFilesToLocalStorage } from "../../utils/localStorageUtils";
 import { StoreName } from "../../enums/storeEnums";
 import { SmallSpinner } from "./spinners";
-import { supabaseClient } from '../../lib'
-import { getSurvey } from '../../lib/queries'
-
-const surveyDiscount = 500000000;
+import { SurveyDiscounts } from '../../enums/discountEnums';
 
 const FileUploader: FunctionComponent = () => {
     const generalUploaderStore = store.namespace(StoreName.generalUploader)
@@ -59,7 +56,7 @@ const FileUploader: FunctionComponent = () => {
         console.log('current filesBytes :>> ', filesBytes);
         const newTotalBytes = filesBytes + bytes;
         console.log('newTotalBytes :>> ', newTotalBytes);
-        setFilesBytes(newTotalBytes - (completedSurvey ? surveyDiscount : 0));
+        setFilesBytes(newTotalBytes - (completedSurvey ? SurveyDiscounts.arweaveSurvey : 0));
         const newFilesCost = await getCostToSaveBytesInDollars(newTotalBytes);
         setFilesCost(newFilesCost);
     }
