@@ -17,7 +17,7 @@ const FrontPage = () => {
         </div>
       </div>
 
-      <div className='mt-48 sm:ml-48 w-96'>
+      <div className='mt-48 sm:ml-12 xl:ml-48 w-96'>
         <div className='font-semibold'>
           For a startup or idea to make it 
           in web3, your timing matters. 
@@ -38,7 +38,7 @@ const FrontPage = () => {
         </div>
       </div>
 
-      <div className='mt-48 sm:ml-60 sm:w-1/2'>
+      <div className='mt-48 sm:w-11/12 md:w-10/12 lg:w-8/12 xl:w-6/12 mx-auto'>
         <div className='float-left mr-6'>
           <Image
             src="/images/arweave-logo.png"
@@ -53,15 +53,18 @@ const FrontPage = () => {
           </div>
           <div className='mt-3'>
             Store files on-chain forever,
+            <br className='hidden sm:block' />
             no recurring costs or hassle.
           </div>
-          <div className='mt-3 text-lg'>
-          Leverage Arweave&apos;s permanent storage 
-          with our steamlined uploader. 
-          Pay once - store forever.
+          <div className='mt-3 text-lg sm:overflow-hidden'>
+            Leverage Arweave&apos;s permanent storage&nbsp; 
+            <br className='hidden sm:block' />
+            with our steamlined uploader.&nbsp; 
+            <br className='hidden sm:block' />
+            Pay once - store forever.
           </div>          
         </div>
-        <div className='text-center mt-6'>
+        <div className='text-center sm:text-left sm:pl-44 mt-6'>
           <TWButton
             classMap={{
               background: 'bg-indigo-800',
