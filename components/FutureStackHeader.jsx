@@ -44,26 +44,28 @@ const FutureStackHeader = ({ darkMode=false, user }) => {
           </span>
         }
         {!user &&
-          <NextLink href='/login'>
-            <a className='mr-6 font-light'>
-              Sign In
-            </a>
-          </NextLink>
-        }
-        <TWButton
-            classMap={{
-              rounded: 'rounded-full',
-              background: darkMode ? 'bg-white' : 'bg-slate-900',
-              padding: 'px-1',
-              font: 'font-light',
-            }}
-          >
-            <NextLink href='/register'>
-              <a className={`px-3 py-1 ${darkMode ? 'text-slate-900' : 'text-white'}`}>
-                Register
+          <>
+            <NextLink href='/login'>
+              <a className='mr-6 font-light'>
+                Sign In
               </a>
             </NextLink>
-          </TWButton>
+            <TWButton
+              classMap={{
+                rounded: 'rounded-full',
+                background: darkMode ? 'bg-white' : 'bg-slate-900',
+                padding: 'px-1',
+                font: 'font-light',
+              }}
+            >
+              <NextLink href='/register'>
+                <a className={`px-3 py-1 ${darkMode ? 'text-slate-900' : 'text-white'}`}>
+                  Register
+                </a>
+              </NextLink>
+            </TWButton>
+          </>
+        }
       </div>
     </TWCleanHeader>
   )

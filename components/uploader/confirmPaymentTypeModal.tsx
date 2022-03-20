@@ -3,6 +3,8 @@ import { Dispatch, Fragment, SetStateAction, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import EstimatedCost from './estimatedCost'
 import { XIcon } from '@heroicons/react/solid'
+import { ArweaveSurvey } from '../surveys'
+import ArweaveSurveyButton from './ArweaveSurveyButton'
 
 type ConfirmPaymentTypeModalProps = {
     open: boolean
@@ -12,6 +14,7 @@ type ConfirmPaymentTypeModalProps = {
 
 export default function ConfirmPaymentTypeModal(props: ConfirmPaymentTypeModalProps) {
     const cancelButtonRef = useRef(null)
+    const [survey, setSurvey] = useState(false)
 
     return (
         <Transition.Root show={props.open} as={Fragment}>
@@ -55,59 +58,73 @@ export default function ConfirmPaymentTypeModal(props: ConfirmPaymentTypeModalPr
                                     </button>
                                 </div>
                             </div>
-                            <div>
-                                <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                                    </svg>                </div>
-                                <div className="mt-3 text-center sm:mt-5">
-                                    <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                                        Ready to upload your images and metadata?
-                                    </Dialog.Title>
-                                    <div className="mt-2">
-                                        <p className="text-sm text-gray-500">
-                                            <EstimatedCost cost={props.cost} />
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="mt-5 sm:mt-6 sm:gap-3 sm:grid-flow-row-dense">
-                                <form action="/api/uploader/checkout_sessions" method="POST">
-                                    <button
-                                        type="submit"
-                                        role="link"
-                                        className="w-full flex items-center justify-center bg-black border border-transparent text-white rounded-md py-2 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-                                    >
-                                        <span className="sr-only">Pay with credit card</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                                        </svg>
-                                        <span className='ml-2'>Pay with credit card</span>
-                                    </button>
-
-                                    <div className="relative mt-4 mb-4">
-                                        <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                                            <div className="w-full border-t border-gray-200" />
-                                        </div>
-                                        <div className="relative flex justify-center">
-                                            <span className="px-4 bg-white text-sm font-medium text-gray-500">or</span>
+                            {survey ? (
+                                <ArweaveSurvey onCancel={() => setSurvey(false)} />
+                            ) : (
+                                <>
+                                    <div>                                
+                                        <div className="mt-3 text-center sm:mt-5">
+                                            <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
+                                                Ready to upload your images and metadata?
+                                            </Dialog.Title>
+                                            <div className="mt-2">
+                                                <div className="text-sm text-gray-500">
+                                                    <EstimatedCost cost={props.cost} minimumWarning={true} />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                    <div className="mt-5 sm:mt-6 sm:gap-3 sm:grid-flow-row-dense">
+                                        <form action="/api/uploader/checkout_sessions" method="POST">
+                                            <button
+                                                type="submit"
+                                                role="link"
+                                                className="w-full flex items-center justify-center bg-black border border-transparent text-white rounded-md py-2 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                                            >
+                                                <span className="sr-only">Pay with credit card</span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                                </svg>
+                                                <span className='ml-2'>Pay with credit card</span>
+                                            </button>
 
-                                    {/* Pay with Crypto not yet built, so type=button for now. */}
-                                    <button
-                                        type="button"
-                                        role="link"
-                                        className="w-full flex items-center justify-center bg-black border border-transparent text-white rounded-md py-2 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
-                                    >
-                                        <span className="sr-only">Pay with crypto</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                        </svg>
-                                        <span className='ml-2'>Pay with crypto</span>
-                                    </button>
-                                </form>
-                            </div>
+                                            <div className="relative mt-4 mb-4">
+                                                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                                                    <div className="w-full border-t border-gray-200" />
+                                                </div>
+                                                <div className="relative flex justify-center">
+                                                    <span className="px-4 bg-white text-sm font-medium text-gray-500">or</span>
+                                                </div>
+                                            </div>
+
+                                            {/* Pay with Crypto not yet built, so type=button for now. */}
+                                            <button
+                                                type="button"
+                                                role="link"
+                                                className="w-full flex items-center justify-center bg-slate-600 border border-transparent text-slate-400 rounded-md py-2 "
+                                            >
+                                                <span className="sr-only">Pay with crypto</span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                </svg>
+                                                <span className='ml-2'>Pay with crypto</span>
+                                            </button>
+                                            <div className='text-center'>Coming Soon!</div>
+
+                                            <div className="relative mt-4 mb-4">
+                                                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                                                    <div className="w-full border-t border-gray-200" />
+                                                </div>
+                                                <div className="relative flex justify-center">
+                                                    <span className="px-4 bg-white text-sm font-medium text-gray-500">or</span>
+                                                </div>
+                                            </div>
+
+                                            <ArweaveSurveyButton onClick={() => setSurvey(true)} />
+                                        </form>
+                                    </div>
+                                </>
+                            )}
                         </div>
                     </Transition.Child>
                 </div>

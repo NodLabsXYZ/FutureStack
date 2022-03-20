@@ -33,22 +33,24 @@ export default class UploadImages extends Component {
 
   render() {
     const files = (
-      <ul role="list" className="grid grid-cols-4 gap-x-4 gap-y-8 sm:grid-cols-7 sm:gap-x-6 lg:grid-cols-10 xl:gap-x-8">
+      <div className='flex flex-wrap'>
         {this.state.files.map((file) => (
-          <li key={file.name} className="relative">
-            <div className="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
-              <Image 
+          <div key={`image-file-${file.name}`}>
+            <div className="border rounded mr-6">
+            <Image 
                 src={file.preview} 
                 alt="" 
                 className="object-cover pointer-events-none" 
-                layout="fill"
+                layout="intrinsic"
+                height={150}
+                width={150}
               />
             </div>
             <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">{file.name}</p>
             <p className="block text-sm font-medium text-gray-500 pointer-events-none">{formatBytes(file.size)}</p>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     );
 
     if (this.state.isDropComplete) {

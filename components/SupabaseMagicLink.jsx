@@ -46,7 +46,7 @@ const SupabaseMagicLink = () => {
         </h3>
         <input
           type='text'
-          className='border px-3 py-1 mb-3 w-full'
+          className='border px-3 py-1 mb-3 w-full text-slate-900'
           onChange={(e) => setEmail(e.target.value)}
           placeholder='Email'
           value={email}

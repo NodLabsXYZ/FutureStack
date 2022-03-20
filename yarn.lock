@@ -9454,6 +9454,11 @@ supports-preserve-symlinks-flag@^1.0.0:
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
+survey-react@^1.9.20:
+  version "1.9.20"
+  resolved "https://registry.yarnpkg.com/survey-react/-/survey-react-1.9.20.tgz#7de0318c233d2f99e553aceeb78e5829f212f503"
+  integrity sha512-nnBmEVWkybUweLLMMR8gFWrcq7eg0/hdJdX1jaCI1AD6Oyuo5ifz5ogJVM49cvw1PfIIUpO5lCuQjoEr6qT/7w==
+
 "sylvester@>= 0.0.12", "sylvester@>= 0.0.8":
   version "0.0.21"
   resolved "https://registry.yarnpkg.com/sylvester/-/sylvester-0.0.21.tgz#2987b1ce2bd2f38b0dce2a34388884bfa4400ea7"
