@@ -4,7 +4,7 @@ import TWButton from "./TWButton";
 
 const FrontPage = () => {
   return (
-    <div className='p-12 text-2xl font-thin text-white'>
+    <div className='py-12 md:px-12 text-2xl font-thin text-white'>
       
       <div className='pt-24 w-96 mx-auto'>
         <div>web3 infrastructure and services</div>
@@ -17,7 +17,7 @@ const FrontPage = () => {
         </div>
       </div>
 
-      <div className='mt-48 ml-48 w-96'>
+      <div className='mt-48 sm:ml-48 w-96'>
         <div className='font-semibold'>
           For a startup or idea to make it 
           in web3, your timing matters. 
@@ -38,7 +38,7 @@ const FrontPage = () => {
         </div>
       </div>
 
-      <div className='mt-48 ml-60 w-1/2'>
+      <div className='mt-48 sm:ml-60 sm:w-1/2'>
         <div className='float-left mr-6'>
           <Image
             src="/images/arweave-logo.png"
@@ -52,7 +52,7 @@ const FrontPage = () => {
             Arweave Uploader
           </div>
           <div className='mt-3'>
-            Store files on-chain forever,<br/>
+            Store files on-chain forever,
             no recurring costs or hassle.
           </div>
           <div className='mt-3 text-lg'>
@@ -77,8 +77,8 @@ const FrontPage = () => {
         </div>        
       </div>
 
-      <div className='mt-48 pr-24 flex justify-between relative'>
-        <div className='opacity-30 -mt-12'>
+      <div className='mt-48 sm:pr-24 flex justify-between relative'>
+        <div className='hidden sm:block opacity-30 -mt-12'>
           <Image
             src="/images/stacks.png"
             alt="Stacks"
@@ -86,18 +86,16 @@ const FrontPage = () => {
             height={377}          
           />
         </div>
-        <div className='float-right'>
+        <div className='float-right sm:w-96 sm:mr-24'>
           <div className='font-semibold'>
             Private Hosted Blockchain
           </div>
           <div className='mt-3'>
             Share access with your team and customers,
-            <br/>
             keep control and privacy.
           </div>
           <div className='mt-3 text-lg'>
             Fully control a hosted blockchain. Manage access and
-            <br/>
             easily automate testing. No more faucets!
           </div>          
           <div className='text-center mt-6'>
@@ -112,7 +110,7 @@ const FrontPage = () => {
         </div>
       </div>
 
-      <div className='mt-72 flex w-1/2 mx-auto'>
+      <div className='mt-72 flex text-center sm:w-1/2 mx-auto'>
         <div className=''>
           <div className='font-semibold'>
             New web3 services and infrastructure coming soon.
