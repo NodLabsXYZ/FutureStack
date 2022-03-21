@@ -99,7 +99,7 @@ function NftUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
                     className='underline text-blue-600 visited:text-purple-600'
                     href={exampleMetadataURI}
                     target='_blank'
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                 >
                     {exampleMetadataURI}
                 </a>
@@ -132,7 +132,7 @@ function FileUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
                     className='underline text-blue-600 visited:text-purple-600'
                     href={exampleFileURI}
                     target='_blank'
-                    rel="noreferrer"
+                    rel="noopener noreferrer"
                 >
                     {exampleFileURI}
                 </a>

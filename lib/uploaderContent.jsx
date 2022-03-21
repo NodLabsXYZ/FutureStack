@@ -43,7 +43,7 @@ const uploaderContent = {
       Any public and private blockchain can reference Arweave URLs.
       NFT metadata can be stored and queried by marketplaces like OpenSea with no extra configuration
       as long as it complies with&nbsp;
-      <a href="https://docs.opensea.io/docs/metadata-standards" target='_blank' rel="noreferrer" className="text-blue-600 visited:text-purple-600">
+      <a href="https://docs.opensea.io/docs/metadata-standards" target='_blank' rel="noopener noreferrer" className="text-blue-600 visited:text-purple-600">
           OpenSea&apos;s Metadata Standards
       </a>.
     </p>
@@ -57,7 +57,7 @@ const uploaderContent = {
         </ul>
         <p>
             Before uploading your metadata, make sure it complies with&nbsp;
-            <a href="https://docs.opensea.io/docs/metadata-standards" target='_blank' rel="noreferrer" className="text-blue-600 visited:text-purple-600">
+            <a href="https://docs.opensea.io/docs/metadata-standards" target='_blank' rel="noopener noreferrer" className="text-blue-600 visited:text-purple-600">
                 OpenSea&apos;s Metadata Standards
             </a>
             &nbsp;if your NFTs will be on Ethereum or Polygon.
@@ -135,7 +135,7 @@ const uploaderContent = {
             <a
                 href={exampleMetadataLink}
                 target='_blank'
-                rel="noreferrer"
+                rel="noopener noreferrer"
             >
                 {exampleMetadataLink}
             </a>
