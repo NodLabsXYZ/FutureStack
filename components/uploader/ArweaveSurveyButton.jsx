@@ -11,7 +11,7 @@ const ArweaveSurveyButton = ({ onClick }) => {
     onClick()
   }
 
-  if (survey?.results?.claimed) {
+  if (survey?.results?.claimedAt) {
     return <></>
   }
 

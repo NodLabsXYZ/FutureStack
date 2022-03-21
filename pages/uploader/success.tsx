@@ -6,6 +6,7 @@ import { CopyBlock, dracula } from "react-code-blocks";
 import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 import ContractTokenUriDisplay from '../../components/uploader/ContractUriDisplay';
+import { updateSurvey } from '../../lib/queries';
 
 type UploadResultDisplayProps = {
     baseURI: string,
@@ -141,9 +142,11 @@ function FileUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
 }
 
 export default function UploadSuccess({ Component, pageProps }: AppProps) {
+    const surveyStore = store.namespace(StoreName.survey);
     const [baseURI, setBaseURI] = useState<string>();
     const [fileNames, setFileNames] = useState<string[]>([]);
     const [uploadType, setUploadType] = useState<StoreName>();
+
     useEffect(() => {
         if (window) {
             const generalUploaderStore = store.namespace(StoreName.generalUploader);
@@ -158,6 +161,16 @@ export default function UploadSuccess({ Component, pageProps }: AppProps) {
             setUploadType(uploadTypeFromLocal);
         }
     }, []);
+
+    useEffect(() => {
+        const survey = surveyStore('arweave');
+        if (survey) {
+            survey.results.claimedAt = new Date().toISOString();
+            updateSurvey(survey.id, survey);
+            surveyStore('arweave', survey);
+        }
+    }, [surveyStore])
+
     return (
         <div>
             <main className={styles.main}>
