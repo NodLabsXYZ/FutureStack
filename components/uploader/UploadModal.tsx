@@ -12,11 +12,18 @@ type ConfirmPaymentTypeModalProps = {
 }
 
 export default function UploadModal(props: ConfirmPaymentTypeModalProps) {
+    const [canClose, setCanClose] = useState(true);
     const cancelButtonRef = useRef(null)
+
+    const closeModalIfAllowed = () => {
+        if (canClose) {
+            props.setOpen(false);
+        }
+    }
 
     return (
         <Transition.Root show={props.open} as={Fragment}>
-            <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={props.setOpen}>
+            <Dialog as="div" className="fixed z-10 inset-0 overflow-y-auto" initialFocus={cancelButtonRef} onClose={closeModalIfAllowed}>
                 <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
                     <Transition.Child
                         as={Fragment}
@@ -43,23 +50,11 @@ export default function UploadModal(props: ConfirmPaymentTypeModalProps) {
                         leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                         leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                     >
-                        <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
-                            <div className="ml-auto pl-3">
-                                <div className="-mx-1.5 -my-1.5">
-                                    <button
-                                        type="button"
-                                        className="inline-flex rounded-md p-1.5 focus:outline-none focus:ring-2 focus:ring-offset-2 "
-                                        onClick={() => props.setOpen(false)}
-                                    >
-                                        <span className="sr-only">Dismiss</span>
-                                        <XIcon className="h-5 w-5" aria-hidden="true" />
-                                    </button>
-                                </div>
-                            </div>
-
+                        <div className="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
                             <UploadModalContent
                                 cost={props.cost}
                                 title={props.title}
+                                setCanClose={setCanClose}
                             />
                         </div>
                     </Transition.Child>

@@ -2,6 +2,7 @@ import { useState, useEffect, Dispatch, SetStateAction } from "react";
 import { Appearance, loadStripe, Stripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import CheckoutForm from "./CheckoutForm";
+import { LargeSpinner } from "./spinners";
 
 type CheckoutProps = {
     // Consider adding in the Stripe promise here to reduce load time
@@ -11,7 +12,7 @@ type CheckoutProps = {
 
 export default function Checkout(props: CheckoutProps) {
     const [clientSecret, setClientSecret] = useState("");
-
+    const [loading, setLoading] = useState(true);
     const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
     useEffect(() => {
@@ -22,7 +23,9 @@ export default function Checkout(props: CheckoutProps) {
             body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
         })
             .then((res) => res.json())
-            .then((data) => setClientSecret(data.clientSecret));
+            .then((data) => {
+                setClientSecret(data.clientSecret);
+            });
     }, []);
 
     const appearance: Appearance = {
@@ -34,12 +37,18 @@ export default function Checkout(props: CheckoutProps) {
     };
 
     return (
-        <div className="App">
-            {clientSecret && (
+        <>
+            {clientSecret ? (
                 <Elements options={options} stripe={stripePromise}>
-                    <CheckoutForm setBeginUpload={props.setBeginUpload} />
+                    <CheckoutForm
+                        setBeginUpload={props.setBeginUpload}
+                        setCheckoutComponentLoading={setLoading}
+                    />
                 </Elements>
-            )}
-        </div>
+            ) : (
+                <LargeSpinner />
+            )
+        }
+        </>
     );
 }

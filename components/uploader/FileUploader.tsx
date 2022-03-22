@@ -5,7 +5,7 @@ import { formatBytes } from '../../utils/formatters';
 import { getCostToSaveBytesInDollars } from '../../utils/costEstimator'
 import EstimatedCost from './estimatedCost'
 import UploadFilesModal from './UploadFilesModal';
-import Error from './error';
+import ErrorBanner from './ErrorBanner';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import store from 'store2';
 import UploadFiles from './UploadFiles';
@@ -83,7 +83,7 @@ const FileUploader: FunctionComponent = () => {
     return (
         <div className={styles.container}>
             <main className={styles.main}>
-                <Error showError={errorMessage} message={errorMessage} />
+                <ErrorBanner showError={errorMessage} message={errorMessage} />
                 <UploadFiles addFiles={addFiles} updateFilesBytes={updateFilesBytes} />
                 <br />
                 {
