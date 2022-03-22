@@ -7,6 +7,9 @@ import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 import { TempNftData, TempFileData } from '../../types/TempData';
 
+import { WebBundlr } from "@bundlr-network/client";
+import { ethers } from 'ethers';
+
 type UploadData = {
     baseURI: string,
     metadataFileNames: string[]
@@ -58,7 +61,62 @@ const handleUploadNfts = async (
     saveResultToLocalStorageAndRouteToSuccess(router, StoreName.nftUploader, baseURI, metadataFileNames)
 }
 
+const pushToArweave = async (file, tags) => {
+    // const provider = ethers.getDefaultProvider()
+    // console.log("PROVIDER", provider)
+
+    let serverSignature;
+    const provider = {
+        publicKey: {
+            toBuffer: () => Buffer.from([0x62, 0x75, 0x66, 0x66, 0x65, 0x72, 0x62, 0x75, 0x66, 0x66, 0x65, 0x72, 0x62, 0x75, 0x66, 0x66, 0x65, 0x72, 0x62, 0x75, 0x66, 0x66, 0x65, 0x72, 0x62, 0x75, 0x66, 0x66, 0x65, 0x72, 0x65, 0x72]),
+            byteLength: 32
+        },
+        signMessage: (message) => {
+            return serverSignature;
+        }
+    }
+
+    const bundlr = new WebBundlr("https://node1.bundlr.network", "solana", provider);
+
+    // const tags = [{ name: "Type", value: "manifest" }, { name: "Content-Type", value: "application/x.arweave-manifest+json" }];
+
+    // const manifest = {"manifest":"arweave/paths","version":"0.1.0","index":{"path":"basten.jpg"},"paths":{"basten.jpg":{"id":"cu2RWNO8T6t2zZ6f9FTIY5S_GY5A19jWfGp-fKBEAxk"},"baresi.jpg":{"id":"CJtmESbh5hRuc2KoykrM16ersMN9PrOhfgHIEiYP1AU"},"higuita.jpg":{"id":"Ql6IX6NCPXh-54BHVdZ18GePeeq2FseaK0tL3tWW4OU"},"brehme.jpg":{"id":"jhhWLDDLTILAgXMoXD0rpEE2VXxF9mS2Hjxul6M98rg"}}}
+
+    const transaction = bundlr.createTransaction(file, { tags });
+
+    const signature = await transaction.getSignatureData()
+
+    const result = await fetch(
+        '/api/uploader/bundlr_signature', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ signature })    
+        }
+    )
+
+    const { signed } = await result.json();
+
+    const serverSignedArray = []
+
+    for (let i = 0; i < Object.keys(signed).length; i++) {
+        serverSignedArray.push(signed[i])
+    }
+
+    serverSignature = new Uint8Array(serverSignedArray)
+
+    transaction.getRaw().set(serverSignature, 2)
+
+    // await transaction.sign();
+    await transaction.upload();  
+}
+
+
 const uploadBulk = async (objects: TempFileData[] | TempNftData[], uploadEndpoint: string): Promise<UploadData> => {
+    
+    
+    
     const formData = new FormData();
     for (let index = 0; index < objects.length; index++) {
         const obj = objects[index];

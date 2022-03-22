@@ -4,6 +4,9 @@ import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 import { ArweaveLayout } from '../../components/uploader';
 
+import { WebBundlr } from "@bundlr-network/client";
+import { ethers } from 'ethers';
+
 type UploadCardContent = {
   header: string,
   subHeader: string,
@@ -46,6 +49,62 @@ const ArweavePage = () => {
       }
     }
   }, []);
+
+
+  // useEffect(() => {
+  //   const pushToArweave = async () => {
+  //     // const provider = ethers.getDefaultProvider()
+  //     // console.log("PROVIDER", provider)
+
+  //     let serverSignature;
+  //     const provider = {
+  //       publicKey: {
+  //         toBuffer: () => Buffer.from([0x35, 0x24, 0xa8, 0xda, 0xea, 0xcf, 0xb0, 0x63, 0x56, 0xd9, 0x0d, 0xf7, 0x63, 0x86, 0x23, 0xe9, 0x7d, 0x63, 0x33, 0x7b, 0xa5, 0x84, 0x20, 0x9c, 0x43, 0xbe, 0xb3, 0xd6, 0x62, 0x06, 0x48, 0x15]),
+  //         byteLength: 32
+  //       },
+  //       signMessage: (message) => {
+  //         return serverSignature;
+  //       }
+  //     }
+
+  //     const bundlr = new WebBundlr("https://node1.bundlr.network", "solana", provider);
+
+  //     const tags = [{ name: "Type", value: "manifest" }, { name: "Content-Type", value: "application/x.arweave-manifest+json" }];
+    
+  //     const manifest = {"manifest":"arweave/paths","version":"0.1.0","index":{"path":"basten.jpg"},"paths":{"basten.jpg":{"id":"cu2RWNO8T6t2zZ6f9FTIY5S_GY5A19jWfGp-fKBEAxk"},"baresi.jpg":{"id":"CJtmESbh5hRuc2KoykrM16ersMN9PrOhfgHIEiYP1AU"},"higuita.jpg":{"id":"Ql6IX6NCPXh-54BHVdZ18GePeeq2FseaK0tL3tWW4OU"},"brehme.jpg":{"id":"jhhWLDDLTILAgXMoXD0rpEE2VXxF9mS2Hjxul6M98rg"}}}
+    
+  //     const transaction = bundlr.createTransaction(JSON.stringify(manifest), { tags });
+      
+  //     const signature = await transaction.getSignatureData()
+
+  //     const result = await fetch(
+  //       '/api/uploader/bundlr_signature', {
+  //         method: "POST",
+  //         headers: {
+  //           'Content-Type': 'application/json'
+  //         },
+  //         body: JSON.stringify({ signature })    
+  //       }
+  //     )
+
+  //     const { signed } = await result.json();
+    
+  //     const serverSignedArray = []
+
+  //     for (let i = 0; i < Object.keys(signed).length; i++) {
+  //       serverSignedArray.push(signed[i])
+  //     }
+
+  //     serverSignature = new Uint8Array(serverSignedArray)
+
+  //     transaction.getRaw().set(serverSignature, 2)
+
+  //     const response = await transaction.upload();  
+  //     console.log("RESPONSE", response.data)
+  //   }
+
+  //   pushToArweave();
+  // }, [])
 
   return (
     <ArweaveLayout title='Uploader'>

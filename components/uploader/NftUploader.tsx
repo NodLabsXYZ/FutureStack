@@ -43,7 +43,7 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
   const updateMetadataBytes = async (bytes: number) => {
     console.log('updateMetadataBytes :>> ', bytes);
     setMetadataBytes(bytes);
-    calculateCost();
+  calculateCost();
   }
 
   const calculateCost = async () => {

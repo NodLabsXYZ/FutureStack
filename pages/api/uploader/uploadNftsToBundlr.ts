@@ -62,7 +62,9 @@ const uploadNftsToBundlr = async (
 
     const tempNftObjects = getTempNftObjects(nftObjectIds, data, tempId);
 
+    console.log("MOVE1")
     moveImagesToTempDir(tempNftObjects);
+    console.log("MOVE2")
 
     await fundBundlrAccountIfNecessary(BUNDLR, imageTempDir);
 
@@ -141,6 +143,10 @@ function getTempNftObjects(nftObjectIds: string[], data: any, tempId: string): T
 function moveImagesToTempDir(tempNftObjects: TempNftObject[]) {
     for (let index = 0; index < tempNftObjects.length; index++) {
         const tempNftObject = tempNftObjects[index];
+
+        console.log("CLIENTEXISTS", existsSync(tempNftObject.clientTempImagePath), tempNftObject.clientTempImagePath)
+        console.log("SERVEREXISTS", existsSync(tempNftObject.serverTempImagePath), tempNftObject.serverTempImagePath)
+
         renameSync(
             tempNftObject.clientTempImagePath,
             tempNftObject.serverTempImagePath
