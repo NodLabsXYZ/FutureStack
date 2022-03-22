@@ -4,7 +4,7 @@ import { NftObject } from '../../types/NftObject'
 import NftObjectGrid from './nftObjectGrid'
 import NftObjectViewerModal from './nftObjectViewerModal'
 import { useState } from 'react'
-import ConfirmPaymentTypeModal from './confirmPaymentTypeModal'
+import UploadModal from './UploadModal'
 
 
 type ConfirmUploadProps = {
@@ -36,7 +36,8 @@ export default function ConfirmUpload(props: ConfirmUploadProps) {
                     setNftToShow={setNftToShow}
                 />
 
-                <br /><button
+                <br />
+                <button
                     type="button"
                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     onClick={() => setOpenConfirmPaymentTypeModal(true)}
@@ -52,10 +53,11 @@ export default function ConfirmUpload(props: ConfirmUploadProps) {
                 nftToShow={nftToShow}
             />
 
-            <ConfirmPaymentTypeModal
+            <UploadModal
                 open={openConfirmPaymentTypeModal}
                 setOpen={setOpenConfirmPaymentTypeModal}
                 cost={props.cost}
+                title='Ready to upload your images and metadata?'
             />
         </div>
 

@@ -6,8 +6,8 @@ import { formatBytes } from '../../utils/formatters';
 import UploadMetadata from './uploadMetadata'
 import { getCostToSaveBytesInDollars } from '../../utils/costEstimator'
 import EstimatedCost from './estimatedCost'
-import Error from './error';
-import ConfirmUpload from './confirmUpload';
+import ErrorBanner from './ErrorBanner';
+import ConfirmUpload from './ConfirmUpload';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import { createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
@@ -50,7 +50,7 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
     let totalBytes = imageBytes + metadataBytes;
     const survey = surveyStore('arweave');
 
-    if (survey.verified && !survey.results?.claimedAt) {
+    if (survey?.verified && !survey?.results?.claimedAt) {
       totalBytes = totalBytes - SurveyDiscounts.arweaveSurvey;
     }
 
@@ -93,7 +93,7 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
     return (
       <div className={styles.container}>
         <main className={styles.main}>
-          <Error showError={errorMessage} message={errorMessage} />
+          <ErrorBanner showError={errorMessage} message={errorMessage} />
           <br />
           <UploadImages setImageFiles={setImageFiles} updateImageBytes={updateImageBytes} />
           <br />

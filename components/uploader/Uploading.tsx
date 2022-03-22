@@ -1,11 +1,15 @@
 import { NextRouter, useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { LargeSpinner } from '../../components/uploader/spinners';
+import { Dispatch, SetStateAction, useState } from 'react';
+import { LargeSpinner } from './spinners';
 import styles from '../../styles/Home.module.css'
-import { FAKE_BUNDLR } from '../../utils/constants';
 import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 import { TempNftData, TempFileData } from '../../types/TempData';
+import { ErrorType } from '../../enums/errorEnums';
+
+type UploadingProps = {
+    setError: Dispatch<SetStateAction<ErrorType>>
+}
 
 import { WebBundlr } from "@bundlr-network/client";
 import { ethers } from 'ethers';
@@ -164,18 +168,18 @@ const routeToSuccessIfUploadComplete = (router: NextRouter): boolean => {
     }
 }
 
-const handleUploadError = (error: Error, router: NextRouter) => {
-    console.error('Upload failed:');
-    console.error(error);
-    router.push('/uploader/error');
-}
 
-
-export default function Uploading() {
+export default function Uploading(props: UploadingProps) {
     const router = useRouter();
     const generalUploadStore = store.namespace(StoreName.generalUploader);
 
     const [isUploading, setIsUploading] = useState(false);
+
+    const handleUploadError = (error: Error) => {
+        console.error('Upload failed:');
+        console.error(error);
+        props.setError(ErrorType.upload);
+    }
 
     const isLocalStorageAvailable = typeof window !== "undefined";
     if (isLocalStorageAvailable && !isUploading) {
@@ -190,16 +194,16 @@ export default function Uploading() {
             setIsUploading(true);
             if (uploadType === StoreName.nftUploader) {
                 const nftObjects = getNfts();
-                handleUploadNfts(nftObjects, router).catch(error => handleUploadError(error, router));
+                handleUploadNfts(nftObjects, router).catch(error => handleUploadError(error));
             } else if (uploadType === StoreName.filesUploader) {
                 const files = getFiles();
-                handleUploadFiles(files, router).catch(error => handleUploadError(error, router));
+                handleUploadFiles(files, router).catch(error => handleUploadError(error));
             } else {
                 throw new Error("Error reading nextUploadType from local storage");
             }
         } catch (error) {
             console.error(error);
-            router.push('/error');
+            props.setError(ErrorType.generic)
         }
     }
 
@@ -213,18 +217,6 @@ export default function Uploading() {
                     <br />
                     <br />
                     <p>Please wait while your images and metadata are being uploaded to Arweave.</p>
-                    {
-                        FAKE_BUNDLR ?
-                            (
-                                <>
-                                    <br />
-                                    <br />
-                                    <strong>The Bundlr call is being stubbed. To actually call bundlr, change the <code>FAKE_BUNDLR</code> value in <code>/utils/constants.ts</code>
-                                    </strong>
-                                </>
-                            ) :
-                            (<></>)
-                    }
                 </div>
             </main>
         </div>
