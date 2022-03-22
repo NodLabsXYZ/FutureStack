@@ -50,7 +50,7 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
     let totalBytes = imageBytes + metadataBytes;
     const survey = surveyStore('arweave');
 
-    if (survey.verified && !survey.results?.claimedAt) {
+    if (survey?.verified && !survey?.results?.claimedAt) {
       totalBytes = totalBytes - SurveyDiscounts.arweaveSurvey;
     }
 

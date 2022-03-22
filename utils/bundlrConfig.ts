@@ -22,7 +22,7 @@ export const BUNDLR = new Bundlr(BUNDLR_NODE_URL, CHOSEN_BUNDLR_CURRENCY, PRIVAT
 
 function getKeyFromEnv(keyEnvVarName: string): string {
     if (process.env[keyEnvVarName] === '' || !process.env[keyEnvVarName]) {
-        throw new Error(`No ${keyEnvVarName}. Set ${keyEnvVarName} environment variable.`);
+        throw new Error(`Set ${keyEnvVarName} environment variable.`);
     }
     return process.env[keyEnvVarName];
 }
