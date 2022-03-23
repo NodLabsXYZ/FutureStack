@@ -56,12 +56,23 @@ export default class UploadMetadata extends Component {
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.files.map((file, fileIdx) => (
+                    {this.state.files.slice(0, 12).map((file, fileIdx) => (
                       <tr key={file.name} className={fileIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{file.name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatBytes(file.size)}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {file.name}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          {formatBytes(file.size)}
+                        </td>
                       </tr>
                     ))}
+                    {this.state.files.length > 12 && (
+                      <tr className="">
+                        <td colSpan={2} className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          Plus {this.state.files.length - 12} more files...
+                        </td>
+                      </tr>
+                    )}
                   </tbody>
                 </table>
               </div>

@@ -7,7 +7,7 @@ import UploadMetadata from './uploadMetadata'
 import { getCostToSaveBytesInDollars } from '../../utils/costEstimator'
 import EstimatedCost from './estimatedCost'
 import ErrorBanner from './ErrorBanner';
-import ConfirmUpload from './confirmUpload';
+import ConfirmUpload from './ConfirmUpload';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import { createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
@@ -108,7 +108,7 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
           {
             cost !== 0 && (
               <div>
-                <EstimatedCost cost={cost} />
+                <EstimatedCost cost={cost * 1.1} />
               </div>
             )
           }

@@ -21,7 +21,7 @@ export default function NftObjectGrid(props: NftObjectGridProps) {
 
     return (
         <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {nftObjects.map((nftObj: NftObject, index: number) => (
+            {nftObjects.slice(0,12).map((nftObj: NftObject, index: number) => (
                 <li
                     key={index}
                     className="cursor-pointer group col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200"

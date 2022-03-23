@@ -4,8 +4,6 @@ import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 import { ArweaveLayout } from '../../components/uploader';
 
-import { upload } from '../../lib/bundlr';
-
 type UploadCardContent = {
   header: string,
   subHeader: string,
