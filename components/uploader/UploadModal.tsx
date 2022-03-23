@@ -3,12 +3,14 @@ import { Dispatch, Fragment, SetStateAction, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { XIcon } from '@heroicons/react/solid'
 import UploadModalContent from './UploadModalContent'
+import { NftObject } from '../../types/NftObject'
 
 type ConfirmPaymentTypeModalProps = {
     open: boolean
     setOpen: Dispatch<SetStateAction<boolean>>,
     title: string,
-    cost: number
+    cost: number,
+    nfts: NftObject[]
 }
 
 export default function UploadModal(props: ConfirmPaymentTypeModalProps) {
@@ -55,6 +57,7 @@ export default function UploadModal(props: ConfirmPaymentTypeModalProps) {
                                 cost={props.cost}
                                 title={props.title}
                                 setCanClose={setCanClose}
+                                nfts={props.nfts}
                             />
                         </div>
                     </Transition.Child>

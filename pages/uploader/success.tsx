@@ -7,6 +7,7 @@ import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 import ContractTokenUriDisplay from '../../components/uploader/ContractUriDisplay';
 import { updateSurvey } from '../../lib/queries';
+import { ARWEAVE_BASE_URL } from 'arweave-nft-uploader/lib/constants';
 
 type UploadResultDisplayProps = {
     baseURI: string,

@@ -8,16 +8,18 @@ import { ArweaveSurvey } from "../surveys";
 import Checkout from "./Checkout";
 import PaymentTypeSelector from "./PaymentTypeSelector";
 import { useRouter } from "next/router";
+import { NftObject } from "../../types/NftObject";
 
 type UploadModalContentProps = {
     title: string,
     cost: number,
-    setCanClose: Dispatch<SetStateAction<boolean>>
+    setCanClose: Dispatch<SetStateAction<boolean>>,
+    nfts: NftObject[]
 }
 
 export default function UploadModalContent(props: UploadModalContentProps) {
     const router = useRouter();
-    
+
     const [survey, setSurvey] = useState(null)
     const [isPaymentTypeChosen, setIsPaymentTypeChosen] = useState(false);
     const [beginUpload, setBeginUpload] = useState(false);
@@ -47,14 +49,17 @@ export default function UploadModalContent(props: UploadModalContentProps) {
                         subheading="The team has been notified and we'll get to it right away. You can also:"
                         primaryButtonText="Start over"
                         primaryButtonCallbackFn={() => router.push('/')}
-                        />
+                    />
                 )
         }
     }
 
     if (beginUpload) {
         props.setCanClose(false)
-        return <Uploading setError={setError} />
+        return <Uploading
+            setError={setError}
+            nfts={props.nfts}
+        />
     }
 
     if (survey) {
