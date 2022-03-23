@@ -1,6 +1,6 @@
 import { Dialog } from "@headlessui/react"
 import { Dispatch, SetStateAction } from "react"
-import EstimatedCost from "./estimatedCost"
+import EstimatedCost from "./EstimatedCost"
 
 type PaymentTypeSelectionProps = {
     title: string,

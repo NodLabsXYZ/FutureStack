@@ -2,8 +2,7 @@ import { FunctionComponent } from "react"
 import styles from '../../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import { formatBytes } from "../../lib/formatters"
-import EstimatedCost from './estimatedCost'
-import UploadFilesModal from './UploadFilesModal';
+import EstimatedCost from './EstimatedCost'
 import ErrorBanner from './ErrorBanner';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import store from 'store2';
@@ -62,10 +61,6 @@ const FileUploader: FunctionComponent = () => {
         setPurchasePriceInCents(newFilesCost);
     }
 
-    /*
-        I'd rather save the files to local storage when the user clicks "pay with credit card"
-        in UploadFilesModal.tsx, but I can't figure out how to do that before Stripe does it's redirect.
-    */
     const continueToUpload = async () => {
         setLoading(true);
 

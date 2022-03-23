@@ -10,7 +10,7 @@ import PaymentTypeSelector from "./PaymentTypeSelector";
 import { useRouter } from "next/router";
 import { FileToUpload, NftObject } from "../../types/NftObject";
 import { Dialog } from "@headlessui/react";
-import EstimatedCost from "./estimatedCost";
+import EstimatedCost from "./EstimatedCost";
 
 type UploadModalContentProps = {
     title: string,
@@ -77,7 +77,7 @@ export default function UploadModalContent(props: UploadModalContentProps) {
                 </Dialog.Title>
                 <div className="mt-2">
                     <div className="text-m text-gray-500">
-                        <EstimatedCost costInCents={props.purchasePriceInCents} minimumWarning={true} />
+                        <EstimatedCost costInCents={props.purchasePriceInCents} />
                     </div>
                 </div>
             </div>

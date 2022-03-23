@@ -3,26 +3,50 @@ import styles from '../../styles/Home.module.css'
 import { NftObject } from '../../types/NftObject'
 import NftObjectGrid from './nftObjectGrid'
 import NftObjectViewerModal from './nftObjectViewerModal'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import UploadModal from './UploadModal'
+import calculatePurchasePrice from '../../lib/bundlr/calculatePurchasePrice'
+import EstimatedCost from './EstimatedCost'
+import store from 'store2'
+import { SurveyDiscounts } from '../../enums/discountEnums'
+import { StoreName } from '../../enums/storeEnums'
+import calculatePurchasePriceInCents from '../../lib/bundlr/calculatePurchasePrice'
 
 
 type ConfirmUploadProps = {
     nftObjects: NftObject[]
-    purchasePrice: number
+    totalBytes: number
 }
 
 export default function ConfirmUpload(props: ConfirmUploadProps) {
+    const surveyStore = store.namespace(StoreName.survey);
+
     const [openNftViewerModal, setOpenNftViewerModal] = useState(false);
     const [openConfirmPaymentTypeModal, setOpenConfirmPaymentTypeModal] = useState(false);
     const [nftToShow, setNftToShow] = useState<NftObject>();
+    const [purchasePriceInCents, setPurchasePriceInCents] = useState(0);
+
+    useEffect(() => {
+        setPurchasePriceInCents(calculatePurchasePrice(props.totalBytes));
+    }, []);
+
+
+    const calculatePurchasePrice = (totalBytes: number): number => {
+        const survey = surveyStore('arweave');
+
+        if (survey?.verified && !survey?.results?.claimedAt) {
+            totalBytes = totalBytes - SurveyDiscounts.arweaveSurvey;
+        }
+
+        return calculatePurchasePriceInCents(totalBytes);
+    }
 
     return (
         <div>
             <main className={styles.main}>
                 <div className='text-sm max-w-prose prose prose-indigo margin-auto'>
                     <p className='pt-3'>
-                        Please confirm that the images and metadata have been combined together successfully. 
+                        Please confirm that the images and metadata have been combined together successfully.
                         Click an image to view its full metadata.
                     </p>
                     <p className='pt-3'>
@@ -35,6 +59,9 @@ export default function ConfirmUpload(props: ConfirmUploadProps) {
                     setOpenNftViewerModal={setOpenNftViewerModal}
                     setNftToShow={setNftToShow}
                 />
+
+                <br />
+                <EstimatedCost costInCents={purchasePriceInCents} />
 
                 <br />
                 <button
@@ -56,7 +83,7 @@ export default function ConfirmUpload(props: ConfirmUploadProps) {
             <UploadModal
                 open={openConfirmPaymentTypeModal}
                 setOpen={setOpenConfirmPaymentTypeModal}
-                purchasePriceInCents={props.purchasePrice}
+                purchasePriceInCents={purchasePriceInCents}
                 title='Ready to upload your images and metadata?'
                 objectsToUpload={props.nftObjects}
             />

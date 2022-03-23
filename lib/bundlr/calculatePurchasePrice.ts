@@ -1,11 +1,11 @@
+import { PRICE_IN_CENTS_PER_MB, PRICE_MINIMUM_IN_CENTS } from "../constants";
 
-const calculatePurchasePriceInCents = (bytes: number): number => {
-    console.log('bytes :>> ', bytes);
-    const priceInCentsPerMb = 2; // $2 per 100 MB
+const calculatePurchasePriceInCents = (bytes: number): number => { 
     const mbToUpload = bytes / 1024 / 1024;
-    console.log('mbToUpload :>> ', mbToUpload);
-    const purchasePrice = priceInCentsPerMb * mbToUpload;
-    console.log('purchasePrice :>> ', purchasePrice);
+    let purchasePrice = PRICE_IN_CENTS_PER_MB * mbToUpload;
+    if (purchasePrice < PRICE_MINIMUM_IN_CENTS) {
+        purchasePrice = PRICE_MINIMUM_IN_CENTS;
+    }
     return purchasePrice;
 }
 
