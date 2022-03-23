@@ -8,13 +8,13 @@ import { ArweaveSurvey } from "../surveys";
 import Checkout from "./Checkout";
 import PaymentTypeSelector from "./PaymentTypeSelector";
 import { useRouter } from "next/router";
-import { NftObject } from "../../types/NftObject";
+import { FileToUpload, NftObject } from "../../types/NftObject";
 
 type UploadModalContentProps = {
     title: string,
     cost: number,
     setCanClose: Dispatch<SetStateAction<boolean>>,
-    nfts: NftObject[]
+    objectsToUpload: NftObject[] | FileToUpload[]
 }
 
 export default function UploadModalContent(props: UploadModalContentProps) {
@@ -57,7 +57,7 @@ export default function UploadModalContent(props: UploadModalContentProps) {
         props.setCanClose(false)
         return <Uploading
             setError={setError}
-            nfts={props.nfts}
+            objectsToUpload={props.objectsToUpload}
         />
     }
 
