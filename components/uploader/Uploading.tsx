@@ -4,10 +4,8 @@ import { LargeSpinner } from './spinners';
 import styles from '../../styles/Home.module.css'
 import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
-import { TempNftData, TempFileData } from '../../types/TempData';
 import { ErrorType } from '../../enums/errorEnums';
 import { upload } from '../../lib/bundlr';
-import { uploaderContent } from '../../lib';
 import { NftObject } from '../../types/NftObject';
 import { ARWEAVE_BASE_URL } from 'arweave-nft-uploader/lib/constants';
 
@@ -21,36 +19,8 @@ type UploadData = {
     metadataFileNames: string[]
 }
 
-const getNfts = (): TempNftData[] => {
-    const nftUploaderStore = store.namespace(StoreName.nftUploader)
-    const numberOfItemsToUpload = +nftUploaderStore('numberOfItemsToUpload');
-
-    const nfts = [];
-    for (let index = 0; index < numberOfItemsToUpload; index++) {
-        const nftDataString = nftUploaderStore(index.toString());
-        const nftData: TempNftData = JSON.parse(nftDataString);
-
-        nfts.push(nftData);
-    }
-    return nfts
-}
-
-const getFiles = (): TempFileData[] => {
-    const fileUploaderStore = store.namespace(StoreName.filesUploader);
-    const numberOfItemsToUpload = +fileUploaderStore('numberOfItemsToUpload');
-
-    const files = [];
-    for (let index = 0; index < numberOfItemsToUpload; index++) {
-        const fileDataString = fileUploaderStore(index.toString());
-        const fileData: TempNftData = JSON.parse(fileDataString);
-
-        files.push(fileData);
-    }
-    return files
-}
-
 const handleUploadFiles = async (
-    files: TempFileData[],
+    files: any[],
     router: NextRouter
 ): Promise<void> => {
     throw new Error("Not yet implemented");
@@ -187,7 +157,7 @@ export default function Uploading(props: UploadingProps) {
                 // const nftObjects = getNfts();
                 handleUploadNfts(props.nfts, router).catch(error => handleUploadError(error));
             } else if (uploadType === StoreName.filesUploader) {
-                const files = getFiles();
+                const files = []
                 handleUploadFiles(files, router).catch(error => handleUploadError(error));
             } else {
                 throw new Error("Error reading nextUploadType from local storage");

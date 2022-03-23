@@ -27,7 +27,6 @@ export default function UploadModalContent(props: UploadModalContentProps) {
 
     const handleRetryUpload = () => {
         // Consider counting errors and doing something after the third retry
-        console.log('handle retry works');
         setError(null);
     }
 

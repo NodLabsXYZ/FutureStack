@@ -9,7 +9,6 @@ import ErrorBanner from './ErrorBanner';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import store from 'store2';
 import UploadFiles from './UploadFiles';
-import { addFilesToLocalStorage } from "../../utils/localStorageUtils";
 import { StoreName } from "../../enums/storeEnums";
 import { SmallSpinner } from "./spinners";
 import { SurveyDiscounts } from '../../enums/discountEnums';
@@ -67,7 +66,6 @@ const FileUploader: FunctionComponent = () => {
     */
     const saveFilesToLocalAndOpenModal = async () => {
         setLoading(true);
-        await addFilesToLocalStorage(files);
 
         // Remove this item of localStorage so the uploading.tsx page does not redirect
         generalUploaderStore.remove('baseURI');

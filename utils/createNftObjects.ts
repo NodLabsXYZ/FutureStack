@@ -25,13 +25,6 @@ const createNftObject = async (imageFile: FileWithPreview, metadataFile: File) =
     // doesn't have access to 'fs'. I couldn't find a way for the client to open and read the submitted JSON files.
     const metadata = await getJsonFromFile(metadataFile);
 
-    // const buffer = getBufferFromFile(imageFile);
-
-    // if (!buffer) {
-    //     throw new Error("");
-        
-    // }
-
     const nftObj: NftObject = {
         imageFile,
         buffer: Buffer.from(await imageFile.arrayBuffer()),

@@ -14,7 +14,6 @@ import { NftObject } from '../../types/NftObject'
 import store from 'store2';
 import { StoreName } from "../../enums/storeEnums"
 import { SurveyDiscounts } from "../../enums/discountEnums"
-import { addNftObjsToLocalStorage } from "../../utils/localStorageUtils"
 import { SmallSpinner } from "./spinners"
 
 type UploaderProps = {
@@ -65,8 +64,6 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
     } else {
       const nftObjs = await createNftObjects(imageFiles, metadataFiles);
       setNftObjects(nftObjs);
-
-      await addNftObjsToLocalStorage(nftObjs)
 
       // Remove this item of localStorage so the uploading.tsx page does not redirect
       generalUploaderStore.remove('baseURI');
