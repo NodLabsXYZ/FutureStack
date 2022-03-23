@@ -7,7 +7,7 @@ import UploadMetadata from './uploadMetadata'
 import { getCostToSaveBytesInDollars } from '../../utils/costEstimator'
 import EstimatedCost from './estimatedCost'
 import ErrorBanner from './ErrorBanner';
-import ConfirmUpload from './ConfirmUpload';
+import ConfirmUpload from './confirmUpload';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import { createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
