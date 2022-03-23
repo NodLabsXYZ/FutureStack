@@ -3,7 +3,8 @@ import Bundlr from "@bundlr-network/client";
 export default async function handle(req, res) {
   const privateKey = process.env.SOL_PRIVATE_KEY;
 
-  const bundlr = new Bundlr("https://node1.bundlr.network", "solana", privateKey);
+  // const bundlr = new Bundlr(process.env.NEXT_PUBLIC_BUNDLR_NODE, "solana", privateKey, { providerUrl: process.env.NEXT_PUBLIC_BUNDLR_PROVIDER_URL });
+  const bundlr = new Bundlr(process.env.NEXT_PUBLIC_BUNDLR_NODE, "solana", privateKey);
 
   const { signature } = req.body;
 
