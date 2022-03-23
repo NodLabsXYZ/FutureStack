@@ -71,10 +71,8 @@ const handleUploadNfts = async (
 
 const uploadBulk = async (objects: NftObject[], uploadEndpoint: string): Promise<UploadData> => {
     const nftsWithImagesUploaded = await setImageTxnIdsInMetadata(objects);
-    console.log('nftsWithImagesUploaded :>> ', nftsWithImagesUploaded);
 
     const manifestId = await uploadManifestForObjects(nftsWithImagesUploaded);
-    console.log("MANIFEST", manifestId)
     const baseURI = ARWEAVE_BASE_URL + manifestId + '/';
 
     const metadataFileNames = getMetadataFileNames(objects.length);
@@ -88,7 +86,8 @@ const setImageTxnIdsInMetadata = async (nfts: NftObject[]): Promise<NftObject[]>
     for (let index = 0; index < nfts.length; index++) {
         const nft = nfts[index];
         const imageTags = [{ name: "Content-Type", value: nft.imageContentType }];
-        const id = await upload(nft.buffer, imageTags);
+        const byteCount = nft.imageFile.size;
+        const id = await upload(nft.buffer, imageTags, byteCount);
         const metadata = JSON.parse(nft.metadata);
         metadata.image = ARWEAVE_BASE_URL + id;
         nft.metadata = JSON.stringify(metadata)
@@ -110,12 +109,15 @@ const uploadManifestForObjects = async (nfts: NftObject[]): Promise<string> => {
 
     // Upload metadata and add to manifest file
     for (let i = 0; i < nfts.length; ++i) {
+        const metadata = nfts[i].metadata;
         const metadataTags = [{ name: "Content-Type", value: "application/json" }];
-        const id = await upload(nfts[i].metadata, metadataTags);
+        const byteCount = metadata.length * 4;
+        const id = await upload(metadata, metadataTags, byteCount);
         manifest.paths[`${i}.json`] = { "id": id };
     }
 
-    return await upload(JSON.stringify(manifest), manifestTags);
+    const byteCount = JSON.stringify(manifest).length * 4;
+    return await upload(JSON.stringify(manifest), manifestTags, byteCount);
 }
 
 const getMetadataFileNames = (numberOfFiles: number): string[] => {

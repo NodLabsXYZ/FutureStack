@@ -22,7 +22,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx", "lib/uploadToBundlr.js", "lib/uploadToBundlr.js",
+    "**/*.tsx"
   ],
   "exclude": [
     "node_modules"
