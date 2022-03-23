@@ -1,7 +1,6 @@
-import { FunctionComponent, useCallback, useRef } from "react"
+import { FunctionComponent, useRef, useState } from "react"
 import styles from '../../styles/Home.module.css'
 import UploadImages from './uploadImages'
-import { useEffect, useState } from 'react'
 import { formatBytes } from '../../lib/formatters';
 import UploadMetadata from './uploadMetadata'
 import EstimatedCost from './EstimatedCost'
@@ -34,6 +33,7 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
   const [nftObjects, setNftObjects] = useState<NftObject[]>();
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
+  const [processedCount, setProcessedCount] = useState(0);
 
   const updateImageBytes = async (bytes: number) => {
     console.log('updateImageBytes :>> ', bytes);
@@ -71,7 +71,11 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
     if (imageFiles.length !== metadataFiles.length) {
       setErrorMessage("There must be the same number of image and metadata files.");
     } else {
-      const nftObjs = await createNftObjects(imageFiles, metadataFiles);
+      const nftObjs = await createNftObjects(
+        imageFiles, 
+        metadataFiles,
+        setProcessedCount 
+      );
       setNftObjects(nftObjs);
 
       // Remove this item of localStorage so the uploading.tsx page does not redirect
@@ -135,9 +139,12 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
           }
           {
             loading && (
-              <span className="mt-2">
+              <div className="mt-3">
                 <SmallSpinner />
-              </span>
+                <div className='mt-3'>
+                  Processing {processedCount + 1} out of {imageFiles.length}
+                </div>
+              </div>
             )
           }
 

@@ -44,7 +44,7 @@ export default function NftObjectGrid(props: NftObjectGridProps) {
                             <dt className="sr-only">Metadata</dt>
 
                             <dd className="text-gray-500 text-sm">
-                                <EllipsisText text={nftObj.metadata} length={50} />
+                                <EllipsisText text={nftObj.metadata || ""} length={50} />
                             </dd>
                         </dl>
                     </button>
