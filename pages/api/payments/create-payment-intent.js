@@ -1,4 +1,5 @@
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { priceMinimumInCents } = require('../../../lib/constants')
 
 const calculateOrderAmount = (items) => {
     // Replace this constant with a calculation of the order's amount
@@ -10,16 +11,19 @@ const calculateOrderAmount = (items) => {
 };
 
 const checkout = async (req, res) => {
-    // Create a PaymentIntent with the order amount and currency
+    const { amount } = req.body;
+
+    if (!amount || amount < priceMinimumInCents) {
+        throw new Error("Invalid price");
+    }
+
     const paymentIntent = await stripe.paymentIntents.create({
-        amount: calculateOrderAmount('test'),
+        // Amount should be in cents
+        amount,
         currency: "usd",
-        // automatic_payment_methods: {
-        //     enabled: true,
-        // },
-        "payment_method_types": [
-            "card",
-        ],
+        automatic_payment_methods: {
+            enabled: true,
+        },
     });
 
     res.send({

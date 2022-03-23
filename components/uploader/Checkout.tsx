@@ -6,7 +6,8 @@ import { LargeSpinner } from "./spinners";
 
 type CheckoutProps = {
     // Consider adding in the Stripe promise here to reduce load time
-    setBeginUpload: Dispatch<SetStateAction<boolean>>
+    setBeginUpload: Dispatch<SetStateAction<boolean>>,
+    purchasePriceInCents: number
 }
 
 
@@ -20,7 +21,7 @@ export default function Checkout(props: CheckoutProps) {
         fetch("/api/payments/create-payment-intent", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ items: [{ id: "xl-tshirt" }] }),
+            body: JSON.stringify({ amount: props.purchasePriceInCents }),
         })
             .then((res) => res.json())
             .then((data) => {

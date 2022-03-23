@@ -99,7 +99,10 @@ export default function UploadModalContent(props: UploadModalContentProps) {
             return (
                 <>
                     {heading}
-                    <Checkout setBeginUpload={setBeginUpload} />
+                    <Checkout
+                        setBeginUpload={setBeginUpload}
+                        purchasePriceInCents={props.purchasePriceInCents}
+                    />
                 </>
             )
         }

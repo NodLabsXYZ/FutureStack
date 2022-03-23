@@ -49,6 +49,3 @@ yarn-error.log*
 **/supabase/.branches
 **/supabase/.temp
 **/supabase/.env
-
-# Local temp files for Bundlr upload
-temp/*
