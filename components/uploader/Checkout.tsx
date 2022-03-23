@@ -27,7 +27,7 @@ export default function Checkout(props: CheckoutProps) {
             .then((data) => {
                 setClientSecret(data.clientSecret);
             });
-    }, []);
+    }, [props.purchasePriceInCents]);
 
     const appearance: Appearance = {
         theme: 'stripe',
