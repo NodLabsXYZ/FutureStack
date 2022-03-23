@@ -6,7 +6,8 @@ import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 import { TempNftData, TempFileData } from '../../types/TempData';
 import { ErrorType } from '../../enums/errorEnums';
-import uploadToBundlr from '../../lib/uploadToBundlr';
+import { upload } from '../../lib/bundlr';
+import { uploaderContent } from '../../lib';
 import { NftObject } from '../../types/NftObject';
 import { ARWEAVE_BASE_URL } from 'arweave-nft-uploader/lib/constants';
 
@@ -87,7 +88,7 @@ const setImageTxnIdsInMetadata = async (nfts: NftObject[]): Promise<NftObject[]>
     for (let index = 0; index < nfts.length; index++) {
         const nft = nfts[index];
         const imageTags = [{ name: "Content-Type", value: nft.imageContentType }];
-        const id = await uploadToBundlr(nft.buffer, imageTags);
+        const id = await upload(nft.buffer, imageTags);
         const metadata = JSON.parse(nft.metadata);
         metadata.image = ARWEAVE_BASE_URL + id;
         nft.metadata = JSON.stringify(metadata)
@@ -110,11 +111,11 @@ const uploadManifestForObjects = async (nfts: NftObject[]): Promise<string> => {
     // Upload metadata and add to manifest file
     for (let i = 0; i < nfts.length; ++i) {
         const metadataTags = [{ name: "Content-Type", value: "application/json" }];
-        const id = await uploadToBundlr(nfts[i].metadata, metadataTags);
+        const id = await upload(nfts[i].metadata, metadataTags);
         manifest.paths[`${i}.json`] = { "id": id };
     }
 
-    return await uploadToBundlr(JSON.stringify(manifest), manifestTags);
+    return await upload(JSON.stringify(manifest), manifestTags);
 }
 
 const getMetadataFileNames = (numberOfFiles: number): string[] => {
