@@ -4,9 +4,7 @@ import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 import { ArweaveLayout } from '../../components/uploader';
 
-import { WebBundlr } from "@bundlr-network/client";
-import { ethers } from 'ethers';
-import { uploadToBundlr } from '../../lib';
+import { upload } from '../../lib/bundlr';
 
 type UploadCardContent = {
   header: string,
@@ -59,7 +57,7 @@ const ArweavePage = () => {
     
       const manifest = {"manifest":"arweave/paths","version":"0.1.0","index":{"path":"basten.jpg"},"paths":{"basten.jpg":{"id":"cu2RWNO8T6t2zZ6f9FTIY5S_GY5A19jWfGp-fKBEAxk"},"baresi.jpg":{"id":"CJtmESbh5hRuc2KoykrM16ersMN9PrOhfgHIEiYP1AU"},"higuita.jpg":{"id":"Ql6IX6NCPXh-54BHVdZ18GePeeq2FseaK0tL3tWW4OU"},"brehme.jpg":{"id":"jhhWLDDLTILAgXMoXD0rpEE2VXxF9mS2Hjxul6M98rg"}}}
 
-      const id = await uploadToBundlr(manifest, tags)
+      const id = await upload(manifest, tags)
       console.log("RESULT", id);
       
       // // const provider = ethers.getDefaultProvider()

@@ -1,12 +1,18 @@
 import Bundlr from "@bundlr-network/client";
 
+import { fundAccount } from '../../../lib/bundlr'; 
+
 export default async function handle(req, res) {
   const privateKey = process.env.SOL_PRIVATE_KEY;
 
-  // const bundlr = new Bundlr(process.env.NEXT_PUBLIC_BUNDLR_NODE, "solana", privateKey, { providerUrl: process.env.NEXT_PUBLIC_BUNDLR_PROVIDER_URL });
-  const bundlr = new Bundlr(process.env.NEXT_PUBLIC_BUNDLR_NODE, "solana", privateKey);
+  const bundlr = new Bundlr(process.env.NEXT_PUBLIC_BUNDLR_NODE, "solana", privateKey, { providerUrl: process.env.NEXT_PUBLIC_BUNDLR_PROVIDER_URL });
+  // const bundlr = new Bundlr(process.env.NEXT_PUBLIC_BUNDLR_NODE, "solana", privateKey);
 
-  const { signature } = req.body;
+  // console.log(bundlr.currencyConfig.getPublicKey().toString('hex'))
+
+  const { signature, byteCount } = req.body;
+
+  await fundAccount(bundlr, byteCount);
 
   const signatureArray = []
 

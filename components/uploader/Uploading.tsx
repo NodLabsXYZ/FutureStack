@@ -6,7 +6,8 @@ import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 import { TempNftData, TempFileData } from '../../types/TempData';
 import { ErrorType } from '../../enums/errorEnums';
-import { uploadToBundlr } from '../../lib';
+import { upload } from '../../lib/bundlr';
+import { uploaderContent } from '../../lib';
 
 type UploadingProps = {
     setError: Dispatch<SetStateAction<ErrorType>>
@@ -76,11 +77,11 @@ const uploadBulk = async (objects: TempFileData[] | TempNftData[], uploadEndpoin
     }
 
     for (let i=0; i<objects.length; ++i) {
-        const id = await uploadToBundlr(objects[i]);
+        const id = await upload(objects[i]);
         manifest.paths[`${i+1}`] = id;
     }
 
-    const manifestId = await uploadToBundlr(manifest, manifestTags);
+    const manifestId = await upload(manifest, manifestTags);
 
     console.log("MANIFEST", manifestId)
 
