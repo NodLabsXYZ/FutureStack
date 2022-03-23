@@ -34,7 +34,7 @@ export default class UploadImages extends Component {
   render() {
     const files = (
       <div className='flex flex-wrap'>
-        {this.state.files.map((file) => (
+        {this.state.files.slice(0, 12).map((file) => (
           <div key={`image-file-${file.name}`}>
             <div className="border rounded mr-6">
             <Image 
@@ -50,6 +50,11 @@ export default class UploadImages extends Component {
             <p className="block text-sm font-medium text-gray-500 pointer-events-none">{formatBytes(file.size)}</p>
           </div>
         ))}
+        {this.state.files.length > 12 && (
+          <div className="py-12 text-lg">
+            Plus {this.state.files.length - 12} more files...
+          </div>
+        )}
       </div>
     );
 

@@ -1,7 +1,7 @@
 import { FileWithPreview } from "../types/FileWithPreview";
 import { NftObject } from "../types/NftObject";
 
-export const createNftObjects = async (imageFiles: FileWithPreview[], metadataFiles: File[]): Promise<NftObject[]> => {
+export const createNftObjects = async (imageFiles: FileWithPreview[], metadataFiles: File[], onItemProcessed: (index: number) => void): Promise<NftObject[]> => {
     if (imageFiles.length !== metadataFiles.length) {
         throw new Error("There must be the same number of image and metadata files.");
     }
@@ -15,14 +15,13 @@ export const createNftObjects = async (imageFiles: FileWithPreview[], metadataFi
         const nftObject = await createNftObject(imageFile, metadataFile);
 
         nftObjects.push(nftObject);
+        onItemProcessed(index);
     }
 
     return nftObjects;
 }
 
 const createNftObject = async (imageFile: FileWithPreview, metadataFile: File) => {
-    // Getting the JSON from the uploaded metadata file is done on the server because React
-    // doesn't have access to 'fs'. I couldn't find a way for the client to open and read the submitted JSON files.
     const metadata = await getJsonFromFile(metadataFile);
 
     const nftObj: NftObject = {
@@ -36,20 +35,15 @@ const createNftObject = async (imageFile: FileWithPreview, metadataFile: File) =
 }
 
 const getJsonFromFile = async (metadataFile: File) => {
-    const formData = new FormData();
+    const fileReader = new FileReader();
+    fileReader.readAsText(metadataFile);
 
-    formData.append(metadataFile.name, metadataFile);
+    const promise = new Promise((resolve, reject) => {
+        fileReader.onload = (e) => {
+            const json = JSON.parse(fileReader.result as string);
+            resolve(json);
+        }
+    });
 
-    const options = {
-        method: 'POST',
-        body: formData
-    }
-
-    const response = await fetch('/api/uploader/getJson', options);
-
-    const { json } = await response.json();
-
-    console.log('json :>> ', json);
-
-    return json;
+    return promise;
 }

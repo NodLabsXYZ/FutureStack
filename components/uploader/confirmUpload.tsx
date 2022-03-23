@@ -3,7 +3,7 @@ import styles from '../../styles/Home.module.css'
 import { NftObject } from '../../types/NftObject'
 import NftObjectGrid from './nftObjectGrid'
 import NftObjectViewerModal from './nftObjectViewerModal'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import UploadModal from './UploadModal'
 import calculatePurchasePrice from '../../lib/bundlr/calculatePurchasePrice'
 import EstimatedCost from './EstimatedCost'
@@ -26,12 +26,7 @@ export default function ConfirmUpload(props: ConfirmUploadProps) {
     const [nftToShow, setNftToShow] = useState<NftObject>();
     const [purchasePriceInCents, setPurchasePriceInCents] = useState(0);
 
-    useEffect(() => {
-        setPurchasePriceInCents(calculatePurchasePrice(props.totalBytes));
-    }, []);
-
-
-    const calculatePurchasePrice = (totalBytes: number): number => {
+    const calculatePurchasePrice = useMemo(() => (totalBytes: number): number => {
         const survey = surveyStore('arweave');
 
         if (survey?.verified && !survey?.results?.claimedAt) {
@@ -39,7 +34,11 @@ export default function ConfirmUpload(props: ConfirmUploadProps) {
         }
 
         return calculatePurchasePriceInCents(totalBytes);
-    }
+    }, [surveyStore]);
+
+    useEffect(() => {
+        setPurchasePriceInCents(calculatePurchasePrice(props.totalBytes));
+    }, [setPurchasePriceInCents, calculatePurchasePrice, props.totalBytes]);
 
     return (
         <div>
