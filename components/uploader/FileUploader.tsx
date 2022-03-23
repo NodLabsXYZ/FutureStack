@@ -1,8 +1,7 @@
 import { FunctionComponent } from "react"
 import styles from '../../styles/Home.module.css'
 import { useEffect, useState } from 'react'
-import { formatBytes } from '../../utils/formatters';
-import { getCostToSaveBytesInDollars } from '../../utils/costEstimator'
+import { formatBytes } from "../../lib/formatters"
 import EstimatedCost from './estimatedCost'
 import UploadFilesModal from './UploadFilesModal';
 import ErrorBanner from './ErrorBanner';
@@ -14,12 +13,13 @@ import { SmallSpinner } from "./spinners";
 import { SurveyDiscounts } from '../../enums/discountEnums';
 import UploadModal from "./UploadModal";
 import { FileToUpload } from "../../types/NftObject";
+import { calculatePurchasePriceInCents } from "../../lib/bundlr";
 
 const FileUploader: FunctionComponent = () => {
     const generalUploaderStore = store.namespace(StoreName.generalUploader)
     const [files, setFiles] = useState<FileWithPreview[]>([]);
     const [filesBytes, setFilesBytes] = useState(0);
-    const [filesCost, setFilesCost] = useState(0);
+    const [purchasePriceInCents, setPurchasePriceInCents] = useState(0);
     const [openModal, setOpenModal] = useState(false);
     const [showError, setShowError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -38,7 +38,6 @@ const FileUploader: FunctionComponent = () => {
                 setShowLinkToExistingUploads(true);
             }
         }
-
     }, []);
 
 
@@ -59,8 +58,8 @@ const FileUploader: FunctionComponent = () => {
         const newTotalBytes = filesBytes + bytes;
         console.log('newTotalBytes :>> ', newTotalBytes);
         setFilesBytes(newTotalBytes - (completedSurvey ? SurveyDiscounts.arweaveSurvey : 0));
-        const newFilesCost = await getCostToSaveBytesInDollars(newTotalBytes);
-        setFilesCost(newFilesCost);
+        const newFilesCost = calculatePurchasePriceInCents(newTotalBytes);
+        setPurchasePriceInCents(newFilesCost);
     }
 
     /*
@@ -115,9 +114,9 @@ const FileUploader: FunctionComponent = () => {
                 }
 
                 {
-                    filesCost === 0 ? (<></>) : (
+                    purchasePriceInCents === 0 ? (<></>) : (
                         <div>
-                            <EstimatedCost cost={filesCost} />
+                            <EstimatedCost costInCents={purchasePriceInCents} />
                         </div>
                     )
                 }
@@ -151,7 +150,7 @@ const FileUploader: FunctionComponent = () => {
                 open={openModal}
                 setOpen={setOpenModal}
                 title='Ready to upload your files?'
-                cost={filesCost}
+                purchasePriceInCents={purchasePriceInCents}
                 objectsToUpload={filesToUpload}
             />
         </div>

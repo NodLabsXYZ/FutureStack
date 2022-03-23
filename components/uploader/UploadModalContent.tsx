@@ -9,10 +9,12 @@ import Checkout from "./Checkout";
 import PaymentTypeSelector from "./PaymentTypeSelector";
 import { useRouter } from "next/router";
 import { FileToUpload, NftObject } from "../../types/NftObject";
+import { Dialog } from "@headlessui/react";
+import EstimatedCost from "./estimatedCost";
 
 type UploadModalContentProps = {
     title: string,
-    cost: number,
+    purchasePriceInCents: number,
     setCanClose: Dispatch<SetStateAction<boolean>>,
     objectsToUpload: NftObject[] | FileToUpload[]
 }
@@ -65,21 +67,41 @@ export default function UploadModalContent(props: UploadModalContentProps) {
         return <ArweaveSurvey onCancel={() => setSurvey(false)} />
     }
 
-    if (props.cost > 0) {
+    if (props.purchasePriceInCents > 0) {
         // Choose payment type and pay
+
+        const heading = (
+            <div className="mb-3 text-center">
+                <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
+                    {props.title}
+                </Dialog.Title>
+                <div className="mt-2">
+                    <div className="text-m text-gray-500">
+                        <EstimatedCost costInCents={props.purchasePriceInCents} minimumWarning={true} />
+                    </div>
+                </div>
+            </div>
+
+        )
         if (!isPaymentTypeChosen) {
             return (
                 <>
+                    {heading}
                     <PaymentTypeSelector
                         title={props.title}
-                        cost={props.cost}
+                        purchasePrice={props.purchasePriceInCents}
                         setIsPaymentTypeChosen={setIsPaymentTypeChosen}
                     />
                     <ArweaveSurveyButton onClick={() => setSurvey(true)} />
                 </>
             )
         } else {
-            return <Checkout setBeginUpload={setBeginUpload} />
+            return (
+                <>
+                    {heading}
+                    <Checkout setBeginUpload={setBeginUpload} />
+                </>
+            )
         }
     } else {
         // Upload is free

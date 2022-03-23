@@ -9,7 +9,7 @@ import UploadModal from './UploadModal'
 
 type ConfirmUploadProps = {
     nftObjects: NftObject[]
-    cost: number
+    purchasePrice: number
 }
 
 export default function ConfirmUpload(props: ConfirmUploadProps) {
@@ -56,7 +56,7 @@ export default function ConfirmUpload(props: ConfirmUploadProps) {
             <UploadModal
                 open={openConfirmPaymentTypeModal}
                 setOpen={setOpenConfirmPaymentTypeModal}
-                cost={props.cost}
+                purchasePriceInCents={props.purchasePrice}
                 title='Ready to upload your images and metadata?'
                 objectsToUpload={props.nftObjects}
             />

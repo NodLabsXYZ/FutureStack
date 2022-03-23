@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
-import { formatBytes } from '../../utils/formatters';
+import { formatBytes } from '../../lib/formatters';
 import Image from 'next/image'
 
 export default class UploadImages extends Component {

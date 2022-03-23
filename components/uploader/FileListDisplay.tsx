@@ -1,5 +1,5 @@
 import { FileWithPreview } from "../../types/FileWithPreview"
-import { formatBytes } from "../../utils/formatters"
+import { formatBytes } from "../../lib/formatters"
 
 type FileListDisplayProps = {
     files: FileWithPreview[]

@@ -82,7 +82,7 @@ export default function UploadFilesModal(props: UploadFilesModalProps) {
                                             </div>
                                             <div className="m-2">
                                                 <div className="text-sm text-gray-500">
-                                                    <EstimatedCost cost={props.cost} minimumWarning={true} />
+                                                    <EstimatedCost costInCents={props.cost} minimumWarning={true} />
                                                 </div>
                                             </div>
                                         </div>

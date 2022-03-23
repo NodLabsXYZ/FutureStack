@@ -3,7 +3,7 @@ import { Dispatch, Fragment, SetStateAction, Suspense, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { NftObject } from '../../types/NftObject'
 import React from 'react';
-import { getNameFromMetadataString } from "../../utils/metadataUtils";
+import { getNameFromMetadataString } from "../../lib/metadataUtils";
 import Image from 'next/image'
 import JsonDisplay from '../JsonDisplay';
 

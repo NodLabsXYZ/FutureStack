@@ -2,19 +2,19 @@ import { FunctionComponent } from "react"
 import styles from '../../styles/Home.module.css'
 import UploadImages from './uploadImages'
 import { useEffect, useState } from 'react'
-import { formatBytes } from '../../utils/formatters';
+import { formatBytes } from '../../lib/formatters';
 import UploadMetadata from './uploadMetadata'
-import { getCostToSaveBytesInDollars } from '../../utils/costEstimator'
 import EstimatedCost from './estimatedCost'
 import ErrorBanner from './ErrorBanner';
 import ConfirmUpload from './confirmUpload';
 import { FileWithPreview } from '../../types/FileWithPreview'
-import { createNftObjects } from '../../utils/createNftObjects'
 import { NftObject } from '../../types/NftObject'
 import store from 'store2';
 import { StoreName } from "../../enums/storeEnums"
 import { SurveyDiscounts } from "../../enums/discountEnums"
 import { SmallSpinner } from "./spinners"
+import { createNftObjects } from "../../lib/createNftObjects";
+import { calculatePurchasePriceInCents } from "../../lib/bundlr";
 
 type UploaderProps = {
   onFilesSelected: () => void
@@ -27,7 +27,7 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
   const [imageBytes, setImageBytes] = useState(0);
   const [metadataFiles, setMetadataFiles] = useState<File[]>([]);
   const [metadataBytes, setMetadataBytes] = useState(0);
-  const [cost, setCost] = useState(0);
+  const [purchasePriceInCents, setPurchasePrice] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
   const [showConfirmUpload, setShowConfirmUpload] = useState(false);
   const [nftObjects, setNftObjects] = useState<NftObject[]>();
@@ -36,25 +36,26 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
   const updateImageBytes = async (bytes: number) => {
     console.log('updateImageBytes :>> ', bytes);
     setImageBytes(bytes);
-    calculateCost();
+    calculatePurchasePrice(bytes + metadataBytes);
   }
 
   const updateMetadataBytes = async (bytes: number) => {
     console.log('updateMetadataBytes :>> ', bytes);
     setMetadataBytes(bytes);
-  calculateCost();
+    calculatePurchasePrice(bytes + imageBytes);
   }
 
-  const calculateCost = async () => {
-    let totalBytes = imageBytes + metadataBytes;
+  const calculatePurchasePrice = async (newTotalBytes: number): Promise<void> => {
     const survey = surveyStore('arweave');
 
+    console.log('newTotalBytes :>> ', newTotalBytes);
     if (survey?.verified && !survey?.results?.claimedAt) {
-      totalBytes = totalBytes - SurveyDiscounts.arweaveSurvey;
+      newTotalBytes = newTotalBytes - SurveyDiscounts.arweaveSurvey;
     }
 
-    const cost = await getCostToSaveBytesInDollars(totalBytes);
-    setCost(cost)
+
+    const price = calculatePurchasePriceInCents(newTotalBytes);
+    setPurchasePrice(price)
   }
 
   const continueToUpload = async () => {
@@ -83,7 +84,7 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
     return (
       <ConfirmUpload
         nftObjects={nftObjects}
-        cost={cost}
+        purchasePrice={purchasePriceInCents}
       />
     )
   } else {
@@ -106,9 +107,9 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
           }
 
           {
-            cost !== 0 && (
+            purchasePriceInCents !== 0 && (
               <div>
-                <EstimatedCost cost={cost} />
+                <EstimatedCost costInCents={purchasePriceInCents} />
               </div>
             )
           }
