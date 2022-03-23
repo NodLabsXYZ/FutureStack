@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
-import { formatBytes } from '../../utils/formatters';
+import { formatBytes } from '../../lib/formatters';
 
 export default class UploadMetadata extends Component {
   constructor(props) {

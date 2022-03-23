@@ -1,10 +1,10 @@
 import { Dialog } from "@headlessui/react"
 import { Dispatch, SetStateAction } from "react"
-import EstimatedCost from "./estimatedCost"
+import EstimatedCost from "./EstimatedCost"
 
 type PaymentTypeSelectionProps = {
     title: string,
-    cost: number,
+    purchasePrice: number,
     setIsPaymentTypeChosen: Dispatch<SetStateAction<boolean>>
 }
 
@@ -12,16 +12,6 @@ export default function PaymentTypeSelector(props: PaymentTypeSelectionProps) {
     return (
         <>
             <div>
-                <div className="mt-3 text-center sm:mt-5">
-                    <Dialog.Title as="h3" className="text-lg leading-6 font-medium text-gray-900">
-                        {props.title}
-                    </Dialog.Title>
-                    <div className="mt-2">
-                        <div className="text-sm text-gray-500">
-                            <EstimatedCost cost={props.cost} minimumWarning={true} />
-                        </div>
-                    </div>
-                </div>
             </div><div className="mt-5 sm:mt-6 sm:gap-3 sm:grid-flow-row-dense">
                 <button
                     type="button"

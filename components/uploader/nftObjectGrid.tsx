@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { NftObject } from "../../types/NftObject";
 import EllipsisText from "react-ellipsis-text";
-import { getNameFromMetadataString } from "../../utils/metadataUtils";
+import { getNameFromMetadataString } from "../../lib/metadataUtils";
 import Image from 'next/image'
 
 type NftObjectGridProps = {
