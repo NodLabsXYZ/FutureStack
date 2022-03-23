@@ -6,12 +6,12 @@ import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 import { ErrorType } from '../../enums/errorEnums';
 import { upload } from '../../lib/bundlr';
-import { NftObject } from '../../types/NftObject';
+import { FileToUpload, NftObject } from '../../types/NftObject';
 import { ARWEAVE_BASE_URL } from 'arweave-nft-uploader/lib/constants';
 
 type UploadingProps = {
     setError: Dispatch<SetStateAction<ErrorType>>,
-    nfts: NftObject[]
+    objectsToUpload: NftObject[] | FileToUpload[]
 }
 
 type UploadData = {
@@ -20,26 +20,39 @@ type UploadData = {
 }
 
 const handleUploadFiles = async (
-    files: any[],
+    files: FileToUpload[],
     router: NextRouter
 ): Promise<void> => {
-    throw new Error("Not yet implemented");
+    console.log('files :>> ', files);
 
-    // const { baseURI, metadataFileNames } = await uploadBulk(files, '/api/uploader/uploadFilesToBundlr');
+    const arweaveURIs = await uploadBulkFiles(files);
 
-    // saveResultToLocalStorageAndRouteToSuccess(router, StoreName.filesUploader, baseURI, metadataFileNames)
+    saveResultToLocalStorageAndRouteToSuccess(router, StoreName.filesUploader, null, arweaveURIs)
 }
+
+const uploadBulkFiles = async (files: FileToUpload[]): Promise<string[]> => {
+    const arweaveURIs = [];
+    for (let index = 0; index < files.length; index++) {
+        const fileToUpload = files[index];
+        const tags = [{ name: "Content-Type", value: fileToUpload.contentType }];
+        const byteCount = fileToUpload.file.size;
+        const txId = await upload(fileToUpload.buffer, tags, byteCount);
+        arweaveURIs.push(ARWEAVE_BASE_URL + txId);
+    }
+    return arweaveURIs;
+}
+
 
 const handleUploadNfts = async (
     nftObjects: NftObject[],
     router: NextRouter
 ): Promise<void> => {
-    const { baseURI, metadataFileNames } = await uploadBulk(nftObjects, '/api/uploader/uploadNftsToBundlr');
+    const { baseURI, metadataFileNames } = await uploadBulkNfts(nftObjects);
 
     saveResultToLocalStorageAndRouteToSuccess(router, StoreName.nftUploader, baseURI, metadataFileNames)
 }
 
-const uploadBulk = async (objects: NftObject[], uploadEndpoint: string): Promise<UploadData> => {
+const uploadBulkNfts = async (objects: NftObject[]): Promise<UploadData> => {
     const nftsWithImagesUploaded = await setImageTxnIdsInMetadata(objects);
 
     const manifestId = await uploadManifestForObjects(nftsWithImagesUploaded);
@@ -153,12 +166,9 @@ export default function Uploading(props: UploadingProps) {
         try {
             setIsUploading(true);
             if (uploadType === StoreName.nftUploader) {
-                console.log('props.nfts :>> ', props.nfts);
-                // const nftObjects = getNfts();
-                handleUploadNfts(props.nfts, router).catch(error => handleUploadError(error));
+                handleUploadNfts(props.objectsToUpload as NftObject[], router).catch(error => handleUploadError(error));
             } else if (uploadType === StoreName.filesUploader) {
-                const files = []
-                handleUploadFiles(files, router).catch(error => handleUploadError(error));
+                handleUploadFiles(props.objectsToUpload as FileToUpload[], router).catch(error => handleUploadError(error));
             } else {
                 throw new Error("Error reading nextUploadType from local storage");
             }

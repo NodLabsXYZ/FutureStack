@@ -56,9 +56,9 @@ export default function ConfirmUpload(props: ConfirmUploadProps) {
             <UploadModal
                 open={openConfirmPaymentTypeModal}
                 setOpen={setOpenConfirmPaymentTypeModal}
-                cost={0}
+                cost={props.cost}
                 title='Ready to upload your images and metadata?'
-                nfts={props.nftObjects}
+                objectsToUpload={props.nftObjects}
             />
         </div>
 

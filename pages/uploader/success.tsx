@@ -65,8 +65,7 @@ function UploadedFilesFullUriDisplay(props: UploadResultDisplayProps): JSX.Eleme
     const elementList = [];
     for (let index = 0; index < props.fileNames.length; index++) {
         const fileName = props.fileNames[index]
-        const isNotOnLastElement = index !== props.fileNames.length - 1
-        display = display.concat(props.baseURI + fileName + '\n');
+        display = display.concat(fileName + '\n');
     }
     return (
         <div className='mt-4'>
@@ -119,7 +118,7 @@ function NftUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
 }
 
 function FileUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
-    const exampleFileURI = props.baseURI + props.fileNames[0];
+    const exampleFileURI = props.fileNames[0];
     return (
         <div className='mt-4  w-2/3 left-1/3'>
             <p className="text-m mt-2 text-center">

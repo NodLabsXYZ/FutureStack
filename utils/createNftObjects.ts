@@ -28,21 +28,11 @@ const createNftObject = async (imageFile: FileWithPreview, metadataFile: File) =
     const nftObj: NftObject = {
         imageFile,
         buffer: Buffer.from(await imageFile.arrayBuffer()),
-        imageContentType: 'image/jpg',
+        imageContentType: imageFile.type,
         metadata: JSON.stringify(metadata)
     }
 
     return nftObj;
-}
-
-const getBufferFromFile = (file: FileWithPreview) => {
-    let reader = new FileReader();
-    reader.onload = function () {
-        if (reader.result) {
-            return Buffer.from(reader.result as ArrayBuffer);
-        }
-    };
-    reader.readAsArrayBuffer(file);
 }
 
 const getJsonFromFile = async (metadataFile: File) => {

@@ -12,6 +12,8 @@ import UploadFiles from './UploadFiles';
 import { StoreName } from "../../enums/storeEnums";
 import { SmallSpinner } from "./spinners";
 import { SurveyDiscounts } from '../../enums/discountEnums';
+import UploadModal from "./UploadModal";
+import { FileToUpload } from "../../types/NftObject";
 
 const FileUploader: FunctionComponent = () => {
     const generalUploaderStore = store.namespace(StoreName.generalUploader)
@@ -24,6 +26,7 @@ const FileUploader: FunctionComponent = () => {
     const [showLinkToExistingUploads, setShowLinkToExistingUploads] = useState(false);
     const [loading, setLoading] = useState(false);
     const [completedSurvey, setCompletedSurvey] = useState();
+    const [filesToUpload, setFilesToUpload] = useState<FileToUpload[]>();
 
     useEffect(() => {
         if (window) {
@@ -64,8 +67,10 @@ const FileUploader: FunctionComponent = () => {
         I'd rather save the files to local storage when the user clicks "pay with credit card"
         in UploadFilesModal.tsx, but I can't figure out how to do that before Stripe does it's redirect.
     */
-    const saveFilesToLocalAndOpenModal = async () => {
+    const continueToUpload = async () => {
         setLoading(true);
+
+        setFilesToUpload(await getFilesToUpload(files));
 
         // Remove this item of localStorage so the uploading.tsx page does not redirect
         generalUploaderStore.remove('baseURI');
@@ -76,6 +81,23 @@ const FileUploader: FunctionComponent = () => {
 
         setLoading(false);
         setOpenModal(true);
+    }
+
+    const getFilesToUpload = async (files: FileWithPreview[]): Promise<FileToUpload[]> => {
+        const filesToUpload: FileToUpload[] = [];
+        for (let index = 0; index < files.length; index++) {
+            const file = files[index];
+            const buffer = Buffer.from(await file.arrayBuffer())
+            const contentType = file.type
+
+            const fileToUpload: FileToUpload = {
+                file,
+                buffer,
+                contentType
+            }
+            filesToUpload.push(fileToUpload);
+        }
+        return filesToUpload;
     }
 
     return (
@@ -108,7 +130,7 @@ const FileUploader: FunctionComponent = () => {
                                 <button
                                     type="button"
                                     className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                    onClick={() => saveFilesToLocalAndOpenModal()}
+                                    onClick={continueToUpload}
                                 >
                                     Continue
                                 </button>
@@ -125,14 +147,12 @@ const FileUploader: FunctionComponent = () => {
 
             </main>
 
-            <UploadFilesModal
+            <UploadModal
                 open={openModal}
-                setOpenModal={setOpenModal}
-                setShowError={setShowError}
-                setErrorMessage={setErrorMessage}
+                setOpen={setOpenModal}
+                title='Ready to upload your files?'
                 cost={filesCost}
-                bytes={filesBytes}
-                fileCount={files.length}
+                objectsToUpload={filesToUpload}
             />
         </div>
     )

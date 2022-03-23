@@ -6,3 +6,9 @@ export type NftObject = {
     imageContentType: string
     metadata: string
 }
+
+export type FileToUpload = {
+    file: FileWithPreview,
+    buffer: Buffer,
+    contentType: string
+}
