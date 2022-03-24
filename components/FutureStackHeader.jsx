@@ -23,7 +23,7 @@ const FutureStackHeader = ({ darkMode=false, user }) => {
   return (
     <TWCleanHeader classMap={{fontColor: darkMode ? 'text-white' : 'text-slate-900'}}>
       <h1 className='text-lg'>
-        <a className='flex' onClick={() => router.push('/')}>
+        <a className='flex cursor-pointer' onClick={() => router.push('/')}>
           <Image
             src={`/images/${darkMode ? 'white-' : ''}stack.png`}
             alt="FutureStack Logo"
