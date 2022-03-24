@@ -42,7 +42,7 @@ export default function UploadConfirmation(props: UploadConfirmationProps) {
     return (
         <div>
             <main className={styles.main}>
-                <div className='text-sm max-w-prose prose prose-indigo margin-auto'>
+                <div className='pb-6 text-sm max-w-prose prose prose-indigo margin-auto'>
                     <p className='pt-3'>
                         Please confirm that the images and metadata have been combined together successfully.
                         Click an image to view its full metadata.

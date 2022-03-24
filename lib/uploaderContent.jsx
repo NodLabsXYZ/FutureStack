@@ -8,8 +8,8 @@ const exampleImageBaseURI = 'https://arweave.net/cvToh8C_sM9FYhGcpWqSAOLJqO2Anv6
 const exampleFileName = '1.jpg';
 const exampleImage = exampleImageBaseURI + exampleFileName;
 const exampleMetadataBaseURI = 'https://arweave.net/HgSjSaOKq2mTSLvNb_2b224fA-r86z6Ogi0xTOWKaio/';
-const exampleMetadataFileNames = "['0.json', '1.json', '2.json', ...]"
-const exampleMetadataLink = exampleMetadataBaseURI + '0.json';
+const exampleMetadataFileNames = "['1', '2', '3', ...]"
+const exampleMetadataLink = exampleMetadataBaseURI + '1';
 
 const uploaderContent = {
   "Supported file types": (

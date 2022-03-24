@@ -95,7 +95,7 @@ const uploadManifestForObjects = async (nfts: NftObject[], onItemCompleted: (ind
         manifest: "arweave/paths",
         version: "0.1.0",
         index: {
-            path: "0.json"
+            path: "1"
         },
         paths: {}
     }
@@ -117,7 +117,7 @@ const uploadManifestForObjects = async (nfts: NftObject[], onItemCompleted: (ind
 const getMetadataFileNames = (numberOfFiles: number): string[] => {
     const fileNames: string[] = [];
     for (let index = 0; index < numberOfFiles; index++) {
-        fileNames.push(index + '.json');
+        fileNames.push(`${index + 1}`);
     }
     return fileNames;
 }

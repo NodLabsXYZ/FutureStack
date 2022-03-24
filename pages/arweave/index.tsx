@@ -37,6 +37,9 @@ const ArweavePage = () => {
   const [showLinkToExistingUploads, setShowLinkToExistingUploads] = useState(false);
 
   useEffect(() => {
+    // const surveyStore = store.namespace(StoreName.survey)
+    // surveyStore('arweave', null)
+
     if (window) {
       const generalUploaderStore = store.namespace(StoreName.generalUploader);
       const baseURIFromLocal = generalUploaderStore('baseURI');
@@ -46,21 +49,6 @@ const ArweavePage = () => {
       }
     }
   }, []);
-
-
-  // useEffect(() => {
-  //   const pushToArweave = async () => {
-      
-  //     const tags = [{ name: "Type", value: "manifest" }, { name: "Content-Type", value: "application/x.arweave-manifest+json" }];
-    
-  //     const manifest = {"manifest":"arweave/paths","version":"0.1.0","index":{"path":"basten.jpg"},"paths":{"basten.jpg":{"id":"cu2RWNO8T6t2zZ6f9FTIY5S_GY5A19jWfGp-fKBEAxk"},"baresi.jpg":{"id":"CJtmESbh5hRuc2KoykrM16ersMN9PrOhfgHIEiYP1AU"},"higuita.jpg":{"id":"Ql6IX6NCPXh-54BHVdZ18GePeeq2FseaK0tL3tWW4OU"},"brehme.jpg":{"id":"jhhWLDDLTILAgXMoXD0rpEE2VXxF9mS2Hjxul6M98rg"}}}
-
-  //     const id = await upload(manifest, tags)
-  //     console.log("RESULT", id);      
-  //   }
-
-  //   pushToArweave();
-  // }, [])
 
   return (
     <ArweaveLayout title='Uploader'>
