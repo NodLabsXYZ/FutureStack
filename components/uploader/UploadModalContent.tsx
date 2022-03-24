@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { FileToUpload, NftObject } from "../../types/NftObject";
 import { Dialog } from "@headlessui/react";
 import EstimatedCost from "./EstimatedCost";
+import store from 'store2';
 
 type UploadModalContentProps = {
     title: string,
@@ -21,8 +22,11 @@ type UploadModalContentProps = {
 
 export default function UploadModalContent(props: UploadModalContentProps) {
     const router = useRouter();
+    
+    const surveyStore = store.namespace('survey')
+    const survey = surveyStore('arweave')
 
-    const [survey, setSurvey] = useState(null)
+    const [showSurvey, setShowSurvey] = useState(null)
     const [isPaymentTypeChosen, setIsPaymentTypeChosen] = useState(false);
     const [beginUpload, setBeginUpload] = useState(false);
     const [error, setError] = useState<ErrorType>();
@@ -63,8 +67,8 @@ export default function UploadModalContent(props: UploadModalContentProps) {
         />
     }
 
-    if (survey) {
-        return <ArweaveSurvey onCancel={() => setSurvey(false)} />
+    if (showSurvey) {
+        return <ArweaveSurvey onCancel={() => setShowSurvey(false)} />
     }
 
     if (props.purchasePriceInCents > 0) {
@@ -92,7 +96,20 @@ export default function UploadModalContent(props: UploadModalContentProps) {
                         purchasePrice={props.purchasePriceInCents}
                         setIsPaymentTypeChosen={setIsPaymentTypeChosen}
                     />
-                    <ArweaveSurveyButton onClick={() => setSurvey(true)} />
+                    {survey?.results?.claimedAt === undefined && (
+                        <>
+                            <div className="relative mt-4 mb-4">
+                                <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                                    <div className="w-full border-t border-gray-200" />
+                                </div>
+                                <div className="relative flex justify-center">
+                                    <span className="px-4 bg-white text-sm font-medium text-gray-500">or</span>
+                                </div>
+                            </div>
+                            <ArweaveSurveyButton onClick={() => setShowSurvey(true)} />
+                        </>
+                    )}
+                    
                 </>
             )
         } else {
