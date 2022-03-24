@@ -29,7 +29,7 @@ export default function ErrorPage(props: ErrorPageProps) {
                 Email support
               </a>
               <a
-                href="https://discord.gg/WbvTJQKZ8A"
+                href="https://discord.gg/A4ETdGsvjD"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
