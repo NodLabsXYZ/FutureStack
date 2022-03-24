@@ -19,6 +19,7 @@ type BaseUrlDisplayProps = {
 }
 
 type MetadataFileNamesDisplayProps = {
+    baseURI: string,
     fileNames: string[]
 }
 
@@ -42,10 +43,10 @@ function MetadataFileNamesDisplay(props: MetadataFileNamesDisplayProps): JSX.Ele
         const fileName = props.fileNames[index]
         const isNotOnLastElement = index !== props.fileNames.length - 1
         if (isNotOnLastElement) {
-            display = display.concat('    "' + fileName + '"' + ',\n');
+            display = display.concat('  "' + props.baseURI + fileName + '"' + ',\n');
         } else {
             // Don't add comma to last element
-            display = display.concat('    "' + fileName + '"' + '\n');
+            display = display.concat('  "' + props.baseURI + fileName + '"' + '\n');
         }
     }
     display = display.concat('];');
@@ -81,18 +82,22 @@ function UploadedFilesFullUriDisplay(props: UploadResultDisplayProps): JSX.Eleme
 function NftUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
     const exampleMetadataURI = props.baseURI + props.fileNames[0];
     return (
-        <div className='mt-4  w-2/3 left-1/3'>
-            <p className="text-m mt-2 text-center">
+        <div className=' w-2/3 left-1/3'>
+            <p className='my-6 text-center'>
+                Please save this information somewhere as it is hard to recover if you lose it.
+            </p>
+            
+            <p className="text-m mb-3 text-center">
                 This is the base URI you&apos;ll use in your contract.
             </p>
             <BaseUriDisplay baseURI={props.baseURI} />
             <br />
-            <p className="text-m mt-2 text-center">
-                These are the file names that, when appended to the end of the base URI,
-                will return the metadata for that token.
+            
+            <p className="text-m mb-3 text-center">
+                Each individual metadata file is available at the base URI above + the index of the file.
             </p>
-            <MetadataFileNamesDisplay fileNames={props.fileNames} />
-            <p className="text-m mt-2 text-center">
+            <MetadataFileNamesDisplay baseURI={props.baseURI} fileNames={props.fileNames} />
+            <p className="text-m mt-3 text-center">
                 Test it out here:
                 <br />
                 <a
@@ -105,14 +110,16 @@ function NftUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
                 </a>
             </p>
             <br />
-            <p className="text-m mt-2 text-center">
+            
+            {/* <p className="text-m mt-2 text-center">
                 You can easily and gas-efficiently return these values in the contract without
                 needing to take any information about the new token from your UI when minting.
                 All you need to do is:
             </p>
             <div className='mt-4'>
                 <ContractTokenUriDisplay />
-            </div>
+            </div> */}
+        
         </div>
     )
 }
