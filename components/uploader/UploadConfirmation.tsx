@@ -5,7 +5,6 @@ import NftObjectGrid from './nftObjectGrid'
 import NftObjectViewerModal from './nftObjectViewerModal'
 import { useEffect, useMemo, useState } from 'react'
 import UploadModal from './UploadModal'
-import calculatePurchasePrice from '../../lib/bundlr/calculatePurchasePrice'
 import EstimatedCost from './EstimatedCost'
 import store from 'store2'
 import { SurveyDiscounts } from '../../enums/discountEnums'
@@ -13,12 +12,12 @@ import { StoreName } from '../../enums/storeEnums'
 import calculatePurchasePriceInCents from '../../lib/bundlr/calculatePurchasePrice'
 
 
-type ConfirmUploadProps = {
+type UploadConfirmationProps = {
     nftObjects: NftObject[]
     totalBytes: number
 }
 
-export default function ConfirmUpload(props: ConfirmUploadProps) {
+export default function UploadConfirmation(props: UploadConfirmationProps) {
     const surveyStore = store.namespace(StoreName.survey);
 
     const [openNftViewerModal, setOpenNftViewerModal] = useState(false);

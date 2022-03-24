@@ -5,14 +5,14 @@ import { formatBytes } from '../../lib/formatters';
 import UploadMetadata from './uploadMetadata'
 import EstimatedCost from './EstimatedCost'
 import ErrorBanner from './ErrorBanner';
-import ConfirmUpload from './ConfirmUpload';
+import UploadConfirmation from './UploadConfirmation';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import { NftObject } from '../../types/NftObject'
 import store from 'store2';
 import { StoreName } from "../../enums/storeEnums"
 import { SurveyDiscounts } from "../../enums/discountEnums"
 import { SmallSpinner } from "./spinners"
-import { createNftObjects } from "../../lib/createNftObjects";
+import createNftObjects from "../../lib/createNftObjects";
 import { calculatePurchasePriceInCents } from "../../lib/bundlr";
 
 type UploaderProps = {
@@ -29,7 +29,7 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
   const metadataBytes = useRef(0);
   const [cost, setCost] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
-  const [showConfirmUpload, setShowConfirmUpload] = useState(false);
+  const [showUploadConfirmation, setShowUploadConfirmation] = useState(false);
   const [nftObjects, setNftObjects] = useState<NftObject[]>();
   const [loading, setLoading] = useState(false);
   const [ready, setReady] = useState(false);
@@ -88,13 +88,13 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
       setLoading(false);
       onFilesSelected();
       document.body.scrollTop = document.documentElement.scrollTop = 0;
-      setShowConfirmUpload(true);
+      setShowUploadConfirmation(true);
     }
   }
 
-  if (showConfirmUpload) {
+  if (showUploadConfirmation) {
     return (
-      <ConfirmUpload
+      <UploadConfirmation
         nftObjects={nftObjects}
         totalBytes={imageBytes.current + metadataBytes.current}
       />

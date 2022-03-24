@@ -1,7 +1,7 @@
 import { FileWithPreview } from "../types/FileWithPreview";
 import { NftObject } from "../types/NftObject";
 
-export const createNftObjects = async (imageFiles: FileWithPreview[], metadataFiles: File[], onItemProcessed: (index: number) => void): Promise<NftObject[]> => {
+const createNftObjects = async (imageFiles: FileWithPreview[], metadataFiles: File[], onItemProcessed: (index: number) => void): Promise<NftObject[]> => {
     if (imageFiles.length !== metadataFiles.length) {
         throw new Error("There must be the same number of image and metadata files.");
     }
@@ -47,3 +47,5 @@ const getJsonFromFile = async (metadataFile: File) => {
 
     return promise;
 }
+
+export default createNftObjects;
