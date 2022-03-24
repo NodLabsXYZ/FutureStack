@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
-import { FutureStackLayout } from '../components';
-import { supabaseClient } from '../lib';
-import { getSurvey, updateSurvey } from '../lib/queries';
+import { FutureStackLayout, TWCenteredContent, TWCircleSpinner } from '../components';
+import { completeUserRegistration, supabaseClient } from '../lib';
 import '../styles/globals.css'
 import '../styles/index.css'
 import store from 'store2';
@@ -18,6 +17,7 @@ function FutureStackApp({ Component, pageProps }) {
   const publicRoute = publicRoutes.includes(rootPath);
 
   const [user, setUser] = useState()
+  const [registeringUser, setRegisteringUser] = useState(false)
   const [darkMode, setDarkMode] = useState(dark.includes(rootPath))
 
   useEffect(() => {
@@ -31,14 +31,9 @@ function FutureStackApp({ Component, pageProps }) {
     const login = async (u) => {
       setUser(u)
       if (u) {
-        const survey = await getSurvey({ email: u.email })
-        if (survey) {
-          if (!survey.verified) {
-            survey.verified = true;
-            updateSurvey(survey.id, survey)    
-          }
-          surveyStore('arweave', survey)
-        }
+        setRegisteringUser(true)
+        await completeUserRegistration(u)
+        setRegisteringUser(false)
       } 
 
       setDarkMode(u === null && dark.includes(rootPath));
@@ -57,6 +52,14 @@ function FutureStackApp({ Component, pageProps }) {
 
     return data.unsubscribe;
   }, [user, router, publicRoute, rootPath, surveyStore]);
+
+  if (registeringUser) {
+    return <TWCenteredContent>
+      <div className='p-60'>
+        <TWCircleSpinner />
+      </div>
+    </TWCenteredContent>
+  }
 
   return (
     <FutureStackLayout darkMode={darkMode} user={user}>

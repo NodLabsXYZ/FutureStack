@@ -9,11 +9,13 @@ import {
   TWButton,
   TWCleanHeader
 } from '.'
+import store from 'store2'
 
 const FutureStackHeader = ({ darkMode=false, user }) => {
 
   const signout = () => {
     supabaseClient.auth.signOut()
+    store.clear();
   }
 
   return (
