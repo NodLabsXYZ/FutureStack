@@ -16,30 +16,18 @@ function FutureStackApp({ Component, pageProps }) {
   const rootPath = router.pathname.split('/')[1] || ''
   const publicRoute = publicRoutes.includes(rootPath);
 
-  const [user, setUser] = useState()
-  const [registeringUser, setRegisteringUser] = useState(false)
+  const [user, setUser] = useState(supabaseClient.auth.user())
+  const [registeringUser, setRegisteringUser] = useState(true)
   const [darkMode, setDarkMode] = useState(dark.includes(rootPath))
 
   useEffect(() => {
-    const _user = supabaseClient.auth.user()
-
-    if (!_user && !publicRoute) {
-      router.push('/')
-      return;
+    const login = async (_user) => {
+      await completeUserRegistration(_user)
+      setDarkMode(_user === null && dark.includes(rootPath));
+      setRegisteringUser(false)
+      setUser(_user)
     }
 
-    const login = async (u) => {
-      setUser(u)
-      if (u) {
-        setRegisteringUser(true)
-        await completeUserRegistration(u)
-        setRegisteringUser(false)
-      } 
-
-      setDarkMode(u === null && dark.includes(rootPath));
-    }
-
-    login(_user)
     const { data, error } = supabaseClient.auth.onAuthStateChange(
       (event, session) => {
         if (event === 'SIGNED_IN' && session) {
@@ -50,8 +38,15 @@ function FutureStackApp({ Component, pageProps }) {
       }
     );
 
+    login(user)
+
     return data.unsubscribe;
-  }, [user, router, publicRoute, rootPath, surveyStore]);
+  }, [user, rootPath]);
+
+  if (!user && !publicRoute) {
+    router.push('/')
+    return <></>;
+  }
 
   if (registeringUser) {
     return <TWCenteredContent>
