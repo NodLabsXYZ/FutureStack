@@ -171,6 +171,7 @@ function NftUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
 
 function FileUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
     const exampleFileURI = props.fileNames[0];
+    
     return (
         <div className='mt-4  w-2/3 left-1/3'>
             <p className="text-m mt-2 text-center">

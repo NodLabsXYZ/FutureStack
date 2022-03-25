@@ -68,15 +68,12 @@ model contract_deployments {
 }
 
 model assets {
-  id                   String    @id @default(dbgenerated("extensions.uuid_generate_v4()")) @db.Uuid
-  image_uri            String
-  metadata             Json
-  onchain_image_uri    String?
-  onchain_metadata_uri String?
-  project              projects? @relation(fields: [project_id], references: [id])
-  project_id           String?   @db.Uuid
-  created_at           DateTime  @default(now())
-  updated_at           DateTime? @db.Timestamptz(6)
+  id         String    @id @default(dbgenerated("extensions.uuid_generate_v4()")) @db.Uuid
+  info       Json
+  project    projects? @relation(fields: [project_id], references: [id])
+  project_id String?   @db.Uuid
+  created_at DateTime  @default(now())
+  updated_at DateTime? @db.Timestamptz(6)
 }
 
 model surveys {

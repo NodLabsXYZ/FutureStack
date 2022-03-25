@@ -182,6 +182,9 @@ BEFORE UPDATE on public.surveys
   FOR EACH ROW EXECUTE PROCEDURE extensions.moddatetime (updated_at);
 
 -- AddPolicies
+ALTER TABLE public.contract_deployments
+  ENABLE ROW LEVEL SECURITY;
+
 CREATE POLICY profile_contract_deployment_access 
 ON public.contract_deployments
 WITH CHECK (
@@ -195,6 +198,9 @@ WITH CHECK (
     )
   )
 );
+
+ALTER TABLE public.contracts
+  ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY profile_contract_access 
 ON public.contracts
@@ -214,6 +220,9 @@ WITH CHECK (
   )
 );
 
+ALTER TABLE public.assets
+  ENABLE ROW LEVEL SECURITY;
+
 CREATE POLICY profile_asset_access 
 ON public.assets
 WITH CHECK (
@@ -228,6 +237,9 @@ WITH CHECK (
   )
 );
 
+
+ALTER TABLE public.projects
+  ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY profile_project_access
 ON public.projects

@@ -122,7 +122,6 @@ const getMetadataFileNames = (numberOfFiles: number): string[] => {
     return fileNames;
 }
 
-
 const saveResultToLocalStorageAndRouteToSuccess =
     (
         router: NextRouter,
