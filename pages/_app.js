@@ -16,12 +16,13 @@ function FutureStackApp({ Component, pageProps }) {
 
   const [ready, setReady] = useState(false);
  
-  const [user, setUser] = useState()
-  const [darkMode, setDarkMode] = useState(dark.includes(rootPath))
+  const [user, setUser] = useState(supabaseClient.auth.user())
+  const [darkMode, setDarkMode] = useState(!user && dark.includes(rootPath))
   const registeringUserId = useRef()
 
   useEffect(() => {
     const _user = supabaseClient.auth.user()
+    setDarkMode(!_user && dark.includes(rootPath));
 
     if (!_user && !publicRoute) {
       router.push('/')

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ArweaveSurveyButton } from ".";
 import { TWButton } from "..";
 import { ErrorType } from "../../enums/errorEnums";
@@ -12,6 +12,7 @@ import { FileToUpload, NftObject } from "../../types/NftObject";
 import { Dialog } from "@headlessui/react";
 import EstimatedCost from "./EstimatedCost";
 import store from 'store2';
+import { supabaseClient } from "../../lib";
 
 type UploadModalContentProps = {
     title: string,
@@ -34,6 +35,16 @@ export default function UploadModalContent(props: UploadModalContentProps) {
     const handleRetryUpload = () => {
         // Consider counting errors and doing something after the third retry
         setError(null);
+    }
+
+    const onSurveyComplete = (survey) => {
+        // supabaseClient
+        //     .from(`surveys:id=eq.${survey.id}`)
+        //     .on('UPDATE', payload => {
+        //         console.log('Change received!', payload)
+        //     })
+        //     .subscribe()
+        setShowSurvey(false)
     }
 
     if (error) {
@@ -68,7 +79,12 @@ export default function UploadModalContent(props: UploadModalContentProps) {
     }
 
     if (showSurvey) {
-        return <ArweaveSurvey onCancel={() => setShowSurvey(false)} />
+        return (
+            <ArweaveSurvey 
+                onCancel={() => setShowSurvey(false)} 
+                onComplete={onSurveyComplete}
+            />
+        )
     }
 
     if (props.purchasePriceInCents > 0) {
