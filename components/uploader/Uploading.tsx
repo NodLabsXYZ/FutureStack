@@ -90,6 +90,9 @@ const setImageTxnIdsInMetadata = async (nfts: NftObject[], onFileCompleted: (ind
 }
 
 const uploadManifestForObjects = async (nfts: NftObject[], onItemCompleted: (index: number) => void): Promise<string> => {
+    const generalUploadStore = store.namespace(StoreName.generalUploader);
+
+    const files = [];
     const manifestTags = [{ name: "Type", value: "manifest" }, { name: "Content-Type", value: "application/x.arweave-manifest+json" }];
     const manifest = {
         manifest: "arweave/paths",
@@ -107,11 +110,20 @@ const uploadManifestForObjects = async (nfts: NftObject[], onItemCompleted: (ind
         // const byteCount = metadata.length * 2;
         const id = await upload(metadata, metadataTags);
         manifest.paths[`${i + 1}`] = { "id": id };
+        files.push({
+            file: JSON.parse(metadata).image,
+            metadata: id
+        })
         onItemCompleted(i);
     }
 
     // const byteCount = JSON.stringify(manifest).length * 2;
-    return await upload(JSON.stringify(manifest), manifestTags);
+    const manifestId = await upload(JSON.stringify(manifest), manifestTags);
+    const manifests = generalUploadStore('manifests') || {};
+    manifests[manifestId] = files;
+    generalUploadStore('manifests', manifests);
+
+    return manifestId;
 }
 
 const getMetadataFileNames = (numberOfFiles: number): string[] => {
