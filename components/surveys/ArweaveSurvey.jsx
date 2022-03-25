@@ -10,11 +10,11 @@ const SurveyComponent = dynamic(() => import("./SurveyComponent"), {
   ssr: false,
 })
 
-const ArweaveSurvey = ({ onCancel }) => {
-  const [complete, setComplete] = useState(false)
+const ArweaveSurvey = ({ onCancel, onComplete }) => {
+  const [survey, setSurvey] = useState()
   const surveyStore = store.namespace(StoreName.survey)
   
-  const onComplete = async (result) => {
+  const onCompleteInternal = async (result) => {
     const email = result.data['What is your email? (you will have to verify to continue)']
     const survey = await createSurvey(
       'arweave', 
@@ -27,10 +27,10 @@ const ArweaveSurvey = ({ onCancel }) => {
     })
 
     surveyStore('arweave', survey)
-    setComplete(true);
+    setSurvey(survey);
   }
 
-  if (complete) {
+  if (survey) {
     return (
       <div className="text-center text-lg text-slate-600">
         <div className='pt-3'>
@@ -41,7 +41,7 @@ const ArweaveSurvey = ({ onCancel }) => {
           Please click the link in the email to receive your discount.
         </div>
         <div className='pt-6'>
-          <TWButton onClick={onCancel}>
+          <TWButton onClick={() => onComplete(survey)}>
             Continue
           </TWButton>
         </div>
@@ -51,7 +51,7 @@ const ArweaveSurvey = ({ onCancel }) => {
 
   return (
     <div className="container">
-      <SurveyComponent questions={questions} onComplete={onComplete} />
+      <SurveyComponent questions={questions} onComplete={onCompleteInternal} />
       <div className='-mt-12 ml-12'>
         <TWButton
           classMap={{ background: 'bg-red-400', font: 'text-sm', padding: 'px-6 py-1' }}
