@@ -185,9 +185,47 @@ BEFORE UPDATE on public.surveys
 ALTER TABLE public.contract_deployments
   ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY profile_contract_deployment_access 
+CREATE POLICY insert_profile_contract_deployment_access 
 ON public.contract_deployments
+FOR INSERT 
 WITH CHECK (
+  auth.role() = 'authenticated'
+);
+
+CREATE POLICY select_profile_contract_deployment_access 
+ON public.contract_deployments
+FOR SELECT
+USING (
+  auth.uid() IN ( 
+    SELECT profiles.user_id 
+    FROM profiles, "_profilesToteams", projects
+    WHERE (
+      (profiles.id = "_profilesToteams"."A") 
+      AND ("_profilesToteams"."B" = projects.team_id) 
+      AND (projects.id = contract_deployments.project_id)
+    )
+  )
+);
+
+CREATE POLICY update_profile_contract_deployment_access 
+ON public.contract_deployments
+FOR UPDATE
+USING (
+  auth.uid() IN ( 
+    SELECT profiles.user_id 
+    FROM profiles, "_profilesToteams", projects
+    WHERE (
+      (profiles.id = "_profilesToteams"."A") 
+      AND ("_profilesToteams"."B" = projects.team_id) 
+      AND (projects.id = contract_deployments.project_id)
+    )
+  )
+);
+
+CREATE POLICY delete_profile_contract_deployment_access 
+ON public.contract_deployments
+FOR DELETE
+USING (
   auth.uid() IN ( 
     SELECT profiles.user_id 
     FROM profiles, "_profilesToteams", projects
@@ -202,9 +240,17 @@ WITH CHECK (
 ALTER TABLE public.contracts
   ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY profile_contract_access 
+CREATE POLICY insert_profile_contract_access
 ON public.contracts
+FOR INSERT 
 WITH CHECK (
+  auth.role() = 'authenticated'
+);
+
+CREATE POLICY select_profile_contract_access 
+ON public.contracts
+FOR SELECT
+USING (
   auth.uid() IN ( 
     SELECT profiles.user_id 
     FROM profiles, "_profilesToteams", projects 
@@ -220,12 +266,89 @@ WITH CHECK (
   )
 );
 
+CREATE POLICY update_profile_contract_access 
+ON public.contracts
+FOR UPDATE
+USING (
+  auth.uid() IN ( 
+    SELECT profiles.user_id 
+    FROM profiles, "_profilesToteams", projects 
+    WHERE (
+      (
+        (profiles.id = "_profilesToteams"."A") 
+        AND ("_profilesToteams"."B" = projects.team_id) 
+        AND (projects.id = contracts.project_id)
+      ) OR (
+        contracts.opensource = true
+      )
+    )
+  )
+);
+
+CREATE POLICY delete_profile_contract_access 
+ON public.contracts
+FOR DELETE
+USING (
+  auth.uid() IN ( 
+    SELECT profiles.user_id 
+    FROM profiles, "_profilesToteams", projects 
+    WHERE (
+      (
+        (profiles.id = "_profilesToteams"."A") 
+        AND ("_profilesToteams"."B" = projects.team_id) 
+        AND (projects.id = contracts.project_id)
+      ) OR (
+        contracts.opensource = true
+      )
+    )
+  )
+);
+
+
 ALTER TABLE public.assets
   ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY profile_asset_access 
+CREATE POLICY insert_profile_asset_access 
 ON public.assets
+FOR INSERT 
 WITH CHECK (
+  auth.role() = 'authenticated'
+);
+
+CREATE POLICY select_profile_asset_access 
+ON public.assets
+FOR SELECT
+USING (
+  auth.uid() IN ( 
+    SELECT profiles.user_id 
+    FROM profiles, "_profilesToteams", projects
+    WHERE (
+      (profiles.id = "_profilesToteams"."A") 
+      AND ("_profilesToteams"."B" = projects.team_id) 
+      AND (projects.id = assets.project_id)
+    )
+  )
+);
+
+CREATE POLICY update_profile_asset_access 
+ON public.assets
+FOR UPDATE
+USING (
+  auth.uid() IN ( 
+    SELECT profiles.user_id 
+    FROM profiles, "_profilesToteams", projects
+    WHERE (
+      (profiles.id = "_profilesToteams"."A") 
+      AND ("_profilesToteams"."B" = projects.team_id) 
+      AND (projects.id = assets.project_id)
+    )
+  )
+);
+
+CREATE POLICY delete_profile_asset_access 
+ON public.assets
+FOR DELETE
+USING (
   auth.uid() IN ( 
     SELECT profiles.user_id 
     FROM profiles, "_profilesToteams", projects
@@ -241,9 +364,10 @@ WITH CHECK (
 ALTER TABLE public.projects
   ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY profile_project_access
+CREATE POLICY select_profile_project_access
 ON public.projects
-WITH CHECK (
+FOR SELECT
+USING (
   auth.uid() IN ( 
     SELECT profiles.user_id 
     FROM profiles, "_profilesToteams" 
@@ -252,4 +376,39 @@ WITH CHECK (
       AND ("_profilesToteams"."B" = projects.team_id)
     )
   )
+);
+
+CREATE POLICY update_profile_project_access
+ON public.projects
+FOR UPDATE
+USING (
+  auth.uid() IN ( 
+    SELECT profiles.user_id 
+    FROM profiles, "_profilesToteams" 
+    WHERE (
+      (profiles.id = "_profilesToteams"."A") 
+      AND ("_profilesToteams"."B" = projects.team_id)
+    )
+  )
+);
+
+CREATE POLICY delete_profile_project_access
+ON public.projects
+FOR DELETE
+USING (
+  auth.uid() IN ( 
+    SELECT profiles.user_id 
+    FROM profiles, "_profilesToteams" 
+    WHERE (
+      (profiles.id = "_profilesToteams"."A") 
+      AND ("_profilesToteams"."B" = projects.team_id)
+    )
+  )
+);
+
+CREATE POLICY insert_profile_project_access 
+ON public.projects 
+FOR INSERT 
+WITH CHECK (
+  auth.role() = 'authenticated'
 );
