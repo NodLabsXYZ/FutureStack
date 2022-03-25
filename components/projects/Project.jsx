@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { NextLink, TWCircleSpinner, TWButton } from "..";
+import { checkFeatureFlag } from '../../lib';
 import { getProject } from "../../lib/queries";
 
 const Project = ({ id }) => {
@@ -42,12 +43,16 @@ const Project = ({ id }) => {
         {project.title}
       </h2>
       <div className='flex pt-6'>
-        <div className='border p-6 mr-6'>
-          {button(`/project/${id}/code`, 'Code')}
-        </div>
-        <div className='border p-6 mr-6'>
-          {button(`/project/${id}/contract`, 'Contracts')}
-        </div>
+        {checkFeatureFlag('full-project') && (
+          <>
+            <div className='border p-6 mr-6'>
+              {button(`/project/${id}/code`, 'Code')}
+            </div>
+            <div className='border p-6 mr-6'>
+              {button(`/project/${id}/contract`, 'Contracts')}
+            </div>
+          </>
+        )}
         <div className='border p-6 mr-6'>
           {button(`/project/${id}/asset`, 'Assets')}
         </div>
