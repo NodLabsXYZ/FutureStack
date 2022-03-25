@@ -14,6 +14,7 @@ model profiles {
   avatar_url String?
   user_id    String    @unique @db.Uuid
   secret_key String?   @default(dbgenerated("extensions.uuid_generate_v4()")) @db.Uuid
+  info       Json?
   created_at DateTime  @default(now())
   updated_at DateTime? @db.Timestamptz(6)
   teams      teams[]
