@@ -9,30 +9,32 @@ import {
   TWButton,
   TWCleanHeader
 } from '.'
+import store from 'store2'
+import { useRouter } from 'next/router'
 
 const FutureStackHeader = ({ darkMode=false, user }) => {
+  const router = useRouter()
 
   const signout = () => {
     supabaseClient.auth.signOut()
+    store.clear();
   }
 
   return (
     <TWCleanHeader classMap={{fontColor: darkMode ? 'text-white' : 'text-slate-900'}}>
       <h1 className='text-lg'>
-        <NextLink href='/'>
-          <a className='flex'>
-            <Image
-              src={`/images/${darkMode ? 'white-' : ''}stack.png`}
-              alt="FutureStack Logo"
-              width={24}
-              height={18}
-            />
-            <div className='ml-1'>
-              <span className='font-light'>Future</span>
-              <span className='font-semibold'>Stack</span>
-            </div>
-          </a>
-        </NextLink>
+        <a className='flex cursor-pointer' onClick={() => router.push('/')}>
+          <Image
+            src={`/images/${darkMode ? 'white-' : ''}stack.png`}
+            alt="FutureStack Logo"
+            width={24}
+            height={18}
+          />
+          <div className='ml-1'>
+            <span className='font-light'>Future</span>
+            <span className='font-semibold'>Stack</span>
+          </div>
+        </a>
       </h1>
       <div className='-mt-2'>
         {user &&

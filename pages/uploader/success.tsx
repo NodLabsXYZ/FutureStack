@@ -5,9 +5,10 @@ import { useEffect, useState } from 'react'
 import { CopyBlock, dracula } from "react-code-blocks";
 import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
-import ContractTokenUriDisplay from '../../components/uploader/ContractUriDisplay';
 import { updateSurvey } from '../../lib/queries';
-import { ARWEAVE_BASE_URL } from 'arweave-nft-uploader/lib/constants';
+import { TWButton } from '../../components';
+import { supabaseClient } from '../../lib';
+import { ApiError } from 'next/dist/server/api-utils';
 
 type UploadResultDisplayProps = {
     baseURI: string,
@@ -81,11 +82,55 @@ function UploadedFilesFullUriDisplay(props: UploadResultDisplayProps): JSX.Eleme
 
 function NftUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
     const exampleMetadataURI = props.baseURI + props.fileNames[0];
+    const [email, setEmail] = useState('');
+    const [sent, setSent] = useState(false);
+    const [error, setError] = useState<any|undefined>();
+
+    const onClick = async () => {
+        let { user, error } = await supabaseClient.auth.signIn({
+            email: email
+        })
+    
+        setError(error);
+        
+        if (!error) {
+            setSent(true)
+        }
+    }
+
     return (
         <div className=' w-2/3 left-1/3'>
             <p className='my-6 text-center'>
                 Please save this information somewhere as it is hard to recover if you lose it.
             </p>
+
+            <div className='pb-3 w-3/4 mx-auto text-center'>
+                Or you can enter your email and we&apos;ll create a dashboard for all of your uploads.
+                {sent && (
+                    <div className='py-3'>
+                        An email was sent to you to complete your registration.
+                    </div>
+                )}
+                {error && (
+                    <div className='py-3 text-red-600'>
+                        {error.message}
+                    </div>
+                )}
+                <div className='py-3'>
+                    <input
+                        type='text'
+                        className='w-2/3 mr-3 border px-3 py-1 mb-3 text-slate-900'
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder='Email'
+                        value={email}
+                    />
+                    <TWButton
+                        onClick={onClick}
+                    >
+                        Register
+                    </TWButton>
+                </div>
+            </div>
             
             <p className="text-m mb-3 text-center">
                 This is the base URI you&apos;ll use in your contract.

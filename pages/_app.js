@@ -1,24 +1,24 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router'
-import { FutureStackLayout } from '../components';
-import { supabaseClient } from '../lib';
-import { getSurvey, updateSurvey } from '../lib/queries';
+import { FutureStackLayout, TWCenteredContent, TWCircleSpinner } from '../components';
+import { completeUserRegistration, supabaseClient } from '../lib';
 import '../styles/globals.css'
 import '../styles/index.css'
-import store from 'store2';
 
 const publicRoutes = ['', 'login', 'register', 'arweave', 'uploader', 'error']
 const dark = ['', 'login', 'register']
 
 function FutureStackApp({ Component, pageProps }) {
   const router = useRouter();
-  const surveyStore = store.namespace('survey')
 
   const rootPath = router.pathname.split('/')[1] || ''
   const publicRoute = publicRoutes.includes(rootPath);
 
+  const [ready, setReady] = useState(false);
+ 
   const [user, setUser] = useState()
   const [darkMode, setDarkMode] = useState(dark.includes(rootPath))
+  const registeringUserId = useRef()
 
   useEffect(() => {
     const _user = supabaseClient.auth.user()
@@ -26,25 +26,27 @@ function FutureStackApp({ Component, pageProps }) {
     if (!_user && !publicRoute) {
       router.push('/')
       return;
-    }
+    }  
 
     const login = async (u) => {
-      setUser(u)
-      if (u) {
-        const survey = await getSurvey({ email: u.email })
-        if (survey) {
-          if (!survey.verified) {
-            survey.verified = true;
-            updateSurvey(survey.id, survey)    
-          }
-          surveyStore('arweave', survey)
-        }
-      } 
+      setReady(false)
+      if (u?.id !== user?.id) {
+        setDarkMode(!u && dark.includes(rootPath));
+        setUser(u)
+      }
 
-      setDarkMode(u === null && dark.includes(rootPath));
+      if (!u) return;
+
+      if (registeringUserId.current === u.id) return;
+      registeringUserId.current = u.id
+      const success = await completeUserRegistration(u)
+      registeringUserId.current = null
+
+      if (success) {
+        setReady(true)
+      }
     }
 
-    login(_user)
     const { data, error } = supabaseClient.auth.onAuthStateChange(
       (event, session) => {
         if (event === 'SIGNED_IN' && session) {
@@ -54,9 +56,25 @@ function FutureStackApp({ Component, pageProps }) {
         }
       }
     );
+    
+    if (_user) {
+      login(_user)
+    } else {
+      setReady(true)
+    }
 
     return data.unsubscribe;
-  }, [user, router, publicRoute, rootPath, surveyStore]);
+  }, [user, rootPath, publicRoute, router]);
+
+  if (!ready) {
+    return (
+      <TWCenteredContent>
+        <div className='p-60'>
+          <TWCircleSpinner />
+        </div>
+      </TWCenteredContent>
+    )
+  }
 
   return (
     <FutureStackLayout darkMode={darkMode} user={user}>

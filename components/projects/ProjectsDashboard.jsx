@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import store from 'store2';
 import { NewProjectButton, ProjectListing } from '.';
 import { TWCircleSpinner } from '..';
 import { getProjects } from '../../lib/queries';
@@ -8,6 +9,7 @@ const ContractDeploymentDashboardProjects = () => {
 
   useEffect(() => {
     const loadProjects = async () => {
+      console.log("GET PROJECTS")
       const projects = await getProjects()
       setProjects(projects)
     }
