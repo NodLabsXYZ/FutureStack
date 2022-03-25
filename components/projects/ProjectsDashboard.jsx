@@ -9,7 +9,6 @@ const ContractDeploymentDashboardProjects = () => {
 
   useEffect(() => {
     const loadProjects = async () => {
-      console.log("GET PROJECTS")
       const projects = await getProjects()
       setProjects(projects)
     }
