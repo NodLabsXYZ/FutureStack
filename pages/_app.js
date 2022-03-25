@@ -16,23 +16,30 @@ function FutureStackApp({ Component, pageProps }) {
 
   const [ready, setReady] = useState(false);
  
-  const [user, setUser] = useState(supabaseClient.auth.user())
-  const [darkMode, setDarkMode] = useState(!user && dark.includes(rootPath))
+  const [user, setUser] = useState()
+  const [darkMode, setDarkMode] = useState(dark.includes(rootPath))
   const registeringUserId = useRef()
 
   useEffect(() => {
-    const login = async (_user) => {
+    const _user = supabaseClient.auth.user()
+
+    if (!_user && !publicRoute) {
+      router.push('/')
+      return;
+    }  
+
+    const login = async (u) => {
       setReady(false)
-      if (_user?.id !== user?.id) {
-        setDarkMode(!_user && dark.includes(rootPath));
-        setUser(_user)
+      if (u?.id !== user?.id) {
+        setDarkMode(!u && dark.includes(rootPath));
+        setUser(u)
       }
 
-      if (!_user) return;
-      if (registeringUserId.current === _user.id) return;
+      if (!u) return;
 
-      registeringUserId.current = _user.id
-      const success = await completeUserRegistration(_user)
+      if (registeringUserId.current === u.id) return;
+      registeringUserId.current = u.id
+      const success = await completeUserRegistration(u)
       registeringUserId.current = null
 
       if (success) {
@@ -50,19 +57,14 @@ function FutureStackApp({ Component, pageProps }) {
       }
     );
     
-    if (user) {
-      login(user)
+    if (_user) {
+      login(_user)
     } else {
       setReady(true)
     }
 
     return data.unsubscribe;
-  }, [user, rootPath]);
-
-  if (!user && !publicRoute) {
-    router.push('/')
-    return;
-  }
+  }, [user, rootPath, publicRoute, router]);
 
   if (!ready) {
     return (
