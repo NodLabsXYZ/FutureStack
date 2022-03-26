@@ -68,6 +68,7 @@ function EmailRegistration(): JSX.Element {
     const [error, setError] = useState<any|undefined>();
 
     const onClick = async () => {
+        console.log("CLICK", store.namespace(StoreName.generalUploader)('metadataFileNames'))
         let { user, error } = await supabaseClient.auth.signIn({
             email: email
         })
