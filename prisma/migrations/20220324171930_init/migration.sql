@@ -12,6 +12,20 @@ $$;
 ALTER FUNCTION "auth"."uid"() OWNER TO "supabase_auth_admin";
 GRANT ALL ON FUNCTION "auth"."uid"() TO "dashboard_user";
 
+DROP FUNCTION IF EXISTS "auth"."role"();
+CREATE FUNCTION "auth"."role"() RETURNS text
+    LANGUAGE sql STABLE
+    AS $$
+  select 
+        coalesce(
+                nullif(current_setting('request.jwt.claim.role', true), ''),
+                (nullif(current_setting('request.jwt.claims', true), '')::jsonb ->> 'role')
+        )::text
+$$;
+ALTER FUNCTION "auth"."role"() OWNER TO "supabase_auth_admin";
+GRANT ALL ON FUNCTION "auth"."role"() TO "dashboard_user";
+
+
 CREATE SCHEMA IF NOT EXISTS "extensions";
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA extensions;
 CREATE EXTENSION IF NOT EXISTS "moddatetime" SCHEMA extensions;

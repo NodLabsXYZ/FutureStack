@@ -5,30 +5,32 @@ import { completeUserRegistration } from "../lib";
 const AccountRegistration = ({ user, onComplete }) => {
   const [message, setMessage] = useState()
   const registering = useRef(false)
+  const userRef = useRef(user)
+  const onCompleteRef = useRef(onComplete)
 
   useEffect(() => {
     if (registering.current) return;
 
     registering.current = true;
 
-    if (!user) {
-      onComplete();
+    if (!userRef.current) {
+      onCompleteRef.current();
       return;
     }
 
     const register = async () => {
       const success = await completeUserRegistration(
-        user,
+        userRef.current,
         setMessage
       )
 
       if (success) {
-        onComplete()
+        onCompleteRef.current()
       }
     }
 
     register()
-  }, [user, onComplete])
+  }, [])
 
   return (
     <TWCenteredContent>
