@@ -33,7 +33,7 @@ export const FileListDisplay = (props: FileListDisplayProps): JSX.Element => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {props.files.map((file, fileIdx) => (
+                                {props.files.slice(0, 12).map((file, fileIdx) => (
                                     <tr key={file.name} className={fileIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{file.name}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatBytes(file.size)}</td>
@@ -42,6 +42,11 @@ export const FileListDisplay = (props: FileListDisplayProps): JSX.Element => {
                             </tbody>
                         </table>
                     </div>
+                    {props.files.length > 12 && (
+                        <div className="p-6">
+                            Plus {props.files.length - 12} more files...
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

@@ -99,46 +99,44 @@ const FileUploader: FunctionComponent = () => {
             <main>
                 <ErrorBanner showError={errorMessage} message={errorMessage} />
                 <UploadFiles addFiles={addFiles} updateFilesBytes={updateFilesBytes} />
-                <br />
-                {
-                    filesBytes === 0 ?
-                        (<></>) :
-                        (
-                            <p>Upload size: {formatBytes(filesBytes)}</p>
+                <div className='text-center mt-6'>
+                    {
+                        filesBytes !== 0 &&
+                            (
+                                <p>Upload size: {formatBytes(filesBytes)}</p>
+                            )
+                    }
+
+                    {
+                        purchasePriceInCents !== 0 && (
+                            <div>
+                                <EstimatedCost costInCents={purchasePriceInCents} />
+                            </div>
                         )
-                }
+                    }
 
-                {
-                    purchasePriceInCents === 0 ? (<></>) : (
-                        <div>
-                            <EstimatedCost costInCents={purchasePriceInCents} />
-                        </div>
-                    )
-                }
+                    {
+                        files.length > 0 && !loading &&
+                            (
+                                <>
+                                    <button
+                                        type="button"
+                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        onClick={continueToUpload}
+                                    >
+                                        Continue
+                                    </button>
+                                </>
+                            )
+                    }
+                    {
+                        loading &&
+                        <span className="mt-2">
+                            <SmallSpinner />
+                        </span>
+                    }
 
-                {
-                    files.length > 0 && !loading ?
-                        (
-                            <>
-                                <br />
-                                <button
-                                    type="button"
-                                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                    onClick={continueToUpload}
-                                >
-                                    Continue
-                                </button>
-                            </>
-                        ) :
-                        (<></>)
-                }
-                {
-                    loading &&
-                    <span className="mt-2">
-                        <SmallSpinner />
-                    </span>
-                }
-
+                </div>
             </main>
 
             <UploadModal

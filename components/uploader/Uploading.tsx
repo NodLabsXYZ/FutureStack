@@ -121,6 +121,7 @@ const uploadManifestForObjects = async (nfts: NftObject[], onItemCompleted: (ind
     const manifestId = await upload(JSON.stringify(manifest), manifestTags);
     const manifests = generalUploadStore('manifests') || {};
     manifests[manifestId] = files;
+    console.log("manifests", manifests);
     generalUploadStore('manifests', manifests);
 
     return manifestId;
