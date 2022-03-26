@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router'
-import { FutureStackLayout, TWCenteredContent, TWCircleSpinner } from '../components';
+import { AccountRegistration, FutureStackLayout, TWCenteredContent, TWCircleSpinner } from '../components';
 import { completeUserRegistration, supabaseClient } from '../lib';
 import '../styles/globals.css'
 import '../styles/index.css'
@@ -13,72 +13,45 @@ function FutureStackApp({ Component, pageProps }) {
   const rootPath = router.pathname.split('/')[1] || ''
   const publicRoute = publicRoutes.includes(rootPath);
 
-  const [ready, setReady] = useState(false);
- 
   const [user, setUser] = useState(supabaseClient.auth.user())
-  const registeringUserId = useRef()
+  const [ready, setReady] = useState(user !== null);
+ 
 
   useEffect(() => {
-    const _user = supabaseClient.auth.user()
-
-    if (!_user && !publicRoute) {
+    if (!user && !publicRoute) {
       router.push('/')
       return;
     }  
 
-    const login = async (u) => {
-      setReady(false)
-      if (u?.id !== user?.id) {
-        setUser(u)
-      }
-
-      if (!u) return;
-
-      if (registeringUserId.current === u.id) return;
-      registeringUserId.current = u.id
-      const success = await completeUserRegistration(u)
-      registeringUserId.current = null
-
-      if (success) {
-        setReady(true)
-      }
-    }
-
     const { data, error } = supabaseClient.auth.onAuthStateChange(
       (event, session) => {
         if (event === 'SIGNED_IN' && session) {
-          login(session.user)
+          setUser(session.user)
+          setReady(false)
         } else if (session === null) {
-          login(null)
+          setUser(null)
         }
       }
     );
     
-    if (_user) {
-      login(_user)
-    } else {
-      setReady(true)
-    }
-
     return data.unsubscribe;
   }, [user, rootPath, publicRoute, router]);
 
-  if (!ready) {
-    return (
-      <TWCenteredContent>
-        <div className='p-60'>
-          <TWCircleSpinner />
-        </div>
-      </TWCenteredContent>
-    )
-  }
-
   return (
     <FutureStackLayout user={user}>
-      <Component
-        user={user}
-        {...pageProps}
-      />
+      {!ready && (
+        <AccountRegistration 
+          user={user} 
+          onComplete={() => setReady(true)}
+        />
+      )}
+      
+      {ready && (
+        <Component
+          user={user}
+          {...pageProps}
+        />
+      )}
     </FutureStackLayout>
   )
 }
