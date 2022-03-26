@@ -109,44 +109,45 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
           <br />
           <br />
           <UploadMetadata setMetadataFiles={setMetadataFiles} updateMetadataBytes={updateMetadataBytes} />
-          <br />
-          <br />
+          
+          <div className='text-center mt-12'>
 
-          {
-            imageBytes.current + metadataBytes.current !== 0 && (
-              <p>Upload size: {formatBytes(imageBytes.current + metadataBytes.current)}</p>
-            )
-          }
+            {
+              imageBytes.current + metadataBytes.current !== 0 && (
+                <p>Upload size: {formatBytes(imageBytes.current + metadataBytes.current)}</p>
+              )
+            }
 
-          {
-            ready && (
-              <div>
-                <EstimatedCost costInCents={cost} />
-              </div>
-            )
-          }
-
-          {
-            ready && !loading && (
-              <button
-                type="button"
-                className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                onClick={continueToUpload}
-              >
-                Continue
-              </button>
-            )
-          }
-          {
-            loading && (
-              <div className="mt-3">
-                <SmallSpinner />
-                <div className='mt-3'>
-                  Processing {processedCount + 1} out of {imageFiles.length}
+            {
+              ready && (
+                <div>
+                  <EstimatedCost costInCents={cost} />
                 </div>
-              </div>
-            )
-          }
+              )
+            }
+
+            {
+              ready && !loading && (
+                <button
+                  type="button"
+                  className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  onClick={continueToUpload}
+                >
+                  Continue
+                </button>
+              )
+            }
+            {
+              loading && (
+                <div className="mt-3">
+                  <SmallSpinner />
+                  <div className='mt-3'>
+                    Processing {processedCount + 1} out of {imageFiles.length}
+                  </div>
+                </div>
+              )
+            }
+          </div>
 
         </main>
       </div>

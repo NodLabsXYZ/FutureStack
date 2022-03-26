@@ -42,7 +42,7 @@ export default function UploadConfirmation(props: UploadConfirmationProps) {
     return (
         <div>
             <main>
-                <div className='pb-6 text-sm max-w-prose prose prose-indigo margin-auto'>
+                <div className='pb-6 text-sm max-w-prose prose prose-indigo mx-auto'>
                     <p className='pt-3'>
                         Please confirm that the images and metadata have been combined together successfully.
                         Click an image to view its full metadata.
@@ -58,17 +58,17 @@ export default function UploadConfirmation(props: UploadConfirmationProps) {
                     setNftToShow={setNftToShow}
                 />
 
-                <br />
-                <EstimatedCost costInCents={purchasePriceInCents} />
+                <div className='text-center mt-6'>
+                    <EstimatedCost costInCents={purchasePriceInCents} />
 
-                <br />
-                <button
-                    type="button"
-                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    onClick={() => setOpenConfirmPaymentTypeModal(true)}
-                >
-                    Looks good
-                </button>
+                    <button
+                        type="button"
+                        className="mt-6 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                        onClick={() => setOpenConfirmPaymentTypeModal(true)}
+                    >
+                        Looks good
+                    </button>
+                </div>
 
 
             </main>
