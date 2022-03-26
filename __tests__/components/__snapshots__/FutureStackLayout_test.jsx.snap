@@ -135,7 +135,7 @@ exports[`FutureStackLayout with user should render 1`] = `
                 />
               </noscript>
             </span>
-            <div
+            <span
               className="ml-1"
             >
               <span
@@ -148,7 +148,7 @@ exports[`FutureStackLayout with user should render 1`] = `
               >
                 Stack
               </span>
-            </div>
+            </span>
           </a>
         </h1>
         <div
