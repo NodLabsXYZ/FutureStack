@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import AssetTable from "./AssetTable";
 
 const AssetDashboard = ({ project }) => {

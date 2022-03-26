@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router'
-import { AccountRegistration, FutureStackLayout, TWCenteredContent, TWCircleSpinner } from '../components';
-import { completeUserRegistration, supabaseClient } from '../lib';
+import store from 'store2';
+import { AccountRegistration, FutureStackLayout } from '../components';
+import { supabaseClient } from '../lib';
 import '../styles/globals.css'
 import '../styles/index.css'
 
@@ -14,7 +15,9 @@ function FutureStackApp({ Component, pageProps }) {
   const publicRoute = publicRoutes.includes(rootPath);
 
   const [user, setUser] = useState(supabaseClient.auth.user())
-  const [ready, setReady] = useState(false);
+
+  const userStore = store.namespace("user");
+  const [ready, setReady] = useState(userStore('ready') || false);
  
   useEffect(() => {
     if (!user && !publicRoute) {
@@ -36,11 +39,14 @@ function FutureStackApp({ Component, pageProps }) {
         }
       }
     );
-
-    login(supabaseClient.auth.user())
     
     return data.unsubscribe;
   }, [user, rootPath, publicRoute, router]);
+
+  const onComplete = () => {
+    userStore('ready', true)
+    setReady(true)
+  }
 
   if (!ready && !user) {
     return <></>
@@ -51,7 +57,7 @@ function FutureStackApp({ Component, pageProps }) {
       {!ready && (
         <AccountRegistration 
           user={user} 
-          onComplete={() => setReady(true)}
+          onComplete={onComplete}
         />
       )}
       
