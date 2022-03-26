@@ -1,29 +1,15 @@
-import { NftUploader } from ".";
-import { supabaseClient } from "../../lib";
+import { useEffect } from "react";
+import AssetTable from "./AssetTable";
 
 const AssetDashboard = ({ project }) => {
-
-  const saveAsset = async () => {
-    const { body, error } = await supabaseClient.from('asset').insert({
-      image_uri:            '',
-      metadata:             '',
-      onchain_image_uri:    '',
-      onchain_metadata_uri: '',
-      project_id:         ''
-    });
-
-    console.log("ASSET INSERTED", body, error);
-
-    const { data } = await supabaseClient.from('asset').select('*');
-
-    console.log("ASSETS", data);
-  }
-
 
   return (
     <div>
       <h2 className='text-lg'>Assets: {project.title}</h2>
-      <NftUploader />
+
+      <div className='py-6'>
+        <AssetTable project={project} />
+      </div>
     </div>
   )
 }
