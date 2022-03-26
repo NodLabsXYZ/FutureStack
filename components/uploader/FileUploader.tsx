@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react"
-import styles from '../../styles/Home.module.css'
+// import styles from '../../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import { formatBytes } from "../../lib/formatters"
 import EstimatedCost from './EstimatedCost'
@@ -95,8 +95,8 @@ const FileUploader: FunctionComponent = () => {
     }
 
     return (
-        <div className={styles.container}>
-            <main className={styles.main}>
+        <div>
+            <main>
                 <ErrorBanner showError={errorMessage} message={errorMessage} />
                 <UploadFiles addFiles={addFiles} updateFilesBytes={updateFilesBytes} />
                 <br />

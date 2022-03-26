@@ -1,7 +1,7 @@
 import { NextRouter, useRouter } from 'next/router';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { LargeSpinner } from './spinners';
-import styles from '../../styles/Home.module.css'
+// import styles from '../../styles/Home.module.css'
 import store from 'store2';
 import { StoreName } from '../../enums/storeEnums';
 import { ErrorType } from '../../enums/errorEnums';
@@ -215,7 +215,7 @@ export default function Uploading(props: UploadingProps) {
 
     return (
         <div>
-            <main className={styles.main}>
+            <main>
                 <div className='place-content-center text-center'>
                     <br />
                     <br />

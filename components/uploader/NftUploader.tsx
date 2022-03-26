@@ -1,5 +1,5 @@
 import { FunctionComponent, useRef, useState } from "react"
-import styles from '../../styles/Home.module.css'
+// import styles from '../../styles/Home.module.css'
 import UploadImages from './uploadImages'
 import { formatBytes } from '../../lib/formatters';
 import UploadMetadata from './uploadMetadata'
@@ -101,8 +101,8 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
     )
   } else {
     return (
-      <div className={styles.container}>
-        <main className={styles.main}>
+      <div>
+        <main>
           <ErrorBanner showError={errorMessage} message={errorMessage} />
           <br />
           <UploadImages setImageFiles={setImageFiles} updateImageBytes={updateImageBytes} />

@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app'
 import { CheckIcon } from '@heroicons/react/outline'
-import styles from '../../styles/Home.module.css'
+// import styles from '../../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import { CopyBlock, dracula } from "react-code-blocks";
 import store from 'store2';
@@ -226,7 +226,7 @@ export default function UploadSuccess({ Component, pageProps }: AppProps) {
 
     return (
         <div>
-            <main className={styles.main}>
+            <main>
                 <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
                     <CheckIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
                 </div>
