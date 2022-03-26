@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app'
 import { CheckIcon } from '@heroicons/react/outline'
-import styles from '../../styles/Home.module.css'
+// import styles from '../../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import { CopyBlock, dracula } from "react-code-blocks";
 import store from 'store2';
@@ -62,6 +62,63 @@ function MetadataFileNamesDisplay(props: MetadataFileNamesDisplayProps): JSX.Ele
     )
 }
 
+function EmailRegistration(): JSX.Element {
+    const [email, setEmail] = useState('');
+    const [sent, setSent] = useState(false);
+    const [error, setError] = useState<any|undefined>();
+
+    const onClick = async () => {
+        console.log("CLICK", store.namespace(StoreName.generalUploader)('metadataFileNames'))
+        let { user, error } = await supabaseClient.auth.signIn({
+            email: email
+        })
+    
+        setError(error);
+        
+        if (!error) {
+            setSent(true)
+        }
+    }
+
+    return (
+        <div>
+            <p className='my-6 text-center'>
+                Please save this information somewhere as it is hard to recover if you lose it.
+            </p>
+
+            <div className='pb-3 w-3/4 mx-auto text-center'>
+                Or you can enter your email and we&apos;ll create a dashboard for all of your uploads.
+                {sent && (
+                    <div className='py-6'>
+                        An email was sent to you to complete your registration.
+                    </div>
+                )}
+                {error && (
+                    <div className='py-3 text-red-600'>
+                    {error.message}
+                </div>
+                )}
+                {!sent && (
+                    <div className='py-3'>
+                        <input
+                            type='text'
+                            className='w-2/3 mr-3 border px-3 py-1 mb-3 text-slate-900'
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder='Email'
+                            value={email}
+                        />
+                        <TWButton
+                            onClick={onClick}
+                        >
+                            Register
+                        </TWButton>
+                    </div>
+                )}         
+            </div>
+        </div>
+    )
+}
+
 function UploadedFilesFullUriDisplay(props: UploadResultDisplayProps): JSX.Element {
     let display = '';
     const elementList = [];
@@ -82,55 +139,10 @@ function UploadedFilesFullUriDisplay(props: UploadResultDisplayProps): JSX.Eleme
 
 function NftUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
     const exampleMetadataURI = props.baseURI + props.fileNames[0];
-    const [email, setEmail] = useState('');
-    const [sent, setSent] = useState(false);
-    const [error, setError] = useState<any|undefined>();
-
-    const onClick = async () => {
-        let { user, error } = await supabaseClient.auth.signIn({
-            email: email
-        })
-    
-        setError(error);
-        
-        if (!error) {
-            setSent(true)
-        }
-    }
 
     return (
         <div className=' w-2/3 left-1/3'>
-            <p className='my-6 text-center'>
-                Please save this information somewhere as it is hard to recover if you lose it.
-            </p>
-
-            <div className='pb-3 w-3/4 mx-auto text-center'>
-                Or you can enter your email and we&apos;ll create a dashboard for all of your uploads.
-                {sent && (
-                    <div className='py-3'>
-                        An email was sent to you to complete your registration.
-                    </div>
-                )}
-                {error && (
-                    <div className='py-3 text-red-600'>
-                        {error.message}
-                    </div>
-                )}
-                <div className='py-3'>
-                    <input
-                        type='text'
-                        className='w-2/3 mr-3 border px-3 py-1 mb-3 text-slate-900'
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder='Email'
-                        value={email}
-                    />
-                    <TWButton
-                        onClick={onClick}
-                    >
-                        Register
-                    </TWButton>
-                </div>
-            </div>
+            <EmailRegistration />
             
             <p className="text-m mb-3 text-center">
                 This is the base URI you&apos;ll use in your contract.
@@ -173,10 +185,13 @@ function FileUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
     const exampleFileURI = props.fileNames[0];
     
     return (
-        <div className='mt-4  w-2/3 left-1/3'>
+        <div className='mt-4  w-2/3 left-1/3 mx-auto'>
             <p className="text-m mt-2 text-center">
                 Here are the links to your files hosted permanently on Arweave:
             </p>
+            
+            <EmailRegistration />
+
             <UploadedFilesFullUriDisplay baseURI={props.baseURI} fileNames={props.fileNames} />
             <p className="text-m mt-2 text-center">
                 To view, just paste them into your browser. Test one out here:
@@ -226,7 +241,7 @@ export default function UploadSuccess({ Component, pageProps }: AppProps) {
 
     return (
         <div>
-            <main className={styles.main}>
+            <main>
                 <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
                     <CheckIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
                 </div>

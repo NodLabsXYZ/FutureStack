@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router'
-import { FutureStackLayout, TWCenteredContent, TWCircleSpinner } from '../components';
+import { AccountRegistration, FutureStackLayout, TWCenteredContent, TWCircleSpinner } from '../components';
 import { completeUserRegistration, supabaseClient } from '../lib';
 import '../styles/globals.css'
 import '../styles/index.css'
@@ -13,35 +13,18 @@ function FutureStackApp({ Component, pageProps }) {
   const rootPath = router.pathname.split('/')[1] || ''
   const publicRoute = publicRoutes.includes(rootPath);
 
+  const [user, setUser] = useState()
   const [ready, setReady] = useState(false);
  
-  const [user, setUser] = useState(supabaseClient.auth.user())
-  const registeringUserId = useRef()
-
   useEffect(() => {
-    const _user = supabaseClient.auth.user()
-
-    if (!_user && !publicRoute) {
+    if (!user && !publicRoute) {
       router.push('/')
       return;
-    }  
-
-    const login = async (u) => {
-      setReady(false)
-      if (u?.id !== user?.id) {
-        setUser(u)
-      }
-
-      if (!u) return;
-
-      if (registeringUserId.current === u.id) return;
-      registeringUserId.current = u.id
-      const success = await completeUserRegistration(u)
-      registeringUserId.current = null
-
-      if (success) {
-        setReady(true)
-      }
+    } 
+    
+    const login = (_user) => {
+      setUser(_user)
+      setReady(!_user)
     }
 
     const { data, error } = supabaseClient.auth.onAuthStateChange(
@@ -53,32 +36,31 @@ function FutureStackApp({ Component, pageProps }) {
         }
       }
     );
-    
-    if (_user) {
-      login(_user)
-    } else {
-      setReady(true)
-    }
 
+    login(supabaseClient.auth.user())
+    
     return data.unsubscribe;
   }, [user, rootPath, publicRoute, router]);
 
-  if (!ready) {
-    return (
-      <TWCenteredContent>
-        <div className='p-60'>
-          <TWCircleSpinner />
-        </div>
-      </TWCenteredContent>
-    )
+  if (!ready && !user) {
+    return <></>
   }
 
   return (
     <FutureStackLayout user={user}>
-      <Component
-        user={user}
-        {...pageProps}
-      />
+      {!ready && (
+        <AccountRegistration 
+          user={user} 
+          onComplete={() => setReady(true)}
+        />
+      )}
+      
+      {ready && (
+        <Component
+          user={user}
+          {...pageProps}
+        />
+      )}
     </FutureStackLayout>
   )
 }
