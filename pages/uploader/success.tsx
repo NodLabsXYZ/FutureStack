@@ -88,7 +88,7 @@ function EmailRegistration(): JSX.Element {
             <div className='pb-3 w-3/4 mx-auto text-center'>
                 Or you can enter your email and we&apos;ll create a dashboard for all of your uploads.
                 {sent && (
-                    <div className='py-3'>
+                    <div className='py-6'>
                         An email was sent to you to complete your registration.
                     </div>
                 )}
@@ -96,22 +96,24 @@ function EmailRegistration(): JSX.Element {
                     <div className='py-3 text-red-600'>
                     {error.message}
                 </div>
-            )}
-            <div className='py-3'>
-                <input
-                    type='text'
-                    className='w-2/3 mr-3 border px-3 py-1 mb-3 text-slate-900'
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder='Email'
-                    value={email}
-                />
-                <TWButton
-                    onClick={onClick}
-                >
-                    Register
-                </TWButton>
+                )}
+                {!sent && (
+                    <div className='py-3'>
+                        <input
+                            type='text'
+                            className='w-2/3 mr-3 border px-3 py-1 mb-3 text-slate-900'
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder='Email'
+                            value={email}
+                        />
+                        <TWButton
+                            onClick={onClick}
+                        >
+                            Register
+                        </TWButton>
+                    </div>
+                )}         
             </div>
-        </div>
         </div>
     )
 }

@@ -30,10 +30,10 @@ const FutureStackHeader = ({ darkMode=false, user }) => {
             width={24}
             height={18}
           />
-          <div className='ml-1'>
+          <span className='ml-1'>
             <span className='font-light'>Future</span>
             <span className='font-semibold'>Stack</span>
-          </div>
+          </span>
         </a>
       </h1>
       <div className='-mt-2'>

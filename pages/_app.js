@@ -13,29 +13,38 @@ function FutureStackApp({ Component, pageProps }) {
   const rootPath = router.pathname.split('/')[1] || ''
   const publicRoute = publicRoutes.includes(rootPath);
 
-  const [user, setUser] = useState(supabaseClient.auth.user())
-  const [ready, setReady] = useState(user !== null);
+  const [user, setUser] = useState()
+  const [ready, setReady] = useState(false);
  
-
   useEffect(() => {
     if (!user && !publicRoute) {
       router.push('/')
       return;
-    }  
+    } 
+    
+    const login = (_user) => {
+      setUser(_user)
+      setReady(!_user)
+    }
 
     const { data, error } = supabaseClient.auth.onAuthStateChange(
       (event, session) => {
         if (event === 'SIGNED_IN' && session) {
-          setUser(session.user)
-          setReady(false)
+          login(session.user)
         } else if (session === null) {
-          setUser(null)
+          login(null)
         }
       }
     );
+
+    login(supabaseClient.auth.user())
     
     return data.unsubscribe;
   }, [user, rootPath, publicRoute, router]);
+
+  if (!ready && !user) {
+    return <></>
+  }
 
   return (
     <FutureStackLayout user={user}>
