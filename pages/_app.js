@@ -6,7 +6,6 @@ import '../styles/globals.css'
 import '../styles/index.css'
 
 const publicRoutes = ['', 'login', 'register', 'arweave', 'uploader', 'error']
-const dark = ['', 'login', 'register']
 
 function FutureStackApp({ Component, pageProps }) {
   const router = useRouter();
@@ -17,12 +16,10 @@ function FutureStackApp({ Component, pageProps }) {
   const [ready, setReady] = useState(false);
  
   const [user, setUser] = useState(supabaseClient.auth.user())
-  const [darkMode, setDarkMode] = useState(!user && dark.includes(rootPath))
   const registeringUserId = useRef()
 
   useEffect(() => {
     const _user = supabaseClient.auth.user()
-    setDarkMode(!_user && dark.includes(rootPath));
 
     if (!_user && !publicRoute) {
       router.push('/')
@@ -32,7 +29,6 @@ function FutureStackApp({ Component, pageProps }) {
     const login = async (u) => {
       setReady(false)
       if (u?.id !== user?.id) {
-        setDarkMode(!u && dark.includes(rootPath));
         setUser(u)
       }
 
@@ -78,7 +74,7 @@ function FutureStackApp({ Component, pageProps }) {
   }
 
   return (
-    <FutureStackLayout darkMode={darkMode} user={user}>
+    <FutureStackLayout user={user}>
       <Component
         user={user}
         {...pageProps}
