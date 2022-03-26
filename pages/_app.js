@@ -13,7 +13,7 @@ function FutureStackApp({ Component, pageProps }) {
   const rootPath = router.pathname.split('/')[1] || ''
   const publicRoute = publicRoutes.includes(rootPath);
 
-  const [user, setUser] = useState()
+  const [user, setUser] = useState(supabaseClient.auth.user())
   const [ready, setReady] = useState(false);
  
   useEffect(() => {

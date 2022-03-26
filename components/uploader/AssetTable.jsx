@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { getAssets } from '../../lib/queries';
 
-const PER_PAGE = 20;
+const PER_PAGE = 10;
 
 const AssetTable = ({ project }) => {
   const [assets, setAssets] = useState([]);
