@@ -1,5 +1,5 @@
 import { NextRouter, useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { LargeSpinner } from './spinners';
 // import styles from '../../styles/Home.module.css'
 import store from 'store2';
@@ -32,12 +32,14 @@ const handleUploadFiles = async (
 }
 
 const uploadBulkFiles = async (files: FileToUpload[], onItemCompleted: (index: number) => void): Promise<string[]> => {
+    const generalUploadStore = store.namespace(StoreName.generalUploader);
     const arweaveURIs = [];
     for (let index = 0; index < files.length; index++) {
         const fileToUpload = files[index];
         const tags = [{ name: "Content-Type", value: fileToUpload.contentType }];
         // const byteCount = fileToUpload.file.size;
         const txId = await upload(fileToUpload.buffer, tags);
+        generalUploadStore("fileUploads", [...generalUploadStore("fileUploads"), txId]);
         arweaveURIs.push(ARWEAVE_BASE_URL + txId);
         onItemCompleted(index);
     }
@@ -51,12 +53,14 @@ const handleUploadNfts = async (
     onFileUploaded: (index: number) => void,
     onMetadataUploaded: (index: number) => void
 ): Promise<void> => {
+    console.log("handleUploadNfts")
     const { baseURI, metadataFileNames } = await uploadBulkNfts(nftObjects, onFileUploaded, onMetadataUploaded);
 
     saveResultToLocalStorageAndRouteToSuccess(router, StoreName.nftUploader, baseURI, metadataFileNames)
 }
 
 const uploadBulkNfts = async (objects: NftObject[], onFileCompleted: (index: number) => void, onMetadataCompleted: (index: number) => void): Promise<UploadData> => {
+    console.log("uploadBulkNfts")
     const nftsWithImagesUploaded = await setImageTxnIdsInMetadata(
         objects,
         onFileCompleted
@@ -121,7 +125,6 @@ const uploadManifestForObjects = async (nfts: NftObject[], onItemCompleted: (ind
     const manifestId = await upload(JSON.stringify(manifest), manifestTags);
     const manifests = generalUploadStore('manifests') || {};
     manifests[manifestId] = files;
-    console.log("manifests", manifests);
     generalUploadStore('manifests', manifests);
 
     return manifestId;
@@ -168,25 +171,21 @@ const routeToSuccessIfUploadComplete = (router: NextRouter): boolean => {
 export default function Uploading(props: UploadingProps) {
     const router = useRouter();
     const generalUploadStore = store.namespace(StoreName.generalUploader);
-    const uploadType: StoreName = generalUploadStore.get('nextUploadType');
-    const nftUpload: boolean = uploadType === StoreName.nftUploader;
+    const uploadType = useRef(generalUploadStore.get('nextUploadType'));
+    const nftUpload = useRef(uploadType.current === StoreName.nftUploader);
 
     const [isUploading, setIsUploading] = useState(false);
     const [filesCompleted, setFilesCompleted] = useState(0)
     const [metadataCompleted, setMetadataCompleted] = useState(0)
 
-    const handleUploadError = (error: Error) => {
-        console.error('Upload failed:');
-        console.error(error);
-        props.setError(ErrorType.upload);
-    }
+    const routerRef = useRef(router);
+    const propsRef = useRef(props)
 
-    const isLocalStorageAvailable = typeof window !== "undefined";
-    if (isLocalStorageAvailable && !isUploading) {
-        const isUploadComplete = routeToSuccessIfUploadComplete(router);
-
-        if (isUploadComplete) {
-            return (<></>);
+    useEffect(() => {
+        const handleUploadError = (error: Error) => {
+            console.error('Upload failed:');
+            console.error(error);
+            propsRef.current.setError(ErrorType.upload);
         }
 
         const onFileUploaded = (index: number) => {
@@ -199,19 +198,28 @@ export default function Uploading(props: UploadingProps) {
 
         try {
             setIsUploading(true);
-            if (nftUpload) {
-                handleUploadNfts(props.objectsToUpload as NftObject[], router, onFileUploaded, onMetadataUploaded)
+            if (nftUpload.current) {
+                handleUploadNfts(propsRef.current.objectsToUpload as NftObject[], routerRef.current, onFileUploaded, onMetadataUploaded)
                     .catch(error => handleUploadError(error));
-            } else if (uploadType === StoreName.filesUploader) {
-                handleUploadFiles(props.objectsToUpload as FileToUpload[], router, onFileUploaded)
+            } else if (uploadType.current === StoreName.filesUploader) {
+                handleUploadFiles(propsRef.current.objectsToUpload as FileToUpload[], routerRef.current, onFileUploaded)
                     .catch(error => handleUploadError(error));
             } else {
                 throw new Error("Error reading nextUploadType from local storage");
             }
         } catch (error) {
             console.error(error);
-            props.setError(ErrorType.generic)
+            propsRef.current.setError(ErrorType.generic)
         }
+    }, [])
+
+    const isLocalStorageAvailable = typeof window !== "undefined";
+    if (isLocalStorageAvailable && !isUploading) {
+        const isUploadComplete = routeToSuccessIfUploadComplete(router);
+
+        if (isUploadComplete) {
+            return (<></>);
+        }        
     }
 
     return (
@@ -227,10 +235,10 @@ export default function Uploading(props: UploadingProps) {
                     {filesCompleted > 0 && (
                         <div className='mt-6'>
                             {filesCompleted + 1} of {props.objectsToUpload.length} 
-                            &nbsp;{nftUpload ? 'images' : 'files'} uploaded.
+                            &nbsp;{nftUpload.current ? 'images' : 'files'} uploaded.
                         </div>
                     )}
-                    {nftUpload && (
+                    {nftUpload.current && (
                         <div className='mt-6'>
                             {metadataCompleted + 1} of {props.objectsToUpload.length} metadata uploaded.
                         </div>

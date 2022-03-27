@@ -68,7 +68,6 @@ function EmailRegistration(): JSX.Element {
     const [error, setError] = useState<any|undefined>();
 
     const onClick = async () => {
-        console.log("CLICK", store.namespace(StoreName.generalUploader)('metadataFileNames'))
         let { user, error } = await supabaseClient.auth.signIn({
             email: email
         })
@@ -141,7 +140,7 @@ function NftUploadResultDisplay(props: UploadResultDisplayProps): JSX.Element {
     const exampleMetadataURI = props.baseURI + props.fileNames[0];
 
     return (
-        <div className=' w-2/3 left-1/3'>
+        <div className=' w-2/3 left-1/3 mx-auto'>
             <EmailRegistration />
             
             <p className="text-m mb-3 text-center">

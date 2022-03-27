@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router'
 import store from 'store2';
 import { AccountRegistration, FutureStackLayout } from '../components';
@@ -16,18 +16,23 @@ function FutureStackApp({ Component, pageProps }) {
 
   const [user, setUser] = useState(supabaseClient.auth.user())
 
-  const userStore = store.namespace("user");
-  const [ready, setReady] = useState(userStore('ready') || false);
+  const userStoreRef = useRef(store.namespace("user"));
+  const [ready, setReady] = useState(userStoreRef.current('ready') || false);
  
   useEffect(() => {
     if (!user && !publicRoute) {
       router.push('/')
       return;
     } 
-    
+  }, [user, publicRoute, router])
+
+  useEffect(() => {    
     const login = (_user) => {
       setUser(_user)
-      setReady(!_user)
+
+      if (_user && !userStoreRef.currrent('ready')) {
+        setReady(false)
+      }      
     }
 
     const { data, error } = supabaseClient.auth.onAuthStateChange(
@@ -41,10 +46,10 @@ function FutureStackApp({ Component, pageProps }) {
     );
     
     return data.unsubscribe;
-  }, [user, rootPath, publicRoute, router]);
+  }, []);
 
   const onComplete = () => {
-    userStore('ready', true)
+    userStoreRef.current('ready', true)
     setReady(true)
   }
 
