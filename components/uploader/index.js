@@ -8,3 +8,4 @@ export { default as FileInstructions } from './FileInstructions';
 export { default as ContractUriDisplay } from './ContractUriDisplay';
 export { default as ArweaveSurveyButton } from './ArweaveSurveyButton';
 export { default as AssetTable } from './AssetTable'
+export { default as UploaderCard } from './UploaderCard'

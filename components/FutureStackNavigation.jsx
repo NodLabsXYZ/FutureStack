@@ -54,6 +54,12 @@ const FutureStackNavigation = () => {
             break;
         }
       }
+
+      if (router.asPath.includes('asset')) {
+        const { projectId } = router.query;
+        _stack.push(linkify('Assets', `project/${projectId}/asset`));
+      }
+
       
       setStack(_stack);
     }
