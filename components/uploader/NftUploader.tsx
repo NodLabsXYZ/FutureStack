@@ -16,10 +16,11 @@ import createNftObjects from "../../lib/createNftObjects";
 import { calculatePurchasePriceInCents } from "../../lib/bundlr";
 
 type UploaderProps = {
-  onFilesSelected: () => void
+  onFilesSelected: () => void,
+  project?: any
 }
 
-const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
+const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected, project }) => {
   const generalUploaderStore = store.namespace(StoreName.generalUploader);
   const surveyStore = store.namespace(StoreName.survey);
 
@@ -97,6 +98,7 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected }) => {
       <UploadConfirmation
         nftObjects={nftObjects}
         totalBytes={imageBytes.current + metadataBytes.current}
+        projectId={project?.id}
       />
     )
   } else {
