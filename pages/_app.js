@@ -30,7 +30,7 @@ function FutureStackApp({ Component, pageProps }) {
     const login = (_user) => {
       setUser(_user)
 
-      if (_user && !userStoreRef.currrent('ready')) {
+      if (_user && !userStoreRef.current('ready')) {
         setReady(false)
       }      
     }

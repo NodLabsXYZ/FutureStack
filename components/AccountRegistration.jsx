@@ -9,7 +9,9 @@ const AccountRegistration = ({ user, onComplete }) => {
   const onCompleteRef = useRef(onComplete)
 
   useEffect(() => {
+    console.log("HI")
     if (registering.current) return;
+    console.log("HI1")
 
     registering.current = true;
 
@@ -17,8 +19,10 @@ const AccountRegistration = ({ user, onComplete }) => {
       onCompleteRef.current();
       return;
     }
+    console.log("HI2")
 
     const register = async () => {
+      console.log("HI3")
       const success = await completeUserRegistration(
         userRef.current,
         setMessage

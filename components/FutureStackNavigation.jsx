@@ -65,7 +65,7 @@ const FutureStackNavigation = () => {
     }
 
     loadStack();
-  }, [router.query]);
+  }, [router]);
 
   return (
     <div className='pb-6 flex text-sm'>
