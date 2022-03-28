@@ -7,7 +7,7 @@ const AddNftsPage = () => {
 
   return (
     <ProjectWrapper>
-      <h1>Add NFTs</h1>
+      <h1 className='text-xl'>Add NFTs</h1>
 
       {!filesSelected && <MetadataInstructions />}
       <NftUploader onFilesSelected={() => setFilesSelected(true)} />

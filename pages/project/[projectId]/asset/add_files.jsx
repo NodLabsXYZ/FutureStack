@@ -1,10 +1,15 @@
+import { ProjectWrapper } from "../../../../components";
+import { FileUploader } from '../../../../components/uploader'
+
 const AddFilesPage = () => {
 
   return (
-    <div>
-      <h1>Add Files</h1>
-    </div>
-  );
+    <ProjectWrapper>
+      <h1 className='text-xl'>Add Files</h1>
+
+      <FileUploader />
+    </ProjectWrapper>
+  )
 }
 
 export default AddFilesPage;
