@@ -49,7 +49,7 @@ const uploadBulkFiles = async (
         if (projectId) {
             await createAssets(projectId, {
                 info: { 
-                    arweaveUri: txId 
+                    arweaveUri: ARWEAVE_BASE_URL + txId 
                 }
             })
         } else {

@@ -13,7 +13,7 @@ import { FileToUpload } from "../../types/NftObject";
 import { calculatePurchasePriceInCents } from "../../lib/bundlr";
 
 type FileUploaderProps = {
-    projectId?: string
+    project?: any
 }
 
 export default function FileUploader(props: FileUploaderProps) {
@@ -147,7 +147,7 @@ export default function FileUploader(props: FileUploaderProps) {
                 title='Ready to upload your files?'
                 purchasePriceInCents={purchasePriceInCents}
                 objectsToUpload={filesToUpload}
-                projectId={props.projectId}
+                projectId={props.project.id}
             />
         </div>
     )
