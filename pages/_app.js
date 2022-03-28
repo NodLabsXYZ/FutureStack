@@ -10,37 +10,36 @@ const publicRoutes = ['', 'login', 'register', 'arweave', 'uploader', 'error']
 
 function FutureStackApp({ Component, pageProps }) {
   const router = useRouter();
+  const userStore = store.namespace("user")
 
   const rootPath = router.pathname.split('/')[1] || ''
   const publicRoute = publicRoutes.includes(rootPath);
 
-  const [user, setUser] = useState(supabaseClient.auth.user())
-
-  const userStoreRef = useRef(store.namespace("user"));
-  const [ready, setReady] = useState(!user || (userStoreRef.current('ready') || false));
+  const [userStatus, setUserStatus] = useState({
+    user: supabaseClient.auth.user(),
+    ready: supabaseClient.auth.user() == null
+  })
  
   useEffect(() => {
-    if (!user && !publicRoute) {
+    if (!userStatus.user && !publicRoute) {
       router.push('/')
       return;
-    } 
-  }, [user, publicRoute, router])
-
-  useEffect(() => {    
-    const login = (_user) => {
-      setUser(_user)
-
-      if (_user && !userStoreRef.current('ready')) {
-        setReady(false)
-      }      
     }
+  }, [userStatus, publicRoute, router])
 
+  useEffect(() => {   
     const { data, error } = supabaseClient.auth.onAuthStateChange(
       (event, session) => {
         if (event === 'SIGNED_IN' && session) {
-          login(session.user)
+          setUserStatus({
+            user: session.user,
+            ready: false
+          })
         } else if (session === null) {
-          login(null)
+          setUserStatus({
+            user: null,
+            ready: true
+          })
         }
       }
     );
@@ -49,26 +48,25 @@ function FutureStackApp({ Component, pageProps }) {
   }, []);
 
   const onComplete = () => {
-    userStoreRef.current('ready', true)
-    setReady(true)
-  }
-
-  if (!ready && !user) {
-    return <></>
+    userStore('ready', true)
+    setUserStatus({
+      user: userStatus.user,
+      ready: true      
+    })
   }
 
   return (
-    <FutureStackLayout user={user}>
-      {!ready && (
+    <FutureStackLayout user={userStatus.user}>
+      {!userStatus.ready && (
         <AccountRegistration 
-          user={user} 
+          user={userStatus.user} 
           onComplete={onComplete}
         />
       )}
       
-      {ready && (
+      {userStatus.ready && (
         <Component
-          user={user}
+          user={userStatus.user}
           {...pageProps}
         />
       )}

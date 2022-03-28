@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import store from 'store2';
 import { NewProjectButton, ProjectListing } from '.';
 import { TWCircleSpinner } from '..';
 import { getProjects } from '../../lib/queries';

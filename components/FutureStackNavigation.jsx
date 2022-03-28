@@ -9,7 +9,7 @@ import {
 } from '../lib/queries'
 import { NextLink } from '.';
 
-const FutureStackNavigation = () => {
+const FutureStackNavigation = ({ user }) => {
   const [stack, setStack] = useState([]);
   const router = useRouter()
 
@@ -20,6 +20,11 @@ const FutureStackNavigation = () => {
   )
 
   useEffect(() => {
+    if (!user) {
+      setStack([])
+      return;
+    }
+
     const loadStack = async () => {
       const _stack = [
         linkify('Projects', '/'),
@@ -65,7 +70,7 @@ const FutureStackNavigation = () => {
     }
 
     loadStack();
-  }, [router]);
+  }, [user, router]);
 
   return (
     <div className='pb-6 flex text-sm'>

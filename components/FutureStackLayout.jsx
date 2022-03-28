@@ -49,7 +49,7 @@ const FutureStackLayout = ({ user, children }) => {
     <div className={`w-fit sm:w-full ${darkState.text}`} style={darkState.gradient}>
       <div className='container px-6 mx-auto pb-36'>
         <FutureStackHeader darkMode={darkState.isDark} user={user} />
-        {user && <FutureStackNavigation />}
+        <FutureStackNavigation user={user} />
         {children}
       </div>
       <FutureStackFooter darkMode={darkState.isDark}/>
