@@ -23,18 +23,18 @@ const FutureStackHeader = ({ darkMode=false, user }) => {
   return (
     <TWCleanHeader classMap={{fontColor: darkMode ? 'text-white' : 'text-slate-900'}}>
       <h1 className='text-lg'>
-        <a className='flex cursor-pointer' onClick={() => router.push('/')}>
+        <div className='flex cursor-pointer' onClick={() => router.push('/')}>
           <Image
             src={`/images/${darkMode ? 'white-' : ''}stack.png`}
             alt="FutureStack Logo"
             width={24}
             height={18}
           />
-          <span className='ml-1'>
+          <div className='ml-1'>
             <span className='font-light'>Future</span>
             <span className='font-semibold'>Stack</span>
-          </span>
-        </a>
+          </div>
+        </div>
       </h1>
       <div className='-mt-2'>
         {user &&
