@@ -17,7 +17,7 @@ function FutureStackApp({ Component, pageProps }) {
   const [user, setUser] = useState(supabaseClient.auth.user())
 
   const userStoreRef = useRef(store.namespace("user"));
-  const [ready, setReady] = useState(userStoreRef.current('ready') || false);
+  const [ready, setReady] = useState(!user || (userStoreRef.current('ready') || false));
  
   useEffect(() => {
     if (!user && !publicRoute) {

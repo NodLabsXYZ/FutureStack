@@ -116,7 +116,7 @@ const uploadManifestForObjects = async (nfts: NftObject[], onItemCompleted: (ind
         manifest.paths[`${i + 1}`] = { "id": id };
         files.push({
             file: JSON.parse(metadata).image,
-            metadata: id
+            metadata: ARWEAVE_BASE_URL + id
         })
         onItemCompleted(i);
     }
@@ -124,7 +124,7 @@ const uploadManifestForObjects = async (nfts: NftObject[], onItemCompleted: (ind
     // const byteCount = JSON.stringify(manifest).length * 2;
     const manifestId = await upload(JSON.stringify(manifest), manifestTags);
     const manifests = generalUploadStore('manifests') || {};
-    manifests[manifestId] = files;
+    manifests[ARWEAVE_BASE_URL + manifestId] = files;
     generalUploadStore('manifests', manifests);
 
     return manifestId;
