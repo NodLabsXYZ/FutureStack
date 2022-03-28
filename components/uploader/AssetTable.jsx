@@ -17,8 +17,6 @@ const AssetTable = ({ project }) => {
     loadAssets();   
   }, [project])
 
-  const arweaveUrl = (uri) => `https://arweave.net/${uri}`;
-
   const pageAssets = assets.slice(page * PER_PAGE, (page + 1) * PER_PAGE);
   
   const pages = []

@@ -1,13 +1,14 @@
+import { ProjectWrapper } from "../../../../components";
 import { NftUploader } from '../../../../components/uploader'
 
 const AddNftsPage = () => {
 
   return (
-    <div>
+    <ProjectWrapper>
       <h1>Add NFTs</h1>
 
       <NftUploader />
-    </div>
+    </ProjectWrapper>
   )
 }
 
