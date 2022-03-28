@@ -1,14 +1,47 @@
+import { useEffect, useState } from 'react';
 import { AssetTable, UploaderCard } from ".";
+import { getAssets } from '../../lib/queries';
 
 const AssetDashboard = ({ project }) => {
+  const [assets, setAssets] = useState([]);
+
+  useEffect(() => {
+    const loadAssets = async () => {
+      const _assets = await getAssets(project);
+      setAssets(_assets);
+    }
+
+    loadAssets();   
+  }, [project])
+
+  const manifests = [];
+  const files = [];
+
+  assets.forEach(asset => {
+    if (asset.info.arweaveManifest) {
+      manifests.push(asset);
+    } else {
+      files.push(asset);
+    }
+  });
 
   return (
     <div>
-      <h2 className='text-lg'>Assets: {project.title}</h2>
+      <h2 className='text-xl'>Assets: {project.title}</h2>
 
-      <div className='py-6'>
-        <AssetTable project={project} />
-      </div>
+      {manifests.length > 0 && (
+        <div className='py-12'>
+          <h3 className='pb-3 text-lg'>Manifest Files</h3>
+          <AssetTable assets={manifests} manifest={true} />
+        </div>
+      )}
+
+      {files.length > 0 && (
+        <div className='py-12'>
+          <h3 className='pb-3 text-lg'>Files</h3>
+          <AssetTable assets={files} />
+        </div>
+      )}
 
       <div className='py-12'>
         <h2 className='text-lg font-bold text-center mb-6'>Add More Assets</h2>
