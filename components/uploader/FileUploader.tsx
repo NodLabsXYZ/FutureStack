@@ -147,7 +147,7 @@ export default function FileUploader(props: FileUploaderProps) {
                 title='Ready to upload your files?'
                 purchasePriceInCents={purchasePriceInCents}
                 objectsToUpload={filesToUpload}
-                projectId={props.project.id}
+                projectId={props.project?.id}
             />
         </div>
     )

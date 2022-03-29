@@ -12,7 +12,6 @@ import { FileToUpload, NftObject } from "../../types/NftObject";
 import { Dialog } from "@headlessui/react";
 import EstimatedCost from "./EstimatedCost";
 import store from 'store2';
-import { supabaseClient } from "../../lib";
 
 type UploadModalContentProps = {
     title: string,

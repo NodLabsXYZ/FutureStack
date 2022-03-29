@@ -46,16 +46,18 @@ const uploadBulkFiles = async (
         const tags = [{ name: "Content-Type", value: fileToUpload.contentType }];
         // const byteCount = fileToUpload.file.size;
         const txId = await upload(fileToUpload.buffer, tags);
+        const fullUrl =  ARWEAVE_BASE_URL + txId;
         if (projectId) {
             await createAssets(projectId, {
                 info: { 
-                    arweaveUri: ARWEAVE_BASE_URL + txId 
+                    arweaveUri: fullUrl 
                 }
             })
         } else {
-            generalUploadStore("fileUploads", [...generalUploadStore("fileUploads"), txId]);
+            const existingUploads = (generalUploadStore("fileUploads") || []) as string[];
+            generalUploadStore("fileUploads", [...existingUploads, fullUrl]);
         }
-        arweaveURIs.push(ARWEAVE_BASE_URL + txId);
+        arweaveURIs.push(fullUrl);
         onItemCompleted(index);
     }
     return arweaveURIs;
@@ -69,7 +71,6 @@ const handleUploadNfts = async (
     onMetadataUploaded: (index: number) => void,
     projectId?: string
 ): Promise<void> => {
-    console.log("handleUploadNfts")
     const { baseURI, metadataFileNames } = await uploadBulkNfts(
         nftObjects,
         onFileUploaded, 
@@ -197,9 +198,13 @@ const saveResultToLocalStorageAndRouteToSuccess =
     ): void => {
         const generalUploadStore = store.namespace(StoreName.generalUploader);
 
+        console.log("HI0")
         generalUploadStore('lastSuccessfulUpload', uploadType);
+        console.log("HI1")
         generalUploadStore('baseURI', baseURI);
+        console.log("HI2")
         generalUploadStore('metadataFileNames', metadataFileNames.join(','));
+        console.log("HI3")
 
         if (projectId) {
             router.push(`/project/${projectId}/asset`)
