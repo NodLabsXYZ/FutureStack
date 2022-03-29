@@ -4,7 +4,7 @@ import EstimatedCost from './EstimatedCost'
 import ErrorBanner from './ErrorBanner';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import store from 'store2';
-import UploadFiles from './UploadFiles';
+import FileDropzone from './FileDropzone';
 import { StoreName } from "../../enums/storeEnums";
 import { SmallSpinner } from "./spinners";
 import { SurveyDiscounts } from '../../enums/discountEnums';
@@ -100,7 +100,7 @@ export default function FileUploader(props: FileUploaderProps) {
         <div>
             <main>
                 <ErrorBanner showError={errorMessage} message={errorMessage} />
-                <UploadFiles addFiles={addFiles} updateFilesBytes={updateFilesBytes} />
+                <FileDropzone addFiles={addFiles} updateFilesBytes={updateFilesBytes} />
                 <div className='text-center mt-6'>
                     {
                         filesBytes !== 0 &&
