@@ -17,7 +17,7 @@ exports[`FutureStackLayout with user should render 1`] = `
         <h1
           className="text-lg"
         >
-          <a
+          <div
             className="flex cursor-pointer"
             onClick={[Function]}
           >
@@ -135,7 +135,7 @@ exports[`FutureStackLayout with user should render 1`] = `
                 />
               </noscript>
             </span>
-            <span
+            <div
               className="ml-1"
             >
               <span
@@ -148,8 +148,8 @@ exports[`FutureStackLayout with user should render 1`] = `
               >
                 Stack
               </span>
-            </span>
-          </a>
+            </div>
+          </div>
         </h1>
         <div
           className="-mt-2"

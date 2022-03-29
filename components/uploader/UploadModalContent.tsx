@@ -12,13 +12,13 @@ import { FileToUpload, NftObject } from "../../types/NftObject";
 import { Dialog } from "@headlessui/react";
 import EstimatedCost from "./EstimatedCost";
 import store from 'store2';
-import { supabaseClient } from "../../lib";
 
 type UploadModalContentProps = {
     title: string,
     purchasePriceInCents: number,
     setCanClose: Dispatch<SetStateAction<boolean>>,
-    objectsToUpload: NftObject[] | FileToUpload[]
+    objectsToUpload: NftObject[] | FileToUpload[],
+    projectId?: string,
 }
 
 export default function UploadModalContent(props: UploadModalContentProps) {
@@ -73,6 +73,7 @@ export default function UploadModalContent(props: UploadModalContentProps) {
     if (beginUpload) {
         props.setCanClose(false)
         return <Uploading
+            projectId={props.projectId}
             setError={setError}
             objectsToUpload={props.objectsToUpload}
         />

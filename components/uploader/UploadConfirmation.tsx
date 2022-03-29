@@ -14,7 +14,8 @@ import calculatePurchasePriceInCents from '../../lib/bundlr/calculatePurchasePri
 
 type UploadConfirmationProps = {
     nftObjects: NftObject[]
-    totalBytes: number
+    totalBytes: number,
+    projectId?: string
 }
 
 export default function UploadConfirmation(props: UploadConfirmationProps) {
@@ -84,6 +85,7 @@ export default function UploadConfirmation(props: UploadConfirmationProps) {
                 purchasePriceInCents={purchasePriceInCents}
                 title='Ready to upload your images and metadata?'
                 objectsToUpload={props.nftObjects}
+                projectId={props.projectId}
             />
         </div>
 

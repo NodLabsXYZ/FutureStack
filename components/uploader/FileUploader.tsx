@@ -1,5 +1,3 @@
-import { FunctionComponent } from "react"
-// import styles from '../../styles/Home.module.css'
 import { useEffect, useState } from 'react'
 import { formatBytes } from "../../lib/formatters"
 import EstimatedCost from './EstimatedCost'
@@ -14,7 +12,11 @@ import UploadModal from "./UploadModal";
 import { FileToUpload } from "../../types/NftObject";
 import { calculatePurchasePriceInCents } from "../../lib/bundlr";
 
-const FileUploader: FunctionComponent = () => {
+type FileUploaderProps = {
+    project?: any
+}
+
+export default function FileUploader(props: FileUploaderProps) {
     const generalUploaderStore = store.namespace(StoreName.generalUploader)
     const [files, setFiles] = useState<FileWithPreview[]>([]);
     const [filesBytes, setFilesBytes] = useState(0);
@@ -145,8 +147,8 @@ const FileUploader: FunctionComponent = () => {
                 title='Ready to upload your files?'
                 purchasePriceInCents={purchasePriceInCents}
                 objectsToUpload={filesToUpload}
+                projectId={props.project?.id}
             />
         </div>
     )
 }
-export default FileUploader;

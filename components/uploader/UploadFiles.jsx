@@ -1,4 +1,4 @@
-import React, { Component, Dispatch, SetStateAction } from 'react';
+import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import { FileListDisplay } from "./FileListDisplay";
 

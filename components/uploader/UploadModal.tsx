@@ -11,6 +11,7 @@ type UploadModalProps = {
     title: string,
     purchasePriceInCents: number,
     objectsToUpload: NftObject[] | FileToUpload[]
+    projectId?: string
 }
 
 export default function UploadModal(props: UploadModalProps) {
@@ -58,6 +59,7 @@ export default function UploadModal(props: UploadModalProps) {
                                 title={props.title}
                                 setCanClose={setCanClose}
                                 objectsToUpload={props.objectsToUpload}
+                                projectId={props.projectId}
                             />
                         </div>
                     </Transition.Child>

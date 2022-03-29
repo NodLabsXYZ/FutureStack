@@ -1,13 +1,17 @@
-import { NftUploader } from '../../../../components/uploader'
+import { useState } from 'react';
+import { ProjectWrapper } from "../../../../components";
+import { NftUploader, MetadataInstructions } from '../../../../components/uploader'
 
 const AddNftsPage = () => {
+  const [filesSelected, setFilesSelected] = useState(false);
 
   return (
-    <div>
-      <h1>Add NFTs</h1>
+    <ProjectWrapper>
+      <h1 className='text-xl'>Add NFTs</h1>
 
-      <NftUploader />
-    </div>
+      {!filesSelected && <MetadataInstructions />}
+      <NftUploader onFilesSelected={() => setFilesSelected(true)} />
+    </ProjectWrapper>
   )
 }
 
