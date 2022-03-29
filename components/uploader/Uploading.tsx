@@ -47,15 +47,16 @@ const uploadBulkFiles = async (
         // const byteCount = fileToUpload.file.size;
         const txId = await upload(fileToUpload.buffer, tags);
         const fullUrl =  ARWEAVE_BASE_URL + txId;
+        const info = { 
+            name: fileToUpload.file.name,
+            contentType: fileToUpload.contentType,
+            arweaveUri: fullUrl 
+        };
         if (projectId) {
-            await createAssets(projectId, {
-                info: { 
-                    arweaveUri: fullUrl 
-                }
-            })
+            await createAssets(projectId, { info })
         } else {
             const existingUploads = (generalUploadStore("fileUploads") || []) as string[];
-            generalUploadStore("fileUploads", [...existingUploads, fullUrl]);
+            generalUploadStore("fileUploads", [...existingUploads, info]);
         }
         arweaveURIs.push(fullUrl);
         onItemCompleted(index);
@@ -145,18 +146,18 @@ const uploadManifestForObjects = async (
         // const byteCount = metadata.length * 2;
         const id = await upload(metadata, metadataTags);        
         manifest.paths[`${i + 1}`] = { "id": id };
+
+        const info = {
+            name: nfts[i].imageFile.name,
+            contentType: nfts[i].imageContentType,
+            arweaveUri: JSON.parse(metadata).image,
+            arweaveMetadata: ARWEAVE_BASE_URL + id
+        }
+        
         if (projectId) {
-            await createAssets(projectId, {
-                info: {
-                    arweaveUri: JSON.parse(metadata).image,
-                    arweaveMetadata: ARWEAVE_BASE_URL + id
-                }
-            })
+            await createAssets(projectId, { info })
         } else {
-            files.push({
-                file: JSON.parse(metadata).image,
-                metadata: ARWEAVE_BASE_URL + id
-            })
+            files.push(info)
         }
         
         onItemCompleted(i);

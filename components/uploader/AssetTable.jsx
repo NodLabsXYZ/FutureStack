@@ -38,6 +38,7 @@ const AssetTable = ({ assets, manifest }) => {
               )}
               {!manifest && (
                 <>
+                  <th className='px-6 py-3'>Name</th>
                   <th className='px-6 py-3'>Image</th>
                   <th className='px-6 py-3'>Link</th>
                   <th className='px-6 py-3'>Metadata</th>
@@ -48,7 +49,7 @@ const AssetTable = ({ assets, manifest }) => {
           </thead>
           <tbody>
             {pageAssets.map((asset, index) => {
-              const { arweaveUri, arweaveMetadata, arweaveManifest } = asset.info;
+              const { arweaveUri, arweaveMetadata, arweaveManifest, name } = asset.info;
               return (
                 <tr key={`asset-${index}`} className='bg-white border-b dark:bg-gray-800 dark:border-gray-700'>
                   {manifest && (
@@ -75,6 +76,9 @@ const AssetTable = ({ assets, manifest }) => {
                   )}
                   {!manifest && (
                     <>
+                      <td className='px-6 py-3'>
+                        {name}
+                      </td>
                       <td className='px-6 py-3'>
                         {arweaveUri ? (
                           <Image 
