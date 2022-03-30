@@ -12,7 +12,7 @@ const FundsPreview = () => {
       )
 
       setFunds(json.funds)
-      setPrice(json.price)
+      setPrice(json.mbPrice)
     }
 
     loadFunds();

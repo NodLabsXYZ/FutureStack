@@ -7,7 +7,7 @@ export default async function handle(req, res) {
 
   res.json({ 
     funds: balanceBigNumber.toString(),
-     mbPrice: mbPrice.toString() 
+    mbPrice: mbPrice.toString() 
   });
 }
 
