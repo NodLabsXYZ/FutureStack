@@ -1,5 +1,3 @@
-
-
 import { bundlrClient, fundAccount } from '../../../lib/bundlr'; 
 
 export default async function handle(req, res) {  
@@ -9,6 +7,3 @@ export default async function handle(req, res) {
 
   res.json({ ok: true });
 }
-
-
-
