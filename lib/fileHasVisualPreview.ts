@@ -1,5 +1,6 @@
 const fileTypesWithVisualPreview = [
     'apng',
+    'png',
     'avif',
     'gif',
     'jpg',

@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { FileWithPreview } from "../../types/FileWithPreview"
-import { CodeIcon } from '@heroicons/react/outline'
+import { DocumentTextIcon } from '@heroicons/react/outline'
 import { fileHasVisualPreview } from '../../lib'
 
 type FileImageDisplayProps = {
@@ -23,6 +23,6 @@ export default function FileImageDisplay(props: FileImageDisplayProps): JSX.Elem
     }
 
     return (
-        <CodeIcon height={props.height} />
+        <DocumentTextIcon height={props.height} />
     )
 }

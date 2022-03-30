@@ -3,6 +3,7 @@ import { fileHasVisualPreview } from "../../lib";
 describe('fileHasVisualPreview', () => {
     const fileTypesWithVisualPreview = [
         'apng',
+        'png',
         'avif',
         'gif',
         'jpg',
