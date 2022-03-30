@@ -211,13 +211,9 @@ const saveResultToLocalStorageAndRouteToSuccess =
     ): void => {
         const generalUploadStore = store.namespace(StoreName.generalUploader);
 
-        console.log("HI0")
         generalUploadStore('lastSuccessfulUpload', uploadType);
-        console.log("HI1")
         generalUploadStore('baseURI', baseURI);
-        console.log("HI2")
         generalUploadStore('metadataFileNames', metadataFileNames.join(','));
-        console.log("HI3")
 
         if (projectId) {
             router.push(`/project/${projectId}/asset`)

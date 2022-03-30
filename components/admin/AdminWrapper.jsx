@@ -12,7 +12,7 @@ const AdminWrapper = ({ children }) => {
     const checkProfile = async () => {
       let profile = userStore('profile');
       if (!profile) {
-        profile = await getProfileTeamsProjects(user.id)
+        profile = await getProfileTeamsProjects()
       }
 
       if (!profile.info?.admin) {

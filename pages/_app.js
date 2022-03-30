@@ -5,7 +5,6 @@ import { AccountRegistration, FutureStackLayout } from '../components';
 import { supabaseClient } from '../lib';
 import '../styles/globals.css'
 import '../styles/index.css'
-import { getProfileTeamsProjects } from '../lib/queries';
 
 const publicRoutes = ['', 'login', 'register', 'arweave', 'uploader', 'error']
 const adminRoutes = ['admin']
