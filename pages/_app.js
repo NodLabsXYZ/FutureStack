@@ -7,6 +7,7 @@ import '../styles/globals.css'
 import '../styles/index.css'
 
 const publicRoutes = ['', 'login', 'register', 'arweave', 'uploader', 'error']
+const adminRoutes = ['admin']
 
 function FutureStackApp({ Component, pageProps }) {
   const router = useRouter();
@@ -14,6 +15,7 @@ function FutureStackApp({ Component, pageProps }) {
 
   const rootPath = router.pathname.split('/')[1] || ''
   const publicRoute = publicRoutes.includes(rootPath);
+  const adminRoute = adminRoutes.includes(rootPath);
 
   const [userStatus, setUserStatus] = useState({
     user: supabaseClient.auth.user(),
@@ -21,11 +23,16 @@ function FutureStackApp({ Component, pageProps }) {
   })
  
   useEffect(() => {
+    if (adminRoute && !userStatus.user) {
+      router.push('/login')
+      return;      
+    }
+
     if (!userStatus.user && !publicRoute) {
       router.push('/')
       return;
     }
-  }, [userStatus, publicRoute, router])
+  }, [userStatus, publicRoute, adminRoute, router])
 
   useEffect(() => {   
     const { data, error } = supabaseClient.auth.onAuthStateChange(

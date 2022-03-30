@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { BoldTitleAndValue, TWButton } from "..";
-import { supabaseClient } from "../../lib";
 import { createProject, getProfileTeamsProjects } from "../../lib/queries";
 
 const NewProject = () => {
@@ -9,10 +8,7 @@ const NewProject = () => {
   const [title, setTitle] = useState('');
 
   const onSubmit = async () => {
-    const user = supabaseClient.auth.user();
-    const profile = await getProfileTeamsProjects(user.id);
-
-    console.log("PROFILE", profile)
+    const profile = await getProfileTeamsProjects();
 
     const project = await createProject(profile.teams[0], {
       title
