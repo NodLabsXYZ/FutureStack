@@ -1,17 +1,12 @@
-import React, { Component, useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { FileWithPreview } from '../../types/FileWithPreview';
-import { FileListDisplay } from "./FileListDisplay";
 
 type FileDropzoneProps = {
   addFiles: (newFiles: FileWithPreview[]) => Promise<void>,
-  updateFilesBytes: (bytes: number) => Promise<void>
+  addBytes: (bytes: number) => Promise<void>
 }
 
 export default function FileDropzone(props: FileDropzoneProps) {
-  const [files, setFiles] = useState<FileWithPreview[]>();
-  const [isDropComplete, setIsDropComplete] = useState(false);
-
   const onDrop = (files: File[]) => {
     const filesWithPreview: FileWithPreview[] = files.map(file => Object.assign(file, { preview: URL.createObjectURL(file) }));
     let totalBytes = 0;
@@ -19,19 +14,8 @@ export default function FileDropzone(props: FileDropzoneProps) {
       totalBytes += file.size;
     });
     props.addFiles(filesWithPreview);
-    props.updateFilesBytes(totalBytes);
-    setFiles(filesWithPreview)
-    setIsDropComplete(true);
+    props.addBytes(totalBytes);
   };
-
-
-  if (isDropComplete) {
-    return (
-      <aside>
-        <FileListDisplay files={files} />
-      </aside>
-    )
-  }
 
   return (
     <Dropzone onDrop={onDrop}>
@@ -57,7 +41,7 @@ export default function FileDropzone(props: FileDropzoneProps) {
                 />
               </svg>
               Drag and drop or click to select files
-              <input {...getInputProps()} type="file" />
+              <input {...getInputProps()} type="file" data-testid="fileDropzoneInput" />
             </button>
           </div>
         </section>

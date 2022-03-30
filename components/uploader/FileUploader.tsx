@@ -11,6 +11,7 @@ import { SurveyDiscounts } from '../../enums/discountEnums';
 import UploadModal from "./UploadModal";
 import { FileToUpload } from "../../types/NftObject";
 import { calculatePurchasePriceInCents } from "../../lib/bundlr";
+import { FileListDisplay } from './FileListDisplay';
 
 type FileUploaderProps = {
     project?: any
@@ -100,13 +101,19 @@ export default function FileUploader(props: FileUploaderProps) {
         <div>
             <main>
                 <ErrorBanner showError={errorMessage} message={errorMessage} />
-                <FileDropzone addFiles={addFiles} updateFilesBytes={updateFilesBytes} />
+                {
+                    files.length <= 0 ? (
+                        <FileDropzone addFiles={addFiles} addBytes={updateFilesBytes} />
+                    ) : (
+                        <FileListDisplay files={files} />
+                    )
+                }
                 <div className='text-center mt-6'>
                     {
                         filesBytes !== 0 &&
-                            (
-                                <p>Upload size: {formatBytes(filesBytes)}</p>
-                            )
+                        (
+                            <p>Upload size: {formatBytes(filesBytes)}</p>
+                        )
                     }
 
                     {
@@ -119,17 +126,17 @@ export default function FileUploader(props: FileUploaderProps) {
 
                     {
                         files.length > 0 && !loading &&
-                            (
-                                <div className='mt-6'>
-                                    <button
-                                        type="button"
-                                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                        onClick={continueToUpload}
-                                    >
-                                        Continue
-                                    </button>
-                                </div>
-                            )
+                        (
+                            <div className='mt-6'>
+                                <button
+                                    type="button"
+                                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                    onClick={continueToUpload}
+                                >
+                                    Continue
+                                </button>
+                            </div>
+                        )
                     }
                     {
                         loading &&

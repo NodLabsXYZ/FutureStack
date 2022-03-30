@@ -55,9 +55,12 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.3",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^14.0.0",
     "@types/react": "^17.0.43",
     "@types/react-currency-format": "^1.0.0",
     "@types/react-dropzone": "^5.1.0",
+    "@types/react-test-renderer": "^17.0.1",
     "@types/request": "^2.48.8",
     "eslint": "^8.11.0",
     "eslint-config-next": "^12.1.0",
