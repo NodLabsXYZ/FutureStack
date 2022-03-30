@@ -12,19 +12,10 @@ const FundsPreview = () => {
       )
 
       setFunds(json.funds)
-    }
-
-    const loadPrice = async () => {
-      const bytes = 1024 * 1024;
-      const { json } = await simpleApiCall(
-        `uploader/cost/${bytes}`
-      )
-
-      setPrice(json.cost)
+      setPrice(json.price)
     }
 
     loadFunds();
-    loadPrice();
   }, [])
 
 
