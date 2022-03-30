@@ -292,7 +292,7 @@ export default function Uploading(props: UploadingProps) {
             console.error(error);
             propsRef.current.setError(ErrorType.generic)
         }
-    }, [])
+    }, [props.projectId])
 
     const isLocalStorageAvailable = typeof window !== "undefined";
     if (isLocalStorageAvailable && !isUploading) {

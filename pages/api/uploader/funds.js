@@ -5,6 +5,9 @@ export default async function handle(req, res) {
   const mbPrice = await bundlrClient.getPrice(mbBytes)
   const balanceBigNumber = await bundlrClient.getLoadedBalance()
 
-  res.json({ funds: balanceBigNumber.toString(), mbPrice: mbPrice.toString() }) });
+  res.json({ 
+    funds: balanceBigNumber.toString(),
+     mbPrice: mbPrice.toString() 
+  });
 }
 
