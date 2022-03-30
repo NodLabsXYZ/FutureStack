@@ -108,7 +108,9 @@ export default function FileUploader(props: FileUploaderProps) {
                 <br />
                 {
                     files.length > 0 && (
-                        <FileListDisplay files={files} />
+                        <div className='mx-96'>
+                            <FileListDisplay files={files} />
+                        </div>
                     )
                 }
                 <div className='text-center mt-6'>

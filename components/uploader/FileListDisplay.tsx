@@ -1,5 +1,7 @@
+import Image from 'next/image'
 import { FileWithPreview } from "../../types/FileWithPreview"
 import { formatBytes } from "../../lib/formatters"
+import FileImageDisplay from './FileImageDisplay'
 
 type FileListDisplayProps = {
     files: FileWithPreview[]
@@ -22,6 +24,12 @@ export const FileListDisplay = (props: FileListDisplayProps): JSX.Element => {
                                         scope="col"
                                         className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                                     >
+                                        {/* No title */}
+                                    </th>
+                                    <th
+                                        scope="col"
+                                        className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                                    >
                                         Name
                                     </th>
                                     <th
@@ -35,6 +43,12 @@ export const FileListDisplay = (props: FileListDisplayProps): JSX.Element => {
                             <tbody>
                                 {props.files.slice(0, 12).map((file, fileIdx) => (
                                     <tr key={file.name} className={fileIdx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                            <FileImageDisplay
+                                                file={file}
+                                                height={50}
+                                            />
+                                        </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{file.name}</td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatBytes(file.size)}</td>
                                     </tr>
