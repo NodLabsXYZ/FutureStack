@@ -101,10 +101,13 @@ export default function FileUploader(props: FileUploaderProps) {
         <div>
             <main>
                 <ErrorBanner showError={errorMessage} message={errorMessage} />
+                <FileDropzone
+                    addFiles={addFiles}
+                    addBytes={updateFilesBytes}
+                />
+                <br />
                 {
-                    files.length <= 0 ? (
-                        <FileDropzone addFiles={addFiles} addBytes={updateFilesBytes} />
-                    ) : (
+                    files.length > 0 && (
                         <FileListDisplay files={files} />
                     )
                 }
