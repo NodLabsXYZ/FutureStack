@@ -4,6 +4,7 @@ export default async function handle(req, res) {
   const { byteCount } = req.body;
 
   await fundAccount(bundlrClient, byteCount);
+  const balanceBigNumber = await bundlrClient.getLoadedBalance()
 
-  res.json({ ok: true });
+  res.json({ funds: balanceBigNumber.toString() });
 }
