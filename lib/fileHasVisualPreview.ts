@@ -1,3 +1,5 @@
+import getFileType from "./getFileType";
+
 const fileTypesWithVisualPreview = [
     'apng',
     'png',
@@ -18,8 +20,7 @@ const fileTypesWithVisualPreview = [
 
 const fileHasVisualPreview = (fileName: string): boolean => {
     // Source: https://developer.mozilla.org/en-US/docs/Web/Media/Formats/Image_types
-    const fileNameSplit = fileName.split('.')
-    const fileType = fileNameSplit[fileNameSplit.length - 1];
+    const fileType = getFileType(fileName);
 
     if (fileTypesWithVisualPreview.includes(fileType)) {
         return true;
