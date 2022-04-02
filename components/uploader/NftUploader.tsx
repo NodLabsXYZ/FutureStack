@@ -1,21 +1,13 @@
-import { FunctionComponent, useRef, useState } from "react"
-// import styles from '../../styles/Home.module.css'
-import UploadImages from './uploadImages'
-import { formatBytes } from '../../lib/formatters';
-import UploadMetadata from './uploadMetadata'
-import EstimatedCost from './EstimatedCost'
+import { FunctionComponent, useState } from "react"
 import ErrorBanner from './ErrorBanner';
 import UploadConfirmation from './UploadConfirmation';
 import { FileWithPreview } from '../../types/FileWithPreview'
 import { NftObject } from '../../types/NftObject'
 import store from 'store2';
 import { StoreName } from "../../enums/storeEnums"
-import { SurveyDiscounts } from "../../enums/discountEnums"
-import { SmallSpinner } from "./spinners"
 import createNftObjects from "../../lib/createNftObjects";
-import { calculatePurchasePriceInCents } from "../../lib/bundlr";
 import FileDropzone from "./FileDropzone";
-import { getFilesOfTypeFromList, getTotalSizeInBytesFromFileList, separateImageAndMetadataFiles } from "../../lib";
+import { getTotalSizeInBytesFromFileList, separateImageAndMetadataFiles } from "../../lib";
 
 type UploaderProps = {
   onFilesSelected: () => void,
