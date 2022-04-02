@@ -49,6 +49,8 @@ export default function FileUploader(props: FileUploaderProps) {
         for (let index = 0; index < newFiles.length; index++) {
             const file = newFiles[index];
             oldAndNewFiles.push(file);
+
+            updateFilesBytes(file.size);
         }
         console.log('oldAndNewFiles :>> ', oldAndNewFiles);
         setFiles(oldAndNewFiles);
@@ -103,7 +105,6 @@ export default function FileUploader(props: FileUploaderProps) {
                 <ErrorBanner showError={errorMessage} message={errorMessage} />
                 <FileDropzone
                     addFiles={addFiles}
-                    addBytes={updateFilesBytes}
                 />
                 <br />
                 {

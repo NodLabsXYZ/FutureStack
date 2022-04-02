@@ -14,6 +14,7 @@ import { SurveyDiscounts } from "../../enums/discountEnums"
 import { SmallSpinner } from "./spinners"
 import createNftObjects from "../../lib/createNftObjects";
 import { calculatePurchasePriceInCents } from "../../lib/bundlr";
+import FileDropzone from "./FileDropzone";
 
 type UploaderProps = {
   onFilesSelected: () => void,
@@ -107,10 +108,10 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected, projec
         <main>
           <ErrorBanner showError={errorMessage} message={errorMessage} />
           <br />
-          <UploadImages setImageFiles={setImageFiles} updateImageBytes={updateImageBytes} />
+          {/* <UploadImages setImageFiles={setImageFiles} updateImageBytes={updateImageBytes} />
           <br />
           <br />
-          <UploadMetadata setMetadataFiles={setMetadataFiles} updateMetadataBytes={updateMetadataBytes} />
+          <UploadMetadata setMetadataFiles={setMetadataFiles} updateMetadataBytes={updateMetadataBytes} /> */}
           
           <div className='text-center mt-12'>
 

@@ -9,18 +9,15 @@ describe('File Dropzone', () => {
     global.URL.createObjectURL = jest.fn(() => examplePreviewUrl);;
     let component: RenderResult = null;
     let addFilesMock = jest.fn();
-    let addBytesMock = jest.fn();
     
 
     beforeEach(() => {
         component = render(
             <FileDropzone
                 addFiles={addFilesMock}
-                addBytes={addBytesMock}
             />
         );
         addFilesMock.mockClear();
-        addBytesMock.mockClear();
     });
 
     it('should render', () => {
@@ -56,23 +53,6 @@ describe('File Dropzone', () => {
         await userEvent.upload(input, file);
 
         expect(addFilesMock).toBeCalledWith([expectedFileWithPreview]);
-    });
-
-    it('should call addBytes function prop on file add', async () => {
-        const input = getFileDropzoneInputElement(component);
-
-        await userEvent.upload(input, file);
-
-        expect(addBytesMock).toBeCalledWith(file.size);
-    });
-
-    it('should call addBytes function prop on multiple file add', async () => {
-        const input = getFileDropzoneInputElement(component);
-
-        await userEvent.upload(input, [file, file2]);
-
-        const expectedBytes = file.size + file2.size;;
-        expect(addBytesMock).toBeCalledWith(expectedBytes);
     });
 
 });

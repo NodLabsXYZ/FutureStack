@@ -3,18 +3,12 @@ import { FileWithPreview } from '../../types/FileWithPreview';
 
 type FileDropzoneProps = {
   addFiles: (newFiles: FileWithPreview[]) => Promise<void>,
-  addBytes: (bytes: number) => Promise<void>
 }
 
 export default function FileDropzone(props: FileDropzoneProps) {
   const onDrop = (files: File[]) => {
     const filesWithPreview: FileWithPreview[] = files.map(file => Object.assign(file, { preview: URL.createObjectURL(file) }));
-    let totalBytes = 0;
-    filesWithPreview.forEach(file => {
-      totalBytes += file.size;
-    });
     props.addFiles(filesWithPreview);
-    props.addBytes(totalBytes);
   };
 
   return (
