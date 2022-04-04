@@ -54,7 +54,7 @@ const NftUploader: FunctionComponent<UploaderProps> = ({ onFilesSelected, projec
     return (
       <UploadConfirmation
         nftObjects={nftObjects}
-        totalBytes={0}
+        totalBytes={totalBytes}
         projectId={project?.id}
       />
     )
