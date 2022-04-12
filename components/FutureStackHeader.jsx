@@ -14,6 +14,8 @@ import { useRouter } from 'next/router'
 
 const FutureStackHeader = ({ darkMode=false, user }) => {
   const router = useRouter()
+  const userStore = store.namespace("user");
+  const profile = userStore("profile")
 
   const signout = () => {
     supabaseClient.auth.signOut()
@@ -36,14 +38,20 @@ const FutureStackHeader = ({ darkMode=false, user }) => {
           </div>
         </div>
       </h1>
-      <div className='-mt-2'>
+      <div className='-mt-2 flex'>
         {user &&
-          <span
-            className='cursor-pointer'
-            onClick={signout}
-          >
-            Sign Out
-          </span>
+          <>
+            <div className='mr-12'>
+              Account:
+              ${(profile?.stored_value || 0) / 100}
+            </div>
+            <div
+              className='cursor-pointer'
+              onClick={signout}
+            >
+              Sign Out
+            </div>
+          </>
         }
         {!user &&
           <>

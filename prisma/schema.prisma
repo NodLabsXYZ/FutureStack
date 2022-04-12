@@ -8,17 +8,19 @@ datasource db {
 }
 
 model profiles {
-  id         String    @id @default(dbgenerated("extensions.uuid_generate_v4()")) @db.Uuid
-  username   String?   @unique
-  email      String?   @unique
-  avatar_url String?
-  user_id    String    @unique @db.Uuid
-  secret_key String?   @default(dbgenerated("extensions.uuid_generate_v4()")) @db.Uuid
-  info       Json?
-  created_at DateTime  @default(now())
-  updated_at DateTime? @db.Timestamptz(6)
-  teams      teams[]
-  surveys    surveys[]
+  id           String         @id @default(dbgenerated("extensions.uuid_generate_v4()")) @db.Uuid
+  username     String?        @unique
+  email        String?        @unique
+  avatar_url   String?
+  user_id      String         @unique @db.Uuid
+  secret_key   String?        @default(dbgenerated("extensions.uuid_generate_v4()")) @db.Uuid
+  stored_value BigInt         @default(0)
+  info         Json?
+  created_at   DateTime       @default(now())
+  updated_at   DateTime?      @db.Timestamptz(6)
+  teams        teams[]
+  surveys      surveys[]
+  transactions transactions[]
 }
 
 model projects {
@@ -87,6 +89,15 @@ model surveys {
   verified   Boolean   @default(false)
   profile    profiles? @relation(fields: [profile_id], references: [id])
   profile_id String?   @db.Uuid
+  created_at DateTime  @default(now())
+  updated_at DateTime? @db.Timestamptz(6)
+}
+
+model transactions {
+  id         String    @id @default(dbgenerated("extensions.uuid_generate_v4()")) @db.Uuid
+  amount     BigInt
+  profile_id String    @db.Uuid
+  profile    profiles  @relation(fields: [profile_id], references: [id])
   created_at DateTime  @default(now())
   updated_at DateTime? @db.Timestamptz(6)
 }
