@@ -78,6 +78,8 @@ exports[`FutureStackLayout with user should render 1`] = `
                 alt="FutureStack Logo"
                 data-nimg="intrinsic"
                 decoding="async"
+                onError={[Function]}
+                onLoad={[Function]}
                 src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
                 style={
                   Object {
@@ -152,14 +154,20 @@ exports[`FutureStackLayout with user should render 1`] = `
           </div>
         </h1>
         <div
-          className="-mt-2"
+          className="-mt-2 flex"
         >
-          <span
+          <div
+            className="mr-12"
+          >
+            Account: $
+            0
+          </div>
+          <div
             className="cursor-pointer"
             onClick={[Function]}
           >
             Sign Out
-          </span>
+          </div>
         </div>
       </div>
     </div>
