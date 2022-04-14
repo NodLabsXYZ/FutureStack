@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { NextLink } from ".";
 import TWButton from "./TWButton";
-import { LightningBoltIcon, LockClosedIcon, CreditCardIcon } from '@heroicons/react/outline'
+import { LightningBoltIcon, LockClosedIcon, CreditCardIcon, CheckIcon } from '@heroicons/react/outline'
 
-const features = [
+const mainFeatures = [
   {
     name: 'Frictionless upload',
     description:
@@ -24,6 +24,21 @@ const features = [
   },
 ]
 
+const devFeatures = [
+  {
+    name: 'Upload Files',
+    icon: CheckIcon,
+  },
+  {
+    name: 'Pay Once',
+    icon: CreditCardIcon,
+  },
+  {
+    name: 'Store Forever',
+    icon: LockClosedIcon,
+  },
+]
+
 const FrontPage = () => {
   return (
     <div className='py-12 md:px-12 text-2xl font-thin text-white'>
@@ -37,11 +52,21 @@ const FrontPage = () => {
           FutureStack makes uploading files to Arweave fast and easy.
         </div>
       </div>
+
+      <div className='rotate-[2.84deg] absolute right-0 top-72 w-[120%] h-1/2'>
+        <Image
+          src="/images/particleWaves.png"
+          alt="Background waves of particles"
+          layout='fill'
+          objectFit='contain'
+        />
+      </div>
+
       <div className="pt-80">
         <div className="max-w-xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
           <h2 className="sr-only">futurestack values</h2>
           <dl className="space-y-10 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-8">
-            {features.map((feature) => (
+            {mainFeatures.map((feature) => (
               <div key={feature.name} className='relative'>
                 <dt>
                   <div
@@ -61,116 +86,54 @@ const FrontPage = () => {
         </div>
       </div>
 
-      <div className='rotate-[2.84deg] absolute right-0 top-72 w-[120%] h-1/2'>
-        <Image
-          src="/images/particleWaves.png"
-          alt="Background waves of particles"
-          layout='fill'
-          objectFit='contain'
-        />
-      </div>
-
-      <div className='mt-48 sm:w-11/12 md:w-10/12 lg:w-8/12 xl:w-6/12 mx-auto'>
-        <div className='float-left mr-6'>
-          <Image
-            src="/images/arweave-logo.png"
-            alt="Arweave Logo"
-            width={154}
-            height={154}
-          />
-        </div>
-        <div className=''>
-          <div className='font-semibold'>
-            Arweave Uploader
-          </div>
-          <div className='mt-3'>
-            Store files on-chain forever,
-            <br className='hidden sm:block' />
-            no recurring costs or hassle.
-          </div>
-          <div className='mt-3 text-lg sm:overflow-hidden'>
-            Leverage Arweave&apos;s permanent storage&nbsp;
-            <br className='hidden sm:block' />
-            with our steamlined uploader.&nbsp;
-            <br className='hidden sm:block' />
-            Pay once - store forever.
+      <div className="mt-52 lg:grid lg:grid-cols-12 lg:gap-8 mx-24">
+        <div className="px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-7 lg:text-left lg:flex lg:items-center">
+          <div>
+            <h1 className="mt-4 text-2xl tracking-tight font-bold text-white sm:mt-5 sm:leading-none lg:mt-6">
+              Developers
+            </h1>
+            <p className="mt-3 text-base sm:mt-5">
+              FutureStack leverages the power of blockchain data storage through Arweave without the hassle.
+              Pay with a credit or debit card, and upload in seconds.
+            </p>
+            <dl className="mt-8 space-y-10 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-8">
+              {devFeatures.map((feature) => (
+                <div key={feature.name} className='relative'>
+                  <dt>
+                    <div
+                      className="mt-1 absolute flex items-center px-2 py-2 border border-landingButtonBorder rounded-full bg-landingButtonBg"
+                    >
+                      <feature.icon className="h-4 w-4" aria-hidden="true" />
+                    </div>
+                    <div>
+                      <span className="mt-5 ml-12 text-base leading-6 text-center">{feature.name}</span>
+                    </div>
+                  </dt>
+                </div>
+              ))}
+            </dl>
+            <div className="mt-6 bg-[#2C323C] rounded-full overflow-hidden">
+              <div className="h-2 bg-gradient-to-r from-[#2B7BF2] to-landingButtonBorder rounded-full" style={{ width: '50%' }} />
+            </div>
           </div>
         </div>
-        <div className='text-center sm:text-left sm:pl-44 mt-6'>
-          <TWButton
-            classMap={{
-              background: 'bg-indigo-800',
-              rounder: 'rounded-full'
-            }}
+        <div className="lg:col-span-1"></div>
+        <div className="mt-12 lg:col-span-4">
+          <div
+            className="relative block w-full border-2 border-white border-dashed rounded-lg p-12 text-center"
           >
-            <NextLink href='/arweave'>
-              <a className='px-3 py-1 text-lg align-text-top font-light'>
-                Get Started
-              </a>
-            </NextLink>
-          </TWButton>
-        </div>
-      </div>
-
-      <div className='mt-48 sm:pr-24 flex justify-between relative'>
-        <div className='hidden sm:block opacity-30 -mt-12'>
-          <Image
-            src="/images/stacks.png"
-            alt="Stacks"
-            width={496}
-            height={377}
-          />
-        </div>
-        <div className='float-right sm:w-96 sm:mr-24'>
-          <div className='font-semibold'>
-            Private Hosted Blockchain
-          </div>
-          <div className='mt-3'>
-            Share access with your team and customers,
-            keep control and privacy.
-          </div>
-          <div className='mt-3 text-lg'>
-            Fully control a hosted blockchain. Manage access and
-            easily automate testing. No more faucets!
-          </div>
-          <div className='text-center mt-6'>
-            <TWButton>
-              <NextLink href='/arweave'>
-                <a className='px-3 py-1 text-lg align-text-top font-light'>
-                  Join Waitlist
-                </a>
-              </NextLink>
-            </TWButton>
-          </div>
-        </div>
-      </div>
-
-      <div className='mt-72 flex text-center sm:w-1/2 mx-auto'>
-        <div className=''>
-          <div className='font-semibold'>
-            New web3 services and infrastructure coming soon.
-          </div>
-
-          <div className='mt-3 text-lg'>
-            Let us know what&apos;s slowing down your
-            web3 development process.
-          </div>
-          <div className='text-center mt-6'>
-            <TWButton
-              classMap={{
-                background: 'bg-indigo-800',
-                rounder: 'rounded-full'
-              }}
+            <span className="text-base">
+              Drag and Drop or Click to Select Files
+            </span>
+            <div
+              className="inline-flex items-center px-8 py-1 mx-4 border border-landingButtonBorder text-base rounded-full shadow-sm bg-landingButtonBg"
             >
-              <NextLink href='/arweave'>
-                <a className='px-3 py-1 text-lg align-text-top font-light'>
-                  Join Waitlist
-                </a>
-              </NextLink>
-            </TWButton>
+              Select File
+            </div>
           </div>
         </div>
       </div>
+
     </div>
   )
 }
