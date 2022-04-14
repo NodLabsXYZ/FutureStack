@@ -17,7 +17,7 @@ const darkStates = [
     isDark: true,
     text: 'text-white',
     gradient: {
-      background: 'linear-gradient(#0C1322 10%, #5B5258 60%, #ECA33B 85%, #DB5224 100%)'
+      background: '#091729'
     }
   }
 ]

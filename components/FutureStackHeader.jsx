@@ -12,7 +12,7 @@ import {
 import store from 'store2'
 import { useRouter } from 'next/router'
 
-const FutureStackHeader = ({ darkMode=false, user }) => {
+const FutureStackHeader = ({ darkMode = false, user }) => {
   const router = useRouter()
 
   const signout = () => {
@@ -21,7 +21,7 @@ const FutureStackHeader = ({ darkMode=false, user }) => {
   }
 
   return (
-    <TWCleanHeader classMap={{fontColor: darkMode ? 'text-white' : 'text-slate-900'}}>
+    <TWCleanHeader classMap={{ fontColor: darkMode ? 'text-white' : 'text-slate-900' }}>
       <h1 className='text-lg'>
         <div className='flex cursor-pointer' onClick={() => router.push('/')}>
           <Image
@@ -47,22 +47,21 @@ const FutureStackHeader = ({ darkMode=false, user }) => {
         }
         {!user &&
           <>
-            <NextLink href='/login'>
-              <a className='mr-6 font-light'>
-                Sign In
-              </a>
-            </NextLink>
             <TWButton
-              classMap={{
-                rounded: 'rounded-full',
-                background: darkMode ? 'bg-white' : 'bg-slate-900',
-                padding: 'px-1',
-                font: 'font-light',
-              }}
+              className="inline-flex items-center px-5 py-1 mx-4 border border-landingButtonBorder text-base font-medium rounded-full shadow-sm bg-landingButtonBg hover:bg-landingButtonBgHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-landingButtonBgHover"
             >
               <NextLink href='/register'>
-                <a className={`px-3 py-1 ${darkMode ? 'text-slate-900' : 'text-white'}`}>
-                  Register
+                <a className='text-white font-normal'>
+                  Create Account
+                </a>
+              </NextLink>
+            </TWButton>
+            <TWButton
+              className="inline-flex items-center px-5 py-1 mx-4 border border-landingButtonBorder text-base font-medium rounded-full shadow-sm bg-landingButtonBg hover:bg-landingButtonBgHover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-landingButtonBgHover"
+            >
+              <NextLink href='/login'>
+                <a className='font-normal'>
+                  Sign In
                 </a>
               </NextLink>
             </TWButton>

@@ -1,41 +1,73 @@
 import Image from "next/image";
 import { NextLink } from ".";
 import TWButton from "./TWButton";
+import { LightningBoltIcon, LockClosedIcon, CreditCardIcon } from '@heroicons/react/outline'
+
+const features = [
+  {
+    name: 'Frictionless upload',
+    description:
+      'Upload to Arweave in seconds and store your files forever.',
+    icon: LightningBoltIcon,
+  },
+  {
+    name: 'Immutable',
+    description:
+      'Once uploaded, your files are secure and can never be edited or deleted.',
+    icon: LockClosedIcon,
+  },
+  {
+    name: 'No recurring fees',
+    description:
+      'Scalable data storage solution for a flat fee. ',
+    icon: CreditCardIcon,
+  },
+]
 
 const FrontPage = () => {
   return (
     <div className='py-12 md:px-12 text-2xl font-thin text-white'>
-      
-      <div className='pt-24 w-96 mx-auto'>
-        <div>web3 infrastructure and services</div>
-        <div className='font-semibold'>
-          for developers and startups 
-          who want to build new products,
-          <div className='italic text-orange-600'>
-            fast.
-          </div>
+
+      <div className='pt-10 text-center'>
+        <div className="text-4xl font-bold mb-4">
+          The easiest way to upload <br /> your files to the blockchain
+        </div>
+        <div className='text-base mx-64 font-slim'>
+          Arweave is a blockchain built exclusively for the permanent storage of files.
+          FutureStack makes uploading files to Arweave fast and easy.
+        </div>
+      </div>
+      <div className="pt-80">
+        <div className="max-w-xl mx-auto px-4 sm:px-6 lg:max-w-7xl lg:px-8">
+          <h2 className="sr-only">futurestack values</h2>
+          <dl className="space-y-10 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-8">
+            {features.map((feature) => (
+              <div key={feature.name} className='relative'>
+                <dt>
+                  <div
+                    className="mt-5 absolute flex items-center px-2 py-2 mx-4 border border-landingButtonBorder rounded-full bg-landingButtonBg"
+                  >
+                    <feature.icon className="h-6 w-6" aria-hidden="true" />
+                  </div>
+                  <div>
+                    <span className="mt-5 ml-20 text-base leading-6 font-medium text-center">{feature.name}</span>
+                    <br />
+                    <dd className="mt-1 ml-20 text-sm font-light">{feature.description}</dd>
+                  </div>
+                </dt>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
 
-      <div className='mt-48 sm:ml-12 xl:ml-48 w-96'>
-        <div className='font-semibold'>
-          For a startup or idea to make it 
-          in web3, your timing matters. 
-        </div>
-        <div className='mt-6'>
-          Increase velocity, maintain control and 
-          flexibility when developing and deploying 
-          new web3 products. 
-        </div>
-        <div className='rotate-[27deg] absolute right-72 top-72'>
-          <Image
-            src="/images/ethereum-logo.png"
-            alt="Ethereum Logo"
-            width={301}
-            height={582}
-            className='opacity-40'
-          />
-        </div>
+      <div className='rotate-[2.84deg] absolute right-0 top-72 w-[120%] h-1/2'>
+        <Image
+          src="/images/particleWaves.png"
+          alt="Background waves of particles"
+          layout='fill'
+          objectFit='contain'
+        />
       </div>
 
       <div className='mt-48 sm:w-11/12 md:w-10/12 lg:w-8/12 xl:w-6/12 mx-auto'>
@@ -44,7 +76,7 @@ const FrontPage = () => {
             src="/images/arweave-logo.png"
             alt="Arweave Logo"
             width={154}
-            height={154}          
+            height={154}
           />
         </div>
         <div className=''>
@@ -57,12 +89,12 @@ const FrontPage = () => {
             no recurring costs or hassle.
           </div>
           <div className='mt-3 text-lg sm:overflow-hidden'>
-            Leverage Arweave&apos;s permanent storage&nbsp; 
+            Leverage Arweave&apos;s permanent storage&nbsp;
             <br className='hidden sm:block' />
-            with our steamlined uploader.&nbsp; 
+            with our steamlined uploader.&nbsp;
             <br className='hidden sm:block' />
             Pay once - store forever.
-          </div>          
+          </div>
         </div>
         <div className='text-center sm:text-left sm:pl-44 mt-6'>
           <TWButton
@@ -77,7 +109,7 @@ const FrontPage = () => {
               </a>
             </NextLink>
           </TWButton>
-        </div>        
+        </div>
       </div>
 
       <div className='mt-48 sm:pr-24 flex justify-between relative'>
@@ -86,7 +118,7 @@ const FrontPage = () => {
             src="/images/stacks.png"
             alt="Stacks"
             width={496}
-            height={377}          
+            height={377}
           />
         </div>
         <div className='float-right sm:w-96 sm:mr-24'>
@@ -100,7 +132,7 @@ const FrontPage = () => {
           <div className='mt-3 text-lg'>
             Fully control a hosted blockchain. Manage access and
             easily automate testing. No more faucets!
-          </div>          
+          </div>
           <div className='text-center mt-6'>
             <TWButton>
               <NextLink href='/arweave'>
@@ -109,7 +141,7 @@ const FrontPage = () => {
                 </a>
               </NextLink>
             </TWButton>
-          </div>        
+          </div>
         </div>
       </div>
 
@@ -118,11 +150,11 @@ const FrontPage = () => {
           <div className='font-semibold'>
             New web3 services and infrastructure coming soon.
           </div>
-          
+
           <div className='mt-3 text-lg'>
-            Let us know what&apos;s slowing down your 
-            web3 development process.  
-          </div>          
+            Let us know what&apos;s slowing down your
+            web3 development process.
+          </div>
           <div className='text-center mt-6'>
             <TWButton
               classMap={{
@@ -136,7 +168,7 @@ const FrontPage = () => {
                 </a>
               </NextLink>
             </TWButton>
-          </div>        
+          </div>
         </div>
       </div>
     </div>
