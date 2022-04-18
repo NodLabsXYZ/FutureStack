@@ -86,6 +86,12 @@ const FrontPage = () => {
         </div>
       </div>
 
+      {/* 
+          For some reason this is needed to trick tailwind
+          into NOT wrapping the div after this one in a "relative" class
+       */}
+      <div className="absolute"></div>
+
       <div className="mt-52 lg:grid lg:grid-cols-12 lg:gap-8 mx-24">
         <div className="px-4 sm:px-6 sm:text-center md:max-w-2xl md:mx-auto lg:col-span-7 lg:text-left lg:flex lg:items-center">
           <div>
@@ -113,20 +119,39 @@ const FrontPage = () => {
               ))}
             </dl>
             <div className="mt-6 bg-[#2C323C] rounded-full overflow-hidden">
-              <div className="h-2 bg-gradient-to-r from-[#2B7BF2] to-landingButtonBorder rounded-full" style={{ width: '50%' }} />
+              <div className="h-1 bg-gradient-to-r from-[#2B7BF2] to-landingButtonBorder rounded-full" style={{ width: '50%' }} />
             </div>
           </div>
         </div>
+
         <div className="lg:col-span-1"></div>
+
         <div className="mt-12 lg:col-span-4">
           <div
-            className="relative block w-full border-2 border-white border-dashed rounded-lg p-12 text-center"
+            className="relative block w-full border-2 border-white border-dashed rounded-lg p-4 pt-16 text-center"
           >
+            <div className='absolute right-0 top-[-7rem] w-full h-full'>
+              <Image
+                src="/images/nftDragNDrop.png"
+                alt="Background waves of particles"
+                layout='fill'
+                objectFit='contain'
+              />
+            </div>
+            <div className='absolute right-[4.5rem] top-[-5.5rem] w-1/6 h-1/6'>
+              <Image
+                src="/images/mouse.png"
+                alt="Background waves of particles"
+                layout='fill'
+                objectFit='contain'
+              />
+            </div>
             <span className="text-base">
               Drag and Drop or Click to Select Files
             </span>
+            <br />
             <div
-              className="inline-flex items-center px-8 py-1 mx-4 border border-landingButtonBorder text-base rounded-full shadow-sm bg-landingButtonBg"
+              className="mt-4 inline-flex items-center px-8 py-1 mx-4 border border-landingButtonBorder text-base rounded-full shadow-sm bg-landingButtonBg"
             >
               Select File
             </div>
