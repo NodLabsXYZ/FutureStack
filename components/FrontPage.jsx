@@ -156,6 +156,35 @@ const FrontPage = () => {
               Select File
             </div>
           </div>
+          <div className="mt-6">
+            <span className="font-semibold text-base align-top">
+              Easy Checkout
+            </span>
+            <Image
+              src="/images/creditCardLogos/billing-visa.png"
+              alt="Background waves of particles"
+              height={40}
+              width={40}
+            />
+            <Image
+              src="/images/creditCardLogos/billing-discover.png"
+              alt="Background waves of particles"
+              height={40}
+              width={40}
+            />
+            <Image
+              src="/images/creditCardLogos/billing-amex.png"
+              alt="Background waves of particles"
+              height={40}
+              width={40}
+            />
+            <Image
+              src="/images/creditCardLogos/billing-mastercard.png"
+              alt="Background waves of particles"
+              height={40}
+              width={40}
+            />
+          </div>
         </div>
       </div>
 
