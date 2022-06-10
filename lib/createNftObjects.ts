@@ -8,9 +8,12 @@ const createNftObjects = async (imageFiles: FileWithPreview[], metadataFiles: Fi
 
     const nftObjects: NftObject[] = [];
 
-    for (let index = 0; index < imageFiles.length; index++) {
-        const imageFile = imageFiles[index];
-        const metadataFile = metadataFiles[index];
+    const sortedImageFiles = imageFiles.sort((a, b) => a.name.localeCompare(b.name));
+    const sortedMetadataFiles = metadataFiles.sort((a, b) => a.name.localeCompare(b.name));
+
+    for (let index = 0; index < sortedImageFiles.length; index++) {
+        const imageFile = sortedImageFiles[index];
+        const metadataFile = sortedMetadataFiles[index];
 
         const nftObject = await createNftObject(imageFile, metadataFile);
 
